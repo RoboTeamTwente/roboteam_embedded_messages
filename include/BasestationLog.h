@@ -9,6 +9,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "BaseTypes.h"
 
 typedef struct _BasestationLogPayload {
@@ -16,27 +17,19 @@ typedef struct _BasestationLogPayload {
 } BasestationLogPayload;
 
 typedef struct _BasestationLog {
-    uint32_t   header              ; // integer [0, 255]             Header byte indicating the type of packet
+    uint32_t header;  // integer [0, 255]             Header byte indicating the type of packet
 } BasestationLog;
 
 // ================================ GETTERS ================================
-static inline uint32_t BasestationLog_get_header(BasestationLogPayload *blp){
-    return ((blp->payload[0]));
-}
+static inline uint32_t BasestationLog_get_header(BasestationLogPayload *blp) { return ((blp->payload[0])); }
 
 // ================================ SETTERS ================================
-static inline void BasestationLog_set_header(BasestationLogPayload *blp, uint32_t header){
-    blp->payload[0] = header;
-}
+static inline void BasestationLog_set_header(BasestationLogPayload *blp, uint32_t header) { blp->payload[0] = header; }
 
 // ================================ ENCODE ================================
-static inline void encodeBasestationLog(BasestationLogPayload *blp, BasestationLog *bl){
-    BasestationLog_set_header              (blp, bl->header);
-}
+static inline void encodeBasestationLog(BasestationLogPayload *blp, BasestationLog *bl) { BasestationLog_set_header(blp, bl->header); }
 
 // ================================ DECODE ================================
-static inline void decodeBasestationLog(BasestationLog *bl, BasestationLogPayload *blp){
-    bl->header           = BasestationLog_get_header(blp);
-}
+static inline void decodeBasestationLog(BasestationLog *bl, BasestationLogPayload *blp) { bl->header = BasestationLog_get_header(blp); }
 
 #endif /*__BASESTATION_LOG_H*/

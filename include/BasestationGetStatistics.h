@@ -9,6 +9,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "BaseTypes.h"
 
 typedef struct _BasestationGetStatisticsPayload {
@@ -16,27 +17,19 @@ typedef struct _BasestationGetStatisticsPayload {
 } BasestationGetStatisticsPayload;
 
 typedef struct _BasestationGetStatistics {
-    uint32_t   header              ; // integer [0, 255]             Header byte indicating the type of packet
+    uint32_t header;  // integer [0, 255]             Header byte indicating the type of packet
 } BasestationGetStatistics;
 
 // ================================ GETTERS ================================
-static inline uint32_t BasestationGetStatistics_get_header(BasestationGetStatisticsPayload *bgsp){
-    return ((bgsp->payload[0]));
-}
+static inline uint32_t BasestationGetStatistics_get_header(BasestationGetStatisticsPayload *bgsp) { return ((bgsp->payload[0])); }
 
 // ================================ SETTERS ================================
-static inline void BasestationGetStatistics_set_header(BasestationGetStatisticsPayload *bgsp, uint32_t header){
-    bgsp->payload[0] = header;
-}
+static inline void BasestationGetStatistics_set_header(BasestationGetStatisticsPayload *bgsp, uint32_t header) { bgsp->payload[0] = header; }
 
 // ================================ ENCODE ================================
-static inline void encodeBasestationGetStatistics(BasestationGetStatisticsPayload *bgsp, BasestationGetStatistics *bgs){
-    BasestationGetStatistics_set_header              (bgsp, bgs->header);
-}
+static inline void encodeBasestationGetStatistics(BasestationGetStatisticsPayload *bgsp, BasestationGetStatistics *bgs) { BasestationGetStatistics_set_header(bgsp, bgs->header); }
 
 // ================================ DECODE ================================
-static inline void decodeBasestationGetStatistics(BasestationGetStatistics *bgs, BasestationGetStatisticsPayload *bgsp){
-    bgs->header          = BasestationGetStatistics_get_header(bgsp);
-}
+static inline void decodeBasestationGetStatistics(BasestationGetStatistics *bgs, BasestationGetStatisticsPayload *bgsp) { bgs->header = BasestationGetStatistics_get_header(bgsp); }
 
 #endif /*__BASESTATION_GET_STATISTICS_H*/

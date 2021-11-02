@@ -12,6 +12,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+
 #include "BaseTypes.h"
 
 typedef struct _RobotLogPayload {
@@ -19,60 +20,44 @@ typedef struct _RobotLogPayload {
 } RobotLogPayload;
 
 typedef struct _RobotLog {
-    uint32_t   header              ; // integer [0, 255]             Header byte indicating the type of packet
-    uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
-    uint32_t   id                  ; // integer [0, 15]              Id of the robot
-    uint32_t   message_length      ; // integer [0, 255]             Length of the following message
+    uint32_t header;          // integer [0, 255]             Header byte indicating the type of packet
+    uint32_t remVersion;      // integer [0, 15]              Version of roboteam_embedded_messages
+    uint32_t id;              // integer [0, 15]              Id of the robot
+    uint32_t message_length;  // integer [0, 255]             Length of the following message
 } RobotLog;
 
 // ================================ GETTERS ================================
-static inline uint32_t RobotLog_get_header(RobotLogPayload *rlp){
-    return ((rlp->payload[0]));
-}
+static inline uint32_t RobotLog_get_header(RobotLogPayload *rlp) { return ((rlp->payload[0])); }
 
-static inline uint32_t RobotLog_get_remVersion(RobotLogPayload *rlp){
-    return ((rlp->payload[1] & 0b11110000) >> 4);
-}
+static inline uint32_t RobotLog_get_remVersion(RobotLogPayload *rlp) { return ((rlp->payload[1] & 0b11110000) >> 4); }
 
-static inline uint32_t RobotLog_get_id(RobotLogPayload *rlp){
-    return ((rlp->payload[1] & 0b00001111));
-}
+static inline uint32_t RobotLog_get_id(RobotLogPayload *rlp) { return ((rlp->payload[1] & 0b00001111)); }
 
-static inline uint32_t RobotLog_get_message_length(RobotLogPayload *rlp){
-    return ((rlp->payload[2]));
-}
+static inline uint32_t RobotLog_get_message_length(RobotLogPayload *rlp) { return ((rlp->payload[2])); }
 
 // ================================ SETTERS ================================
-static inline void RobotLog_set_header(RobotLogPayload *rlp, uint32_t header){
-    rlp->payload[0] = header;
-}
+static inline void RobotLog_set_header(RobotLogPayload *rlp, uint32_t header) { rlp->payload[0] = header; }
 
-static inline void RobotLog_set_remVersion(RobotLogPayload *rlp, uint32_t remVersion){
-    rlp->payload[1] = ((remVersion << 4) & 0b11110000) | (rlp->payload[1] & 0b00001111);
-}
+static inline void RobotLog_set_remVersion(RobotLogPayload *rlp, uint32_t remVersion) { rlp->payload[1] = ((remVersion << 4) & 0b11110000) | (rlp->payload[1] & 0b00001111); }
 
-static inline void RobotLog_set_id(RobotLogPayload *rlp, uint32_t id){
-    rlp->payload[1] = (id & 0b00001111) | (rlp->payload[1] & 0b11110000);
-}
+static inline void RobotLog_set_id(RobotLogPayload *rlp, uint32_t id) { rlp->payload[1] = (id & 0b00001111) | (rlp->payload[1] & 0b11110000); }
 
-static inline void RobotLog_set_message_length(RobotLogPayload *rlp, uint32_t message_length){
-    rlp->payload[2] = message_length;
-}
+static inline void RobotLog_set_message_length(RobotLogPayload *rlp, uint32_t message_length) { rlp->payload[2] = message_length; }
 
 // ================================ ENCODE ================================
-static inline void encodeRobotLog(RobotLogPayload *rlp, RobotLog *rl){
-    RobotLog_set_header              (rlp, rl->header);
-    RobotLog_set_remVersion          (rlp, rl->remVersion);
-    RobotLog_set_id                  (rlp, rl->id);
-    RobotLog_set_message_length      (rlp, rl->message_length);
+static inline void encodeRobotLog(RobotLogPayload *rlp, RobotLog *rl) {
+    RobotLog_set_header(rlp, rl->header);
+    RobotLog_set_remVersion(rlp, rl->remVersion);
+    RobotLog_set_id(rlp, rl->id);
+    RobotLog_set_message_length(rlp, rl->message_length);
 }
 
 // ================================ DECODE ================================
-static inline void decodeRobotLog(RobotLog *rl, RobotLogPayload *rlp){
-    rl->header           = RobotLog_get_header(rlp);
-    rl->remVersion       = RobotLog_get_remVersion(rlp);
-    rl->id               = RobotLog_get_id(rlp);
-    rl->message_length   = RobotLog_get_message_length(rlp);
+static inline void decodeRobotLog(RobotLog *rl, RobotLogPayload *rlp) {
+    rl->header = RobotLog_get_header(rlp);
+    rl->remVersion = RobotLog_get_remVersion(rlp);
+    rl->id = RobotLog_get_id(rlp);
+    rl->message_length = RobotLog_get_message_length(rlp);
 }
 
 #endif /*__ROBOT_LOG_H*/
