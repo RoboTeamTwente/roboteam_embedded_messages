@@ -12,12 +12,13 @@ packets = {
         ["useCameraAngle",     1,  None, "Use the info in 'cameraAngle'"],
         ["rho",                16, [0, 8], "Magnitude of movement (m/s)"],
         ["theta",              16, [-math.pi, math.pi], "Direction of movement (radians)"],
-        ["angle",              16, [-math.pi, math.pi], "Absolute angle (rad) / angular velocity (rad/s)"],
+        ["angle",              16, [-math.pi, math.pi], "Absolute angle (rad)"],
+        ["angularVelocity",    16, [-4*math.pi, 4*math.pi], "Angular velocity (rad/s)"],
         ["cameraAngle",        16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
         ["dribbler",           3,  [0, 1], "Dribbler speed"],
         ["kickChipPower",      3,  [0, 6.5], "Speed of the ball in m/s"],
         ["angularControl",     1,  None, "NOT IMPLEMENTED IN ROBOT YET. 0 = angular velocity, 1 = absolute angle"],
-        ["feedback",           1,  None, "Ignore the packet. Just send feedback"],
+        ["feedback",           1,  None, "Ignore the packet. Just send feedback"]
     ],
     "RobotFeedback" : [
         ["header",             8,  None, "Header byte indicating the type of packet"],
@@ -50,14 +51,35 @@ packets = {
         ["wheelSpeed2",       32, [-50000., 50000.], "wheelSpeed2"],
         ["wheelSpeed3",       32, [-50000., 50000.], "wheelSpeed3"],
         ["wheelSpeed4",       32, [-50000., 50000.], "wheelSpeed4"],
+        ["bodyXIntegral",     8, None, "Integral value from the PID for body_x"],
+        ["bodyYIntegral",     8, None, "Integral value from the PID for body_y"],
+        ["bodyWIntegral",     8, None, "Integral value from the PID for body_w"],
+        ["bodyYawIntegral",   8, None, "Integral value from the PID for body_Yaw"]
     ],
     "RobotBuzzer" : [
-    	["header",             8,  None, "Header byte indicating the type of packet"],
-        ["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
-        ["id",                 4,  None, "Id of the robot"],
-        ["messageId",          4,  None, "Id of the message"],
-    	["period",             12, None, "Sound that the buzzer makes."],
-    	["duration",           16, [0., 5.], "Duration of the sound"]
+	["header",             8,  None, "Header byte indicating the type of packet"],
+	["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
+	["id",                 4,  None, "Id of the robot"],
+	["messageId",          4,  None, "Id of the message"],
+	["period",             12, None, "Sound that the buzzer makes."],
+	["duration",           16, [0., 5.], "Duration of the sound"]
+    ],
+    "Configuration" : [
+    	["PbodyX",             8,  [0.,1.],  "P gain of the PID for body_x (x-direction)"],
+	["IbodyX",             8,  [0.,1.],  "I gain of the PID for body_x (x-direction)"],
+	["DbodyX",             8,  [0.,1.],  "D gain of the PID for body_x (x-direction)"],
+	["PbodyY",             8,  [0.,1.],  "P gain of the PID for body_y (y-direction)"],
+	["IbodyY",             8,  [0.,1.],  "I gain of the PID for body_y (y-direction)"],
+	["DbodyY",             8,  [0.,1.],  "D gain of the PID for body_y (y-direction)"],
+	["PbodyW",             8,  [0.,40.], "P gain of the PID for body_w (Angular velocity)"],
+	["IbodyW",             8,  [0.,20.], "I gain of the PID for body_w (Angular velocity)"],
+	["DbodyW",             8,  [0.,10.], "D gain of the PID for body_w (Angular velocity)"],
+	["PbodyYaw",           8,  [0.,40.], "P gain of the PID for body_yaw (Absolute angle)"],
+	["IbodyYaw",           8,  [0.,20.], "I gain of the PID for body_yaw (Absolute angle)"],
+	["DbodyYaw",           8,  [0.,10.], "D gain of the PID for body_yaw (Absolute angle)"],
+	["Pwheels",            8,  [0.,40.], "P gain of the PID for the wheels"],
+	["Iwheels",            8,  [0.,20.], "I gain of the PID for the wheels"],
+	["Dwheels",            8,  [0.,10.], "D gain of the PID for the wheels"]
     ],
 
     "BasestationStatistics" : [
@@ -94,7 +116,7 @@ packets = {
         ["bot14_sent", 8, None, "Packets sent to robot with ID 14"],
         ["bot14_rcvd", 8, None, "Packets received from robot with ID 14"],
         ["bot15_sent", 8, None, "Packets sent to robot with ID 15"],
-        ["bot15_rcvd", 8, None, "Packets received from robot with ID 15"],
+        ["bot15_rcvd", 8, None, "Packets received from robot with ID 15"]
     ],
     "BasestationGetStatistics" : [
         ["header",     8, None, "Header byte indicating the type of packet"]

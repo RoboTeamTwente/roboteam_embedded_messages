@@ -7,10 +7,10 @@
 #ifndef __BASETYPES_H
 #define __BASETYPES_H
 
-#define LOCAL_REM_VERSION 5
+#define LOCAL_REM_VERSION 6
 
 #define PACKET_TYPE_ROBOT_COMMAND                                    0b00001111 // 15 
-#define PACKET_SIZE_ROBOT_COMMAND                                    12
+#define PACKET_SIZE_ROBOT_COMMAND                                    14
 #define PACKET_RANGE_ROBOT_COMMAND_RHO_MIN                           0.
 #define PACKET_RANGE_ROBOT_COMMAND_RHO_MAX                           8.
 #define PACKET_RANGE_ROBOT_COMMAND_RHO_N_BITS                        16
@@ -20,6 +20,9 @@
 #define PACKET_RANGE_ROBOT_COMMAND_ANGLE_MIN                         -3.1415926535897931
 #define PACKET_RANGE_ROBOT_COMMAND_ANGLE_MAX                         3.1415926535897931
 #define PACKET_RANGE_ROBOT_COMMAND_ANGLE_N_BITS                      16
+#define PACKET_RANGE_ROBOT_COMMAND_ANGULAR_VELOCITY_MIN              -12.5663706143591725
+#define PACKET_RANGE_ROBOT_COMMAND_ANGULAR_VELOCITY_MAX              12.5663706143591725
+#define PACKET_RANGE_ROBOT_COMMAND_ANGULAR_VELOCITY_N_BITS           16
 #define PACKET_RANGE_ROBOT_COMMAND_CAMERA_ANGLE_MIN                  -3.1415926535897931
 #define PACKET_RANGE_ROBOT_COMMAND_CAMERA_ANGLE_MAX                  3.1415926535897931
 #define PACKET_RANGE_ROBOT_COMMAND_CAMERA_ANGLE_N_BITS               16
@@ -46,7 +49,7 @@
 #define PACKET_RANGE_ROBOT_FEEDBACK_ANGLE_N_BITS                     16
 
 #define PACKET_TYPE_ROBOT_STATE_INFO                                 0b00111100 // 60 
-#define PACKET_SIZE_ROBOT_STATE_INFO                                 35
+#define PACKET_SIZE_ROBOT_STATE_INFO                                 39
 #define PACKET_RANGE_ROBOT_STATE_INFO_XSENS_ACC1_MIN                 -50000.
 #define PACKET_RANGE_ROBOT_STATE_INFO_XSENS_ACC1_MAX                 50000.
 #define PACKET_RANGE_ROBOT_STATE_INFO_XSENS_ACC1_N_BITS              32
@@ -78,25 +81,73 @@
 #define PACKET_RANGE_ROBOT_BUZZER_DURATION_MAX                       5.
 #define PACKET_RANGE_ROBOT_BUZZER_DURATION_N_BITS                    16
 
-#define PACKET_TYPE_BASESTATION_STATISTICS                           0b01011010 // 90 
+#define PACKET_TYPE_CONFIGURATION                                    0b01011010 // 90 
+#define PACKET_SIZE_CONFIGURATION                                    15
+#define PACKET_RANGE_CONFIGURATION__PBODY_X_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__PBODY_X_MAX                      1.
+#define PACKET_RANGE_CONFIGURATION__PBODY_X_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__IBODY_X_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__IBODY_X_MAX                      1.
+#define PACKET_RANGE_CONFIGURATION__IBODY_X_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__DBODY_X_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__DBODY_X_MAX                      1.
+#define PACKET_RANGE_CONFIGURATION__DBODY_X_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__PBODY_Y_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__PBODY_Y_MAX                      1.
+#define PACKET_RANGE_CONFIGURATION__PBODY_Y_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__IBODY_Y_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__IBODY_Y_MAX                      1.
+#define PACKET_RANGE_CONFIGURATION__IBODY_Y_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__DBODY_Y_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__DBODY_Y_MAX                      1.
+#define PACKET_RANGE_CONFIGURATION__DBODY_Y_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__PBODY_W_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__PBODY_W_MAX                      40.
+#define PACKET_RANGE_CONFIGURATION__PBODY_W_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__IBODY_W_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__IBODY_W_MAX                      20.
+#define PACKET_RANGE_CONFIGURATION__IBODY_W_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__DBODY_W_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__DBODY_W_MAX                      10.
+#define PACKET_RANGE_CONFIGURATION__DBODY_W_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__PBODY_YAW_MIN                    0.
+#define PACKET_RANGE_CONFIGURATION__PBODY_YAW_MAX                    40.
+#define PACKET_RANGE_CONFIGURATION__PBODY_YAW_N_BITS                 8
+#define PACKET_RANGE_CONFIGURATION__IBODY_YAW_MIN                    0.
+#define PACKET_RANGE_CONFIGURATION__IBODY_YAW_MAX                    20.
+#define PACKET_RANGE_CONFIGURATION__IBODY_YAW_N_BITS                 8
+#define PACKET_RANGE_CONFIGURATION__DBODY_YAW_MIN                    0.
+#define PACKET_RANGE_CONFIGURATION__DBODY_YAW_MAX                    10.
+#define PACKET_RANGE_CONFIGURATION__DBODY_YAW_N_BITS                 8
+#define PACKET_RANGE_CONFIGURATION__PWHEELS_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__PWHEELS_MAX                      40.
+#define PACKET_RANGE_CONFIGURATION__PWHEELS_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__IWHEELS_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__IWHEELS_MAX                      20.
+#define PACKET_RANGE_CONFIGURATION__IWHEELS_N_BITS                   8
+#define PACKET_RANGE_CONFIGURATION__DWHEELS_MIN                      0.
+#define PACKET_RANGE_CONFIGURATION__DWHEELS_MAX                      10.
+#define PACKET_RANGE_CONFIGURATION__DWHEELS_N_BITS                   8
+
+#define PACKET_TYPE_BASESTATION_STATISTICS                           0b01100110 // 102 
 #define PACKET_SIZE_BASESTATION_STATISTICS                           34
 
-#define PACKET_TYPE_BASESTATION_GET_STATISTICS                       0b01100110 // 102 
+#define PACKET_TYPE_BASESTATION_GET_STATISTICS                       0b01101001 // 105 
 #define PACKET_SIZE_BASESTATION_GET_STATISTICS                       1
 
-#define PACKET_TYPE_BASESTATION_LOG                                  0b01101001 // 105 
+#define PACKET_TYPE_BASESTATION_LOG                                  0b10010110 // 150 
 #define PACKET_SIZE_BASESTATION_LOG                                  1
 
-#define PACKET_TYPE_ROBOT_LOG                                        0b10010110 // 150 
+#define PACKET_TYPE_ROBOT_LOG                                        0b10011001 // 153 
 #define PACKET_SIZE_ROBOT_LOG                                        3
 
-#define PACKET_TYPE_BASESTATION_GET_CONFIGURATION                    0b10011001 // 153 
+#define PACKET_TYPE_BASESTATION_GET_CONFIGURATION                    0b10100101 // 165 
 #define PACKET_SIZE_BASESTATION_GET_CONFIGURATION                    1
 
-#define PACKET_TYPE_BASESTATION_CONFIGURATION                        0b10100101 // 165 
+#define PACKET_TYPE_BASESTATION_CONFIGURATION                        0b10101010 // 170 
 #define PACKET_SIZE_BASESTATION_CONFIGURATION                        2
 
-#define PACKET_TYPE_BASESTATION_SET_CONFIGURATION                    0b10101010 // 170 
+#define PACKET_TYPE_BASESTATION_SET_CONFIGURATION                    0b11000011 // 195 
 #define PACKET_SIZE_BASESTATION_SET_CONFIGURATION                    2
 
 #endif /*__BASETYPES_H*/
