@@ -51,10 +51,10 @@ packets = {
         ["wheelSpeed2",       32, [-50000., 50000.], "wheelSpeed2"],
         ["wheelSpeed3",       32, [-50000., 50000.], "wheelSpeed3"],
         ["wheelSpeed4",       32, [-50000., 50000.], "wheelSpeed4"],
-        ["bodyXIntegral",     32, [-1000.0, 1000.0], "Integral value from the PID for body_x"],
-        ["bodyYIntegral",     32, [-1000.0, 1000.0], "Integral value from the PID for body_y"],
-        ["bodyWIntegral",     32, [-1000.0, 1000.0], "Integral value from the PID for body_w"],
-        ["bodyYawIntegral",   32, [-1000.0, 1000.0], "Integral value from the PID for body_Yaw"]
+        ["bodyXIntegral",     32, [-50000.0, 50000.0], "Integral value from the PID for body_x"],
+        ["bodyYIntegral",     32, [-50000.0, 50000.0], "Integral value from the PID for body_y"],
+        ["bodyWIntegral",     32, [-50000.0, 50000.0], "Integral value from the PID for body_w"],
+        ["bodyYawIntegral",   32, [-50000.0, 50000.0], "Integral value from the PID for body_Yaw"]
     ],
     "RobotBuzzer" : [
 	["header",             8,  None, "Header byte indicating the type of packet"],

@@ -43,10 +43,10 @@ typedef struct _RobotStateInfo {
     float      wheelSpeed2         ; // float   [-50000.000, 50000.000] wheelSpeed2
     float      wheelSpeed3         ; // float   [-50000.000, 50000.000] wheelSpeed3
     float      wheelSpeed4         ; // float   [-50000.000, 50000.000] wheelSpeed4
-    float      bodyXIntegral       ; // float   [-1000.000, 1000.000] Integral value from the PID for body_x
-    float      bodyYIntegral       ; // float   [-1000.000, 1000.000] Integral value from the PID for body_y
-    float      bodyWIntegral       ; // float   [-1000.000, 1000.000] Integral value from the PID for body_w
-    float      bodyYawIntegral     ; // float   [-1000.000, 1000.000] Integral value from the PID for body_Yaw
+    float      bodyXIntegral       ; // float   [-50000.000, 50000.000] Integral value from the PID for body_x
+    float      bodyYIntegral       ; // float   [-50000.000, 50000.000] Integral value from the PID for body_y
+    float      bodyWIntegral       ; // float   [-50000.000, 50000.000] Integral value from the PID for body_w
+    float      bodyYawIntegral     ; // float   [-50000.000, 50000.000] Integral value from the PID for body_Yaw
 } RobotStateInfo;
 
 // ================================ GETTERS ================================
@@ -108,22 +108,22 @@ static inline float RobotStateInfo_get_wheelSpeed4(RobotStateInfoPayload *rsip){
 
 static inline float RobotStateInfo_get_bodyXIntegral(RobotStateInfoPayload *rsip){
     uint32_t _bodyXIntegral = ((rsip->payload[34] & 0b00001111) << 28) | ((rsip->payload[35]) << 20) | ((rsip->payload[36]) << 12) | ((rsip->payload[37]) << 4) | ((rsip->payload[38] & 0b11110000) >> 4);
-    return (_bodyXIntegral * 0.0000004656612874) + -1000.0000000000000000;
+    return (_bodyXIntegral * 0.0000232830643708) + -50000.0000000000000000;
 }
 
 static inline float RobotStateInfo_get_bodyYIntegral(RobotStateInfoPayload *rsip){
     uint32_t _bodyYIntegral = ((rsip->payload[38] & 0b00001111) << 28) | ((rsip->payload[39]) << 20) | ((rsip->payload[40]) << 12) | ((rsip->payload[41]) << 4) | ((rsip->payload[42] & 0b11110000) >> 4);
-    return (_bodyYIntegral * 0.0000004656612874) + -1000.0000000000000000;
+    return (_bodyYIntegral * 0.0000232830643708) + -50000.0000000000000000;
 }
 
 static inline float RobotStateInfo_get_bodyWIntegral(RobotStateInfoPayload *rsip){
     uint32_t _bodyWIntegral = ((rsip->payload[42] & 0b00001111) << 28) | ((rsip->payload[43]) << 20) | ((rsip->payload[44]) << 12) | ((rsip->payload[45]) << 4) | ((rsip->payload[46] & 0b11110000) >> 4);
-    return (_bodyWIntegral * 0.0000004656612874) + -1000.0000000000000000;
+    return (_bodyWIntegral * 0.0000232830643708) + -50000.0000000000000000;
 }
 
 static inline float RobotStateInfo_get_bodyYawIntegral(RobotStateInfoPayload *rsip){
     uint32_t _bodyYawIntegral = ((rsip->payload[46] & 0b00001111) << 28) | ((rsip->payload[47]) << 20) | ((rsip->payload[48]) << 12) | ((rsip->payload[49]) << 4) | ((rsip->payload[50] & 0b11110000) >> 4);
-    return (_bodyYawIntegral * 0.0000004656612874) + -1000.0000000000000000;
+    return (_bodyYawIntegral * 0.0000232830643708) + -50000.0000000000000000;
 }
 
 // ================================ SETTERS ================================
@@ -216,7 +216,7 @@ static inline void RobotStateInfo_set_wheelSpeed4(RobotStateInfoPayload *rsip, f
 }
 
 static inline void RobotStateInfo_set_bodyXIntegral(RobotStateInfoPayload *rsip, float bodyXIntegral){
-    uint32_t _bodyXIntegral = (uint32_t)((bodyXIntegral +1000.0000000000000000) / 0.0000004656612874);
+    uint32_t _bodyXIntegral = (uint32_t)((bodyXIntegral +50000.0000000000000000) / 0.0000232830643708);
     rsip->payload[34] = ((_bodyXIntegral >> 28) & 0b00001111) | (rsip->payload[34] & 0b11110000);
     rsip->payload[35] = (_bodyXIntegral >> 20);
     rsip->payload[36] = (_bodyXIntegral >> 12);
@@ -225,7 +225,7 @@ static inline void RobotStateInfo_set_bodyXIntegral(RobotStateInfoPayload *rsip,
 }
 
 static inline void RobotStateInfo_set_bodyYIntegral(RobotStateInfoPayload *rsip, float bodyYIntegral){
-    uint32_t _bodyYIntegral = (uint32_t)((bodyYIntegral +1000.0000000000000000) / 0.0000004656612874);
+    uint32_t _bodyYIntegral = (uint32_t)((bodyYIntegral +50000.0000000000000000) / 0.0000232830643708);
     rsip->payload[38] = ((_bodyYIntegral >> 28) & 0b00001111) | (rsip->payload[38] & 0b11110000);
     rsip->payload[39] = (_bodyYIntegral >> 20);
     rsip->payload[40] = (_bodyYIntegral >> 12);
@@ -234,7 +234,7 @@ static inline void RobotStateInfo_set_bodyYIntegral(RobotStateInfoPayload *rsip,
 }
 
 static inline void RobotStateInfo_set_bodyWIntegral(RobotStateInfoPayload *rsip, float bodyWIntegral){
-    uint32_t _bodyWIntegral = (uint32_t)((bodyWIntegral +1000.0000000000000000) / 0.0000004656612874);
+    uint32_t _bodyWIntegral = (uint32_t)((bodyWIntegral +50000.0000000000000000) / 0.0000232830643708);
     rsip->payload[42] = ((_bodyWIntegral >> 28) & 0b00001111) | (rsip->payload[42] & 0b11110000);
     rsip->payload[43] = (_bodyWIntegral >> 20);
     rsip->payload[44] = (_bodyWIntegral >> 12);
@@ -243,7 +243,7 @@ static inline void RobotStateInfo_set_bodyWIntegral(RobotStateInfoPayload *rsip,
 }
 
 static inline void RobotStateInfo_set_bodyYawIntegral(RobotStateInfoPayload *rsip, float bodyYawIntegral){
-    uint32_t _bodyYawIntegral = (uint32_t)((bodyYawIntegral +1000.0000000000000000) / 0.0000004656612874);
+    uint32_t _bodyYawIntegral = (uint32_t)((bodyYawIntegral +50000.0000000000000000) / 0.0000232830643708);
     rsip->payload[46] = ((_bodyYawIntegral >> 28) & 0b00001111) | (rsip->payload[46] & 0b11110000);
     rsip->payload[47] = (_bodyYawIntegral >> 20);
     rsip->payload[48] = (_bodyYawIntegral >> 12);
