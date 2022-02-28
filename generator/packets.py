@@ -51,10 +51,10 @@ packets = {
         ["wheelSpeed2",       32, [-50000., 50000.], "wheelSpeed2"],
         ["wheelSpeed3",       32, [-50000., 50000.], "wheelSpeed3"],
         ["wheelSpeed4",       32, [-50000., 50000.], "wheelSpeed4"],
-        ["bodyXIntegral",     8, None, "Integral value from the PID for body_x"],
-        ["bodyYIntegral",     8, None, "Integral value from the PID for body_y"],
-        ["bodyWIntegral",     8, None, "Integral value from the PID for body_w"],
-        ["bodyYawIntegral",   8, None, "Integral value from the PID for body_Yaw"]
+        ["bodyXIntegral",     8, [0.0, 1000.0], "Integral value from the PID for body_x"],
+        ["bodyYIntegral",     8, [0.0, 1000.0], "Integral value from the PID for body_y"],
+        ["bodyWIntegral",     8, [0.0, 1000.0], "Integral value from the PID for body_w"],
+        ["bodyYawIntegral",   8, [0.0, 1000.0], "Integral value from the PID for body_Yaw"]
     ],
     "RobotBuzzer" : [
 	["header",             8,  None, "Header byte indicating the type of packet"],
@@ -64,7 +64,7 @@ packets = {
 	["period",             12, None, "Sound that the buzzer makes."],
 	["duration",           16, [0., 5.], "Duration of the sound"]
     ],
-    "Configuration" : [
+    "PIDConfiguration" : [
 	["header",             8,  None, "Header byte indicating the type of packet"],
 	["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
 	["id",                 4,  None, "Id of the robot"],

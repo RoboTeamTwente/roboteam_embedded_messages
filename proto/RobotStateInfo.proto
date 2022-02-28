@@ -36,8 +36,8 @@ message RobotStateInfo {
     float wheelSpeed2 = 10;   // float   [-50000.000, 50000.000] wheelSpeed2
     float wheelSpeed3 = 11;   // float   [-50000.000, 50000.000] wheelSpeed3
     float wheelSpeed4 = 12;   // float   [-50000.000, 50000.000] wheelSpeed4
-    uint32 bodyXIntegral = 13; // integer [0, 255]             Integral value from the PID for body_x
-    uint32 bodyYIntegral = 14; // integer [0, 255]             Integral value from the PID for body_y
-    uint32 bodyWIntegral = 15; // integer [0, 255]             Integral value from the PID for body_w
-    uint32 bodyYawIntegral = 16; // integer [0, 255]             Integral value from the PID for body_Yaw
+    float bodyXIntegral = 13; // float   [0.000, 1000.000]    Integral value from the PID for body_x
+    float bodyYIntegral = 14; // float   [0.000, 1000.000]    Integral value from the PID for body_y
+    float bodyWIntegral = 15; // float   [0.000, 1000.000]    Integral value from the PID for body_w
+    float bodyYawIntegral = 16; // float   [0.000, 1000.000]    Integral value from the PID for body_Yaw
 }
