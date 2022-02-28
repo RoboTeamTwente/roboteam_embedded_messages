@@ -37,10 +37,10 @@ class RobotStateInfo:
     wheelSpeed2 = 0           # float   [-50000.000, 50000.000] wheelSpeed2
     wheelSpeed3 = 0           # float   [-50000.000, 50000.000] wheelSpeed3
     wheelSpeed4 = 0           # float   [-50000.000, 50000.000] wheelSpeed4
-    bodyXIntegral = 0         # float   [0.000, 1000.000]    Integral value from the PID for body_x
-    bodyYIntegral = 0         # float   [0.000, 1000.000]    Integral value from the PID for body_y
-    bodyWIntegral = 0         # float   [0.000, 1000.000]    Integral value from the PID for body_w
-    bodyYawIntegral = 0       # float   [0.000, 1000.000]    Integral value from the PID for body_Yaw
+    bodyXIntegral = 0         # float   [-1000.000, 1000.000] Integral value from the PID for body_x
+    bodyYIntegral = 0         # float   [-1000.000, 1000.000] Integral value from the PID for body_y
+    bodyWIntegral = 0         # float   [-1000.000, 1000.000] Integral value from the PID for body_w
+    bodyYawIntegral = 0       # float   [-1000.000, 1000.000] Integral value from the PID for body_Yaw
 
 
 
@@ -104,22 +104,22 @@ class RobotStateInfo:
     @staticmethod
     def get_bodyXIntegral(payload):
         _bodyXIntegral = ((payload[34] & 0b00001111) << 4) | ((payload[35] & 0b11110000) >> 4);
-        return (_bodyXIntegral * 3.9215686274509802) + 0.0000000000000000;
+        return (_bodyXIntegral * 7.8431372549019605) + -1000.0000000000000000;
 
     @staticmethod
     def get_bodyYIntegral(payload):
         _bodyYIntegral = ((payload[35] & 0b00001111) << 4) | ((payload[36] & 0b11110000) >> 4);
-        return (_bodyYIntegral * 3.9215686274509802) + 0.0000000000000000;
+        return (_bodyYIntegral * 7.8431372549019605) + -1000.0000000000000000;
 
     @staticmethod
     def get_bodyWIntegral(payload):
         _bodyWIntegral = ((payload[36] & 0b00001111) << 4) | ((payload[37] & 0b11110000) >> 4);
-        return (_bodyWIntegral * 3.9215686274509802) + 0.0000000000000000;
+        return (_bodyWIntegral * 7.8431372549019605) + -1000.0000000000000000;
 
     @staticmethod
     def get_bodyYawIntegral(payload):
         _bodyYawIntegral = ((payload[37] & 0b00001111) << 4) | ((payload[38] & 0b11110000) >> 4);
-        return (_bodyYawIntegral * 3.9215686274509802) + 0.0000000000000000;
+        return (_bodyYawIntegral * 7.8431372549019605) + -1000.0000000000000000;
 
 # ================================ SETTERS ================================
     @staticmethod
@@ -212,25 +212,25 @@ class RobotStateInfo:
 
     @staticmethod
     def set_bodyXIntegral(payload, bodyXIntegral):
-        _bodyXIntegral = int(bodyXIntegral / 3.9215686274509802);
+        _bodyXIntegral = int((bodyXIntegral +1000.0000000000000000) / 7.8431372549019605);
         payload[34] = ((_bodyXIntegral >> 4) & 0b00001111) | (payload[34] & 0b11110000);
         payload[35] = ((_bodyXIntegral << 4) & 0b11110000) | (payload[35] & 0b00001111);
 
     @staticmethod
     def set_bodyYIntegral(payload, bodyYIntegral):
-        _bodyYIntegral = int(bodyYIntegral / 3.9215686274509802);
+        _bodyYIntegral = int((bodyYIntegral +1000.0000000000000000) / 7.8431372549019605);
         payload[35] = ((_bodyYIntegral >> 4) & 0b00001111) | (payload[35] & 0b11110000);
         payload[36] = ((_bodyYIntegral << 4) & 0b11110000) | (payload[36] & 0b00001111);
 
     @staticmethod
     def set_bodyWIntegral(payload, bodyWIntegral):
-        _bodyWIntegral = int(bodyWIntegral / 3.9215686274509802);
+        _bodyWIntegral = int((bodyWIntegral +1000.0000000000000000) / 7.8431372549019605);
         payload[36] = ((_bodyWIntegral >> 4) & 0b00001111) | (payload[36] & 0b11110000);
         payload[37] = ((_bodyWIntegral << 4) & 0b11110000) | (payload[37] & 0b00001111);
 
     @staticmethod
     def set_bodyYawIntegral(payload, bodyYawIntegral):
-        _bodyYawIntegral = int(bodyYawIntegral / 3.9215686274509802);
+        _bodyYawIntegral = int((bodyYawIntegral +1000.0000000000000000) / 7.8431372549019605);
         payload[37] = ((_bodyYawIntegral >> 4) & 0b00001111) | (payload[37] & 0b11110000);
         payload[38] = ((_bodyYawIntegral << 4) & 0b11110000) | (payload[38] & 0b00001111);
 
