@@ -54,7 +54,11 @@ packets = {
         ["bodyXIntegral",     32, [-50000.0, 50000.0], "Integral value from the PID for body_x"],
         ["bodyYIntegral",     32, [-50000.0, 50000.0], "Integral value from the PID for body_y"],
         ["bodyWIntegral",     32, [-50000.0, 50000.0], "Integral value from the PID for body_w"],
-        ["bodyYawIntegral",   32, [-50000.0, 50000.0], "Integral value from the PID for body_Yaw"]
+        ["bodyYawIntegral",   32, [-50000.0, 50000.0], "Integral value from the PID for body_Yaw"],
+        ["wheel1Integral",    32, [-50000.0, 50000.0], "Integral value from the PID for Wheel_1"],
+        ["wheel2Integral",    32, [-50000.0, 50000.0], "Integral value from the PID for Wheel_2"],
+        ["wheel3Integral",    32, [-50000.0, 50000.0], "Integral value from the PID for Wheel_3"],
+        ["wheel4Integral",    32, [-50000.0, 50000.0], "Integral value from the PID for Wheel_4"]
     ],
     "RobotBuzzer" : [
 	["header",             8,  None, "Header byte indicating the type of packet"],
