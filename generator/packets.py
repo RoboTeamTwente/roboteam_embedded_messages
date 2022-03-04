@@ -72,12 +72,12 @@ packets = {
 	["header",             8,  None, "Header byte indicating the type of packet"],
 	["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
 	["id",                 4,  None, "Id of the robot"],
-    	["PbodyX",             16,  [0.,40.],  "P gain of the PID for body_x (x-direction)"],
-	["IbodyX",             16,  [0.,20.],  "I gain of the PID for body_x (x-direction)"],
-	["DbodyX",             16,  [0.,10.],  "D gain of the PID for body_x (x-direction)"],
-	["PbodyY",             16,  [0.,40.],  "P gain of the PID for body_y (y-direction)"],
-	["IbodyY",             16,  [0.,20.],  "I gain of the PID for body_y (y-direction)"],
-	["DbodyY",             16,  [0.,10.],  "D gain of the PID for body_y (y-direction)"],
+    	["PbodyX",             16, [0.,40.], "P gain of the PID for body_x (x-direction)"],
+	["IbodyX",             16, [0.,20.], "I gain of the PID for body_x (x-direction)"],
+	["DbodyX",             16, [0.,10.], "D gain of the PID for body_x (x-direction)"],
+	["PbodyY",             16, [0.,40.], "P gain of the PID for body_y (y-direction)"],
+	["IbodyY",             16, [0.,20.], "I gain of the PID for body_y (y-direction)"],
+	["DbodyY",             16, [0.,10.], "D gain of the PID for body_y (y-direction)"],
 	["PbodyW",             16, [0.,40.], "P gain of the PID for body_w (Angular velocity)"],
 	["IbodyW",             16, [0.,20.], "I gain of the PID for body_w (Angular velocity)"],
 	["DbodyW",             16, [0.,10.], "D gain of the PID for body_w (Angular velocity)"],
@@ -85,8 +85,8 @@ packets = {
 	["IbodyYaw",           16, [0.,20.], "I gain of the PID for body_yaw (Absolute angle)"],
 	["DbodyYaw",           16, [0.,10.], "D gain of the PID for body_yaw (Absolute angle)"],
 	["Pwheels",            16, [0.,40.], "P gain of the PID for the wheels"],
-	["Iwheels",            16,  [0.,20.], "I gain of the PID for the wheels"],
-	["Dwheels",            16,  [0.,10.], "D gain of the PID for the wheels"]
+	["Iwheels",            16, [0.,20.], "I gain of the PID for the wheels"],
+	["Dwheels",            16, [0.,10.], "D gain of the PID for the wheels"]
     ],
 
     "REM_BasestationStatistics" : [
