@@ -1,7 +1,7 @@
 import math
 
 packets = {
-    "RobotCommand" : [
+    "REM_RobotCommand" : [
         ["header",             8,  None, "Header byte indicating the type of packet"],
         ["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
         ["id",                 4,  None, "Id of the robot"],
@@ -20,7 +20,7 @@ packets = {
         ["angularControl",     1,  None, "NOT IMPLEMENTED IN ROBOT YET. 0 = angular velocity, 1 = absolute angle"],
         ["feedback",           1,  None, "Ignore the packet. Just send feedback"]
     ],
-    "RobotFeedback" : [
+    "REM_RobotFeedback" : [
         ["header",             8,  None, "Header byte indicating the type of packet"],
         ["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
         ["id",                 4,  None, "Id of the robot "],
@@ -38,7 +38,7 @@ packets = {
         ["wheelBraking",       4,  None, "Indicates if a wheel is slipping. One bit per wheel"],
         ["rssi",               4,  None, "Signal strength of the last packet received by the robot"]
     ],
-    "RobotStateInfo" : [
+    "REM_RobotStateInfo" : [
         ["header",             8,  None, "Header byte indicating the type of packet"],
         ["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
         ["id",                 4,  None, "Id of the robot "],
@@ -60,13 +60,13 @@ packets = {
         ["wheel3Integral",    32, [-50000.0, 50000.0], "Integral value from the PID for Wheel_3"],
         ["wheel4Integral",    32, [-50000.0, 50000.0], "Integral value from the PID for Wheel_4"]
     ],
-    "RobotBuzzer" : [
-	["header",             8,  None, "Header byte indicating the type of packet"],
-	["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
-	["id",                 4,  None, "Id of the robot"],
-	["messageId",          4,  None, "Id of the message"],
-	["period",             12, None, "Sound that the buzzer makes."],
-	["duration",           16, [0., 5.], "Duration of the sound"]
+    "REM_RobotBuzzer" : [
+    	["header",             8,  None, "Header byte indicating the type of packet"],
+        ["remVersion",         4,  None, "Version of roboteam_embedded_messages"],
+        ["id",                 4,  None, "Id of the robot"],
+        ["messageId",          4,  None, "Id of the message"],
+    	["period",             12, None, "Sound that the buzzer makes."],
+    	["duration",           16, [0., 5.], "Duration of the sound"]
     ],
     "PIDConfiguration" : [
 	["header",             8,  None, "Header byte indicating the type of packet"],
@@ -89,7 +89,7 @@ packets = {
 	["Dwheels",            16,  [0.,10.], "D gain of the PID for the wheels"]
     ],
 
-    "BasestationStatistics" : [
+    "REM_BasestationStatistics" : [
         ["header",     8, None, "Header byte indicating the type of packet"],
         ["remVersion", 4,  None, "Version of roboteam_embedded_messages"],
         ["bot0_sent",  8, None, "Packets sent to robot with ID 0"],
@@ -125,27 +125,27 @@ packets = {
         ["bot15_sent", 8, None, "Packets sent to robot with ID 15"],
         ["bot15_rcvd", 8, None, "Packets received from robot with ID 15"]
     ],
-    "BasestationGetStatistics" : [
+    "REM_BasestationGetStatistics" : [
         ["header",     8, None, "Header byte indicating the type of packet"]
     ],
-    "BasestationLog" : [
+    "REM_BasestationLog" : [
         ["header",     8, None, "Header byte indicating the type of packet"]
     ],
-    "RobotLog" : [
+    "REM_RobotLog" : [
         ["header",     8, None, "Header byte indicating the type of packet"],
         ["remVersion", 4, None, "Version of roboteam_embedded_messages"],
         ["id",         4, None, "Id of the robot"],
         ["message_length", 8, None, "Length of the following message"]
     ],
-    "BasestationGetConfiguration" : [
+    "REM_BasestationGetConfiguration" : [
         ["header",     8, None, "Header byte indicating the type of packet"]
     ],
-    "BasestationConfiguration" : [
+    "REM_BasestationConfiguration" : [
         ["header",     8, None, "Header byte indicating the type of packet"],
         ["remVersion", 4, None, "Version of roboteam_embedded_messages"],
         ["channel",    1, None, "Channel on which the basestation and robots communicate"]
     ],
-    "BasestationSetConfiguration" : [
+    "REM_BasestationSetConfiguration" : [
         ["header",     8, None, "Header byte indicating the type of packet"],
         ["remVersion", 4, None, "Version of roboteam_embedded_messages"],
         ["channel",    1, None, "Channel on which the basestation and robots communicate"]
