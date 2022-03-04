@@ -360,8 +360,7 @@ class REM_RobotStateInfo:
         self.wheel4Integral   = REM_RobotStateInfo.get_wheel4Integral(payload)
 
 
-
-def print_bit_string(self):
+    def print_bit_string(self):
         payload = self.encode()
         for i in range(len(payload)):
             print(format(payload[i], '08b'), end=" ")

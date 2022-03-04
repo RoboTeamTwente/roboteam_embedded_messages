@@ -22,7 +22,7 @@
 """
 
 import numpy as np
-from . import BaseTypes
+from . import REM_BaseTypes
 
 
 
@@ -241,7 +241,7 @@ class PIDConfiguration:
 
 # ================================ ENCODE ================================
     def encode(self):
-        payload = np.zeros(BaseTypes.PACKET_SIZE_P_I_D_CONFIGURATION, dtype=np.uint8)
+        payload = np.zeros(REM_BaseTypes.PACKET_SIZE_P_I_D_CONFIGURATION, dtype=np.uint8)
         PIDConfiguration.set_header              (payload, self.header)
         PIDConfiguration.set_remVersion          (payload, self.remVersion)
         PIDConfiguration.set_id                  (payload, self.id)

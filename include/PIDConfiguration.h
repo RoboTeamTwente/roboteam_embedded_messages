@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "BaseTypes.h"
+#include "REM_BaseTypes.h"
 
 typedef struct _PIDConfigurationPayload {
     uint8_t payload[PACKET_SIZE_P_I_D_CONFIGURATION];
