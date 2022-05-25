@@ -4,7 +4,7 @@
 11111111 -------- -------- header
 -------- 1111---- -------- remVersion
 -------- ----1111 -------- id
--------- -------- 11111111 messageLength
+-------- -------- 11111111 sequenceNumber
 """
 
 import numpy as np
@@ -12,11 +12,11 @@ from . import REM_BaseTypes
 
 
 
-class REM_RobotLog:
+class REM_RobotAssuredAck:
     header = 0                # integer [0, 255]             Header byte indicating the type of packet
     remVersion = 0            # integer [0, 15]              Version of roboteam_embedded_messages
     id = 0                    # integer [0, 15]              Id of the robot
-    messageLength = 0         # integer [0, 255]             Length of the following message
+    sequenceNumber = 0        # integer [0, 255]             Number to match this packet with AssuredPacket
 
 
 
@@ -34,7 +34,7 @@ class REM_RobotLog:
         return ((payload[1] & 0b00001111));
 
     @staticmethod
-    def get_messageLength(payload):
+    def get_sequenceNumber(payload):
         return ((payload[2]));
 
 # ================================ SETTERS ================================
@@ -51,25 +51,25 @@ class REM_RobotLog:
         payload[1] = (id & 0b00001111) | (payload[1] & 0b11110000);
 
     @staticmethod
-    def set_messageLength(payload, messageLength):
-        payload[2] = messageLength;
+    def set_sequenceNumber(payload, sequenceNumber):
+        payload[2] = sequenceNumber;
 
 # ================================ ENCODE ================================
     def encode(self):
-        payload = np.zeros(REM_BaseTypes.PACKET_SIZE_REM_ROBOT_LOG, dtype=np.uint8)
-        REM_RobotLog.set_header              (payload, self.header)
-        REM_RobotLog.set_remVersion          (payload, self.remVersion)
-        REM_RobotLog.set_id                  (payload, self.id)
-        REM_RobotLog.set_messageLength       (payload, self.messageLength)
+        payload = np.zeros(REM_BaseTypes.PACKET_SIZE_REM_ROBOT_ASSURED_ACK, dtype=np.uint8)
+        REM_RobotAssuredAck.set_header              (payload, self.header)
+        REM_RobotAssuredAck.set_remVersion          (payload, self.remVersion)
+        REM_RobotAssuredAck.set_id                  (payload, self.id)
+        REM_RobotAssuredAck.set_sequenceNumber      (payload, self.sequenceNumber)
         return payload
 
 
 # ================================ DECODE ================================
     def decode(self, payload):
-        self.header           = REM_RobotLog.get_header(payload)
-        self.remVersion       = REM_RobotLog.get_remVersion(payload)
-        self.id               = REM_RobotLog.get_id(payload)
-        self.messageLength    = REM_RobotLog.get_messageLength(payload)
+        self.header           = REM_RobotAssuredAck.get_header(payload)
+        self.remVersion       = REM_RobotAssuredAck.get_remVersion(payload)
+        self.id               = REM_RobotAssuredAck.get_id(payload)
+        self.sequenceNumber   = REM_RobotAssuredAck.get_sequenceNumber(payload)
 
 
     def print_bit_string(self):

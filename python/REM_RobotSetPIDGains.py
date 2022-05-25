@@ -22,29 +22,29 @@
 """
 
 import numpy as np
-from . import BaseTypes
+from . import REM_BaseTypes
 
 
 
-class Configuration:
+class REM_RobotSetPIDGains:
     header = 0                # integer [0, 255]             Header byte indicating the type of packet
     remVersion = 0            # integer [0, 15]              Version of roboteam_embedded_messages
     id = 0                    # integer [0, 15]              Id of the robot
-    PbodyX = 0                # float   [0.000, 40.000]      P gain of the PID for body_x (x-direction)
-    IbodyX = 0                # float   [0.000, 20.000]      I gain of the PID for body_x (x-direction)
-    DbodyX = 0                # float   [0.000, 10.000]      D gain of the PID for body_x (x-direction)
-    PbodyY = 0                # float   [0.000, 40.000]      P gain of the PID for body_y (y-direction)
-    IbodyY = 0                # float   [0.000, 20.000]      I gain of the PID for body_y (y-direction)
-    DbodyY = 0                # float   [0.000, 10.000]      D gain of the PID for body_y (y-direction)
-    PbodyW = 0                # float   [0.000, 40.000]      P gain of the PID for body_w (Angular velocity)
-    IbodyW = 0                # float   [0.000, 20.000]      I gain of the PID for body_w (Angular velocity)
-    DbodyW = 0                # float   [0.000, 10.000]      D gain of the PID for body_w (Angular velocity)
-    PbodyYaw = 0              # float   [0.000, 40.000]      P gain of the PID for body_yaw (Absolute angle)
-    IbodyYaw = 0              # float   [0.000, 20.000]      I gain of the PID for body_yaw (Absolute angle)
-    DbodyYaw = 0              # float   [0.000, 10.000]      D gain of the PID for body_yaw (Absolute angle)
-    Pwheels = 0               # float   [0.000, 40.000]      P gain of the PID for the wheels
-    Iwheels = 0               # float   [0.000, 20.000]      I gain of the PID for the wheels
-    Dwheels = 0               # float   [0.000, 10.000]      D gain of the PID for the wheels
+    PbodyX = 0                # float   [0.000, 40.000]      Commanded P gain of the PID for body_x (x-direction)
+    IbodyX = 0                # float   [0.000, 20.000]      Commanded I gain of the PID for body_x (x-direction)
+    DbodyX = 0                # float   [0.000, 10.000]      Commanded D gain of the PID for body_x (x-direction)
+    PbodyY = 0                # float   [0.000, 40.000]      Commanded P gain of the PID for body_y (y-direction)
+    IbodyY = 0                # float   [0.000, 20.000]      Commanded I gain of the PID for body_y (y-direction)
+    DbodyY = 0                # float   [0.000, 10.000]      Commanded D gain of the PID for body_y (y-direction)
+    PbodyW = 0                # float   [0.000, 40.000]      Commanded P gain of the PID for body_w (Angular velocity)
+    IbodyW = 0                # float   [0.000, 20.000]      Commanded I gain of the PID for body_w (Angular velocity)
+    DbodyW = 0                # float   [0.000, 10.000]      Commanded D gain of the PID for body_w (Angular velocity)
+    PbodyYaw = 0              # float   [0.000, 40.000]      Commanded P gain of the PID for body_yaw (Absolute angle)
+    IbodyYaw = 0              # float   [0.000, 20.000]      Commanded I gain of the PID for body_yaw (Absolute angle)
+    DbodyYaw = 0              # float   [0.000, 10.000]      Commanded D gain of the PID for body_yaw (Absolute angle)
+    Pwheels = 0               # float   [0.000, 40.000]      Commanded P gain of the PID for the wheels
+    Iwheels = 0               # float   [0.000, 20.000]      Commanded I gain of the PID for the wheels
+    Dwheels = 0               # float   [0.000, 10.000]      Commanded D gain of the PID for the wheels
 
 
 
@@ -241,48 +241,48 @@ class Configuration:
 
 # ================================ ENCODE ================================
     def encode(self):
-        payload = np.zeros(BaseTypes.PACKET_SIZE_CONFIGURATION, dtype=np.uint8)
-        Configuration.set_header              (payload, self.header)
-        Configuration.set_remVersion          (payload, self.remVersion)
-        Configuration.set_id                  (payload, self.id)
-        Configuration.set_PbodyX              (payload, self.PbodyX)
-        Configuration.set_IbodyX              (payload, self.IbodyX)
-        Configuration.set_DbodyX              (payload, self.DbodyX)
-        Configuration.set_PbodyY              (payload, self.PbodyY)
-        Configuration.set_IbodyY              (payload, self.IbodyY)
-        Configuration.set_DbodyY              (payload, self.DbodyY)
-        Configuration.set_PbodyW              (payload, self.PbodyW)
-        Configuration.set_IbodyW              (payload, self.IbodyW)
-        Configuration.set_DbodyW              (payload, self.DbodyW)
-        Configuration.set_PbodyYaw            (payload, self.PbodyYaw)
-        Configuration.set_IbodyYaw            (payload, self.IbodyYaw)
-        Configuration.set_DbodyYaw            (payload, self.DbodyYaw)
-        Configuration.set_Pwheels             (payload, self.Pwheels)
-        Configuration.set_Iwheels             (payload, self.Iwheels)
-        Configuration.set_Dwheels             (payload, self.Dwheels)
+        payload = np.zeros(REM_BaseTypes.PACKET_SIZE_REM_ROBOT_SET_PIDGAINS, dtype=np.uint8)
+        REM_RobotSetPIDGains.set_header              (payload, self.header)
+        REM_RobotSetPIDGains.set_remVersion          (payload, self.remVersion)
+        REM_RobotSetPIDGains.set_id                  (payload, self.id)
+        REM_RobotSetPIDGains.set_PbodyX              (payload, self.PbodyX)
+        REM_RobotSetPIDGains.set_IbodyX              (payload, self.IbodyX)
+        REM_RobotSetPIDGains.set_DbodyX              (payload, self.DbodyX)
+        REM_RobotSetPIDGains.set_PbodyY              (payload, self.PbodyY)
+        REM_RobotSetPIDGains.set_IbodyY              (payload, self.IbodyY)
+        REM_RobotSetPIDGains.set_DbodyY              (payload, self.DbodyY)
+        REM_RobotSetPIDGains.set_PbodyW              (payload, self.PbodyW)
+        REM_RobotSetPIDGains.set_IbodyW              (payload, self.IbodyW)
+        REM_RobotSetPIDGains.set_DbodyW              (payload, self.DbodyW)
+        REM_RobotSetPIDGains.set_PbodyYaw            (payload, self.PbodyYaw)
+        REM_RobotSetPIDGains.set_IbodyYaw            (payload, self.IbodyYaw)
+        REM_RobotSetPIDGains.set_DbodyYaw            (payload, self.DbodyYaw)
+        REM_RobotSetPIDGains.set_Pwheels             (payload, self.Pwheels)
+        REM_RobotSetPIDGains.set_Iwheels             (payload, self.Iwheels)
+        REM_RobotSetPIDGains.set_Dwheels             (payload, self.Dwheels)
         return payload
 
 
 # ================================ DECODE ================================
     def decode(self, payload):
-        self.header           = Configuration.get_header(payload)
-        self.remVersion       = Configuration.get_remVersion(payload)
-        self.id               = Configuration.get_id(payload)
-        self.PbodyX           = Configuration.get_PbodyX(payload)
-        self.IbodyX           = Configuration.get_IbodyX(payload)
-        self.DbodyX           = Configuration.get_DbodyX(payload)
-        self.PbodyY           = Configuration.get_PbodyY(payload)
-        self.IbodyY           = Configuration.get_IbodyY(payload)
-        self.DbodyY           = Configuration.get_DbodyY(payload)
-        self.PbodyW           = Configuration.get_PbodyW(payload)
-        self.IbodyW           = Configuration.get_IbodyW(payload)
-        self.DbodyW           = Configuration.get_DbodyW(payload)
-        self.PbodyYaw         = Configuration.get_PbodyYaw(payload)
-        self.IbodyYaw         = Configuration.get_IbodyYaw(payload)
-        self.DbodyYaw         = Configuration.get_DbodyYaw(payload)
-        self.Pwheels          = Configuration.get_Pwheels(payload)
-        self.Iwheels          = Configuration.get_Iwheels(payload)
-        self.Dwheels          = Configuration.get_Dwheels(payload)
+        self.header           = REM_RobotSetPIDGains.get_header(payload)
+        self.remVersion       = REM_RobotSetPIDGains.get_remVersion(payload)
+        self.id               = REM_RobotSetPIDGains.get_id(payload)
+        self.PbodyX           = REM_RobotSetPIDGains.get_PbodyX(payload)
+        self.IbodyX           = REM_RobotSetPIDGains.get_IbodyX(payload)
+        self.DbodyX           = REM_RobotSetPIDGains.get_DbodyX(payload)
+        self.PbodyY           = REM_RobotSetPIDGains.get_PbodyY(payload)
+        self.IbodyY           = REM_RobotSetPIDGains.get_IbodyY(payload)
+        self.DbodyY           = REM_RobotSetPIDGains.get_DbodyY(payload)
+        self.PbodyW           = REM_RobotSetPIDGains.get_PbodyW(payload)
+        self.IbodyW           = REM_RobotSetPIDGains.get_IbodyW(payload)
+        self.DbodyW           = REM_RobotSetPIDGains.get_DbodyW(payload)
+        self.PbodyYaw         = REM_RobotSetPIDGains.get_PbodyYaw(payload)
+        self.IbodyYaw         = REM_RobotSetPIDGains.get_IbodyYaw(payload)
+        self.DbodyYaw         = REM_RobotSetPIDGains.get_DbodyYaw(payload)
+        self.Pwheels          = REM_RobotSetPIDGains.get_Pwheels(payload)
+        self.Iwheels          = REM_RobotSetPIDGains.get_Iwheels(payload)
+        self.Dwheels          = REM_RobotSetPIDGains.get_Dwheels(payload)
 
 
     def print_bit_string(self):

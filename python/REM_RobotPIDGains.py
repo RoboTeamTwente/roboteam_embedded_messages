@@ -26,7 +26,7 @@ from . import REM_BaseTypes
 
 
 
-class REM_PIDGains:
+class REM_RobotPIDGains:
     header = 0                # integer [0, 255]             Header byte indicating the type of packet
     remVersion = 0            # integer [0, 15]              Version of roboteam_embedded_messages
     id = 0                    # integer [0, 15]              Id of the robot
@@ -241,48 +241,48 @@ class REM_PIDGains:
 
 # ================================ ENCODE ================================
     def encode(self):
-        payload = np.zeros(REM_BaseTypes.PACKET_SIZE_REM_P_I_D_GAINS, dtype=np.uint8)
-        REM_PIDGains.set_header              (payload, self.header)
-        REM_PIDGains.set_remVersion          (payload, self.remVersion)
-        REM_PIDGains.set_id                  (payload, self.id)
-        REM_PIDGains.set_PbodyX              (payload, self.PbodyX)
-        REM_PIDGains.set_IbodyX              (payload, self.IbodyX)
-        REM_PIDGains.set_DbodyX              (payload, self.DbodyX)
-        REM_PIDGains.set_PbodyY              (payload, self.PbodyY)
-        REM_PIDGains.set_IbodyY              (payload, self.IbodyY)
-        REM_PIDGains.set_DbodyY              (payload, self.DbodyY)
-        REM_PIDGains.set_PbodyW              (payload, self.PbodyW)
-        REM_PIDGains.set_IbodyW              (payload, self.IbodyW)
-        REM_PIDGains.set_DbodyW              (payload, self.DbodyW)
-        REM_PIDGains.set_PbodyYaw            (payload, self.PbodyYaw)
-        REM_PIDGains.set_IbodyYaw            (payload, self.IbodyYaw)
-        REM_PIDGains.set_DbodyYaw            (payload, self.DbodyYaw)
-        REM_PIDGains.set_Pwheels             (payload, self.Pwheels)
-        REM_PIDGains.set_Iwheels             (payload, self.Iwheels)
-        REM_PIDGains.set_Dwheels             (payload, self.Dwheels)
+        payload = np.zeros(REM_BaseTypes.PACKET_SIZE_REM_ROBOT_PIDGAINS, dtype=np.uint8)
+        REM_RobotPIDGains.set_header              (payload, self.header)
+        REM_RobotPIDGains.set_remVersion          (payload, self.remVersion)
+        REM_RobotPIDGains.set_id                  (payload, self.id)
+        REM_RobotPIDGains.set_PbodyX              (payload, self.PbodyX)
+        REM_RobotPIDGains.set_IbodyX              (payload, self.IbodyX)
+        REM_RobotPIDGains.set_DbodyX              (payload, self.DbodyX)
+        REM_RobotPIDGains.set_PbodyY              (payload, self.PbodyY)
+        REM_RobotPIDGains.set_IbodyY              (payload, self.IbodyY)
+        REM_RobotPIDGains.set_DbodyY              (payload, self.DbodyY)
+        REM_RobotPIDGains.set_PbodyW              (payload, self.PbodyW)
+        REM_RobotPIDGains.set_IbodyW              (payload, self.IbodyW)
+        REM_RobotPIDGains.set_DbodyW              (payload, self.DbodyW)
+        REM_RobotPIDGains.set_PbodyYaw            (payload, self.PbodyYaw)
+        REM_RobotPIDGains.set_IbodyYaw            (payload, self.IbodyYaw)
+        REM_RobotPIDGains.set_DbodyYaw            (payload, self.DbodyYaw)
+        REM_RobotPIDGains.set_Pwheels             (payload, self.Pwheels)
+        REM_RobotPIDGains.set_Iwheels             (payload, self.Iwheels)
+        REM_RobotPIDGains.set_Dwheels             (payload, self.Dwheels)
         return payload
 
 
 # ================================ DECODE ================================
     def decode(self, payload):
-        self.header           = REM_PIDGains.get_header(payload)
-        self.remVersion       = REM_PIDGains.get_remVersion(payload)
-        self.id               = REM_PIDGains.get_id(payload)
-        self.PbodyX           = REM_PIDGains.get_PbodyX(payload)
-        self.IbodyX           = REM_PIDGains.get_IbodyX(payload)
-        self.DbodyX           = REM_PIDGains.get_DbodyX(payload)
-        self.PbodyY           = REM_PIDGains.get_PbodyY(payload)
-        self.IbodyY           = REM_PIDGains.get_IbodyY(payload)
-        self.DbodyY           = REM_PIDGains.get_DbodyY(payload)
-        self.PbodyW           = REM_PIDGains.get_PbodyW(payload)
-        self.IbodyW           = REM_PIDGains.get_IbodyW(payload)
-        self.DbodyW           = REM_PIDGains.get_DbodyW(payload)
-        self.PbodyYaw         = REM_PIDGains.get_PbodyYaw(payload)
-        self.IbodyYaw         = REM_PIDGains.get_IbodyYaw(payload)
-        self.DbodyYaw         = REM_PIDGains.get_DbodyYaw(payload)
-        self.Pwheels          = REM_PIDGains.get_Pwheels(payload)
-        self.Iwheels          = REM_PIDGains.get_Iwheels(payload)
-        self.Dwheels          = REM_PIDGains.get_Dwheels(payload)
+        self.header           = REM_RobotPIDGains.get_header(payload)
+        self.remVersion       = REM_RobotPIDGains.get_remVersion(payload)
+        self.id               = REM_RobotPIDGains.get_id(payload)
+        self.PbodyX           = REM_RobotPIDGains.get_PbodyX(payload)
+        self.IbodyX           = REM_RobotPIDGains.get_IbodyX(payload)
+        self.DbodyX           = REM_RobotPIDGains.get_DbodyX(payload)
+        self.PbodyY           = REM_RobotPIDGains.get_PbodyY(payload)
+        self.IbodyY           = REM_RobotPIDGains.get_IbodyY(payload)
+        self.DbodyY           = REM_RobotPIDGains.get_DbodyY(payload)
+        self.PbodyW           = REM_RobotPIDGains.get_PbodyW(payload)
+        self.IbodyW           = REM_RobotPIDGains.get_IbodyW(payload)
+        self.DbodyW           = REM_RobotPIDGains.get_DbodyW(payload)
+        self.PbodyYaw         = REM_RobotPIDGains.get_PbodyYaw(payload)
+        self.IbodyYaw         = REM_RobotPIDGains.get_IbodyYaw(payload)
+        self.DbodyYaw         = REM_RobotPIDGains.get_DbodyYaw(payload)
+        self.Pwheels          = REM_RobotPIDGains.get_Pwheels(payload)
+        self.Iwheels          = REM_RobotPIDGains.get_Iwheels(payload)
+        self.Dwheels          = REM_RobotPIDGains.get_Dwheels(payload)
 
 
     def print_bit_string(self):
