@@ -144,97 +144,97 @@ class REM_RobotStateInfo:
     @staticmethod
     def get_xsensAcc1(payload):
         _xsensAcc1 = ((payload[7]) << 8) | ((payload[8]));
-        return (_xsensAcc1 * 0.0047901121538109) + -156.9600000000000080;
+        return (_xsensAcc1 * 0.0047901121538109F) + -156.9600000000000080F;
 
     @staticmethod
     def get_xsensAcc2(payload):
         _xsensAcc2 = ((payload[9]) << 8) | ((payload[10]));
-        return (_xsensAcc2 * 0.0047901121538109) + -156.9600000000000080;
+        return (_xsensAcc2 * 0.0047901121538109F) + -156.9600000000000080F;
 
     @staticmethod
     def get_xsensYaw(payload):
         _xsensYaw = ((payload[11]) << 24) | ((payload[12]) << 16) | ((payload[13]) << 8) | ((payload[14]));
-        return (_xsensYaw * 0.0000232830643708) + -50000.0000000000000000;
+        return (_xsensYaw * 0.0000232830643708F) + -50000.0000000000000000F;
 
     @staticmethod
     def get_rateOfTurn(payload):
         _rateOfTurn = ((payload[15]) << 8) | ((payload[16]));
-        return (_rateOfTurn * 0.0006103608758679) + -20.0000000000000000;
+        return (_rateOfTurn * 0.0006103608758679F) + -20.0000000000000000F;
 
     @staticmethod
     def get_wheelSpeed1(payload):
         _wheelSpeed1 = ((payload[17]) << 8) | ((payload[18]));
-        return (_wheelSpeed1 * 0.0305180437933928) + -1000.0000000000000000;
+        return (_wheelSpeed1 * 0.0305180437933928F) + -1000.0000000000000000F;
 
     @staticmethod
     def get_wheelSpeed2(payload):
         _wheelSpeed2 = ((payload[19]) << 8) | ((payload[20]));
-        return (_wheelSpeed2 * 0.0305180437933928) + -1000.0000000000000000;
+        return (_wheelSpeed2 * 0.0305180437933928F) + -1000.0000000000000000F;
 
     @staticmethod
     def get_wheelSpeed3(payload):
         _wheelSpeed3 = ((payload[21]) << 8) | ((payload[22]));
-        return (_wheelSpeed3 * 0.0305180437933928) + -1000.0000000000000000;
+        return (_wheelSpeed3 * 0.0305180437933928F) + -1000.0000000000000000F;
 
     @staticmethod
     def get_wheelSpeed4(payload):
         _wheelSpeed4 = ((payload[23]) << 8) | ((payload[24]));
-        return (_wheelSpeed4 * 0.0305180437933928) + -1000.0000000000000000;
+        return (_wheelSpeed4 * 0.0305180437933928F) + -1000.0000000000000000F;
 
     @staticmethod
     def get_dribbleSpeed(payload):
         _dribbleSpeed = ((payload[25]) << 8) | ((payload[26]));
-        return (_dribbleSpeed * 0.0762951094834821) + 0.0000000000000000;
+        return (_dribbleSpeed * 0.0762951094834821F);
 
     @staticmethod
     def get_filteredDribbleSpeed(payload):
         _filteredDribbleSpeed = ((payload[27]) << 8) | ((payload[28]));
-        return (_filteredDribbleSpeed * 0.0762951094834821) + 0.0000000000000000;
+        return (_filteredDribbleSpeed * 0.0762951094834821F);
 
     @staticmethod
     def get_dribblespeedBeforeGotBall(payload):
         _dribblespeedBeforeGotBall = ((payload[29]) << 8) | ((payload[30]));
-        return (_dribblespeedBeforeGotBall * 0.0762951094834821) + 0.0000000000000000;
+        return (_dribblespeedBeforeGotBall * 0.0762951094834821F);
 
     @staticmethod
     def get_bodyXIntegral(payload):
         _bodyXIntegral = ((payload[31]) << 8) | ((payload[32]));
-        return (_bodyXIntegral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_bodyXIntegral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_bodyYIntegral(payload):
         _bodyYIntegral = ((payload[33]) << 8) | ((payload[34]));
-        return (_bodyYIntegral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_bodyYIntegral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_bodyWIntegral(payload):
         _bodyWIntegral = ((payload[35]) << 8) | ((payload[36]));
-        return (_bodyWIntegral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_bodyWIntegral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_bodyYawIntegral(payload):
         _bodyYawIntegral = ((payload[37]) << 8) | ((payload[38]));
-        return (_bodyYawIntegral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_bodyYawIntegral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_wheel1Integral(payload):
         _wheel1Integral = ((payload[39]) << 8) | ((payload[40]));
-        return (_wheel1Integral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_wheel1Integral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_wheel2Integral(payload):
         _wheel2Integral = ((payload[41]) << 8) | ((payload[42]));
-        return (_wheel2Integral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_wheel2Integral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_wheel3Integral(payload):
         _wheel3Integral = ((payload[43]) << 8) | ((payload[44]));
-        return (_wheel3Integral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_wheel3Integral * 0.1525902189669642F) + -5000.0000000000000000F;
 
     @staticmethod
     def get_wheel4Integral(payload):
         _wheel4Integral = ((payload[45]) << 8) | ((payload[46]));
-        return (_wheel4Integral * 0.1525902189669642) + -5000.0000000000000000;
+        return (_wheel4Integral * 0.1525902189669642F) + -5000.0000000000000000F;
 
 # ================================ SETTERS ================================
     @staticmethod
@@ -300,19 +300,19 @@ class REM_RobotStateInfo:
 
     @staticmethod
     def set_xsensAcc1(payload, xsensAcc1):
-        _xsensAcc1 = int((xsensAcc1 +156.9600000000000080) / 0.0047901121538109);
+        _xsensAcc1 = int((xsensAcc1 +156.9600000000000080F) / 0.0047901121538109F);
         payload[7] = (_xsensAcc1 >> 8);
         payload[8] = _xsensAcc1;
 
     @staticmethod
     def set_xsensAcc2(payload, xsensAcc2):
-        _xsensAcc2 = int((xsensAcc2 +156.9600000000000080) / 0.0047901121538109);
+        _xsensAcc2 = int((xsensAcc2 +156.9600000000000080F) / 0.0047901121538109F);
         payload[9] = (_xsensAcc2 >> 8);
         payload[10] = _xsensAcc2;
 
     @staticmethod
     def set_xsensYaw(payload, xsensYaw):
-        _xsensYaw = int((xsensYaw +50000.0000000000000000) / 0.0000232830643708);
+        _xsensYaw = int((xsensYaw +50000.0000000000000000F) / 0.0000232830643708F);
         payload[11] = (_xsensYaw >> 24);
         payload[12] = (_xsensYaw >> 16);
         payload[13] = (_xsensYaw >> 8);
@@ -320,97 +320,97 @@ class REM_RobotStateInfo:
 
     @staticmethod
     def set_rateOfTurn(payload, rateOfTurn):
-        _rateOfTurn = int((rateOfTurn +20.0000000000000000) / 0.0006103608758679);
+        _rateOfTurn = int((rateOfTurn +20.0000000000000000F) / 0.0006103608758679F);
         payload[15] = (_rateOfTurn >> 8);
         payload[16] = _rateOfTurn;
 
     @staticmethod
     def set_wheelSpeed1(payload, wheelSpeed1):
-        _wheelSpeed1 = int((wheelSpeed1 +1000.0000000000000000) / 0.0305180437933928);
+        _wheelSpeed1 = int((wheelSpeed1 +1000.0000000000000000F) / 0.0305180437933928F);
         payload[17] = (_wheelSpeed1 >> 8);
         payload[18] = _wheelSpeed1;
 
     @staticmethod
     def set_wheelSpeed2(payload, wheelSpeed2):
-        _wheelSpeed2 = int((wheelSpeed2 +1000.0000000000000000) / 0.0305180437933928);
+        _wheelSpeed2 = int((wheelSpeed2 +1000.0000000000000000F) / 0.0305180437933928F);
         payload[19] = (_wheelSpeed2 >> 8);
         payload[20] = _wheelSpeed2;
 
     @staticmethod
     def set_wheelSpeed3(payload, wheelSpeed3):
-        _wheelSpeed3 = int((wheelSpeed3 +1000.0000000000000000) / 0.0305180437933928);
+        _wheelSpeed3 = int((wheelSpeed3 +1000.0000000000000000F) / 0.0305180437933928F);
         payload[21] = (_wheelSpeed3 >> 8);
         payload[22] = _wheelSpeed3;
 
     @staticmethod
     def set_wheelSpeed4(payload, wheelSpeed4):
-        _wheelSpeed4 = int((wheelSpeed4 +1000.0000000000000000) / 0.0305180437933928);
+        _wheelSpeed4 = int((wheelSpeed4 +1000.0000000000000000F) / 0.0305180437933928F);
         payload[23] = (_wheelSpeed4 >> 8);
         payload[24] = _wheelSpeed4;
 
     @staticmethod
     def set_dribbleSpeed(payload, dribbleSpeed):
-        _dribbleSpeed = int(dribbleSpeed / 0.0762951094834821);
+        _dribbleSpeed = int(dribbleSpeed / 0.0762951094834821F);
         payload[25] = (_dribbleSpeed >> 8);
         payload[26] = _dribbleSpeed;
 
     @staticmethod
     def set_filteredDribbleSpeed(payload, filteredDribbleSpeed):
-        _filteredDribbleSpeed = int(filteredDribbleSpeed / 0.0762951094834821);
+        _filteredDribbleSpeed = int(filteredDribbleSpeed / 0.0762951094834821F);
         payload[27] = (_filteredDribbleSpeed >> 8);
         payload[28] = _filteredDribbleSpeed;
 
     @staticmethod
     def set_dribblespeedBeforeGotBall(payload, dribblespeedBeforeGotBall):
-        _dribblespeedBeforeGotBall = int(dribblespeedBeforeGotBall / 0.0762951094834821);
+        _dribblespeedBeforeGotBall = int(dribblespeedBeforeGotBall / 0.0762951094834821F);
         payload[29] = (_dribblespeedBeforeGotBall >> 8);
         payload[30] = _dribblespeedBeforeGotBall;
 
     @staticmethod
     def set_bodyXIntegral(payload, bodyXIntegral):
-        _bodyXIntegral = int((bodyXIntegral +5000.0000000000000000) / 0.1525902189669642);
+        _bodyXIntegral = int((bodyXIntegral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[31] = (_bodyXIntegral >> 8);
         payload[32] = _bodyXIntegral;
 
     @staticmethod
     def set_bodyYIntegral(payload, bodyYIntegral):
-        _bodyYIntegral = int((bodyYIntegral +5000.0000000000000000) / 0.1525902189669642);
+        _bodyYIntegral = int((bodyYIntegral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[33] = (_bodyYIntegral >> 8);
         payload[34] = _bodyYIntegral;
 
     @staticmethod
     def set_bodyWIntegral(payload, bodyWIntegral):
-        _bodyWIntegral = int((bodyWIntegral +5000.0000000000000000) / 0.1525902189669642);
+        _bodyWIntegral = int((bodyWIntegral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[35] = (_bodyWIntegral >> 8);
         payload[36] = _bodyWIntegral;
 
     @staticmethod
     def set_bodyYawIntegral(payload, bodyYawIntegral):
-        _bodyYawIntegral = int((bodyYawIntegral +5000.0000000000000000) / 0.1525902189669642);
+        _bodyYawIntegral = int((bodyYawIntegral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[37] = (_bodyYawIntegral >> 8);
         payload[38] = _bodyYawIntegral;
 
     @staticmethod
     def set_wheel1Integral(payload, wheel1Integral):
-        _wheel1Integral = int((wheel1Integral +5000.0000000000000000) / 0.1525902189669642);
+        _wheel1Integral = int((wheel1Integral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[39] = (_wheel1Integral >> 8);
         payload[40] = _wheel1Integral;
 
     @staticmethod
     def set_wheel2Integral(payload, wheel2Integral):
-        _wheel2Integral = int((wheel2Integral +5000.0000000000000000) / 0.1525902189669642);
+        _wheel2Integral = int((wheel2Integral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[41] = (_wheel2Integral >> 8);
         payload[42] = _wheel2Integral;
 
     @staticmethod
     def set_wheel3Integral(payload, wheel3Integral):
-        _wheel3Integral = int((wheel3Integral +5000.0000000000000000) / 0.1525902189669642);
+        _wheel3Integral = int((wheel3Integral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[43] = (_wheel3Integral >> 8);
         payload[44] = _wheel3Integral;
 
     @staticmethod
     def set_wheel4Integral(payload, wheel4Integral):
-        _wheel4Integral = int((wheel4Integral +5000.0000000000000000) / 0.1525902189669642);
+        _wheel4Integral = int((wheel4Integral +5000.0000000000000000F) / 0.1525902189669642F);
         payload[45] = (_wheel4Integral >> 8);
         payload[46] = _wheel4Integral;
 

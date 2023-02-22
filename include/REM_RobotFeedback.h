@@ -138,17 +138,17 @@ static inline uint32_t REM_RobotFeedback_get_payloadSize(REM_RobotFeedbackPayloa
 
 static inline float REM_RobotFeedback_get_rho(REM_RobotFeedbackPayload *remrfp){
     uint32_t _rho = ((remrfp->payload[7]) << 8) | ((remrfp->payload[8]));
-    return (_rho * 0.0001220721751736) + 0.0000000000000000;
+    return (_rho * 0.0001220721751736F);
 }
 
 static inline float REM_RobotFeedback_get_theta(REM_RobotFeedbackPayload *remrfp){
     uint32_t _theta = ((remrfp->payload[9]) << 8) | ((remrfp->payload[10]));
-    return (_theta * 0.0000958752621833) + -3.1415926535897931;
+    return (_theta * 0.0000958752621833F) + -3.1415926535897931F;
 }
 
 static inline float REM_RobotFeedback_get_angle(REM_RobotFeedbackPayload *remrfp){
     uint32_t _angle = ((remrfp->payload[11]) << 8) | ((remrfp->payload[12]));
-    return (_angle * 0.0000958752621833) + -3.1415926535897931;
+    return (_angle * 0.0000958752621833F) + -3.1415926535897931F;
 }
 
 static inline uint32_t REM_RobotFeedback_get_batteryLevel(REM_RobotFeedbackPayload *remrfp){
@@ -173,7 +173,7 @@ static inline bool REM_RobotFeedback_get_ballSensorSeesBall(REM_RobotFeedbackPay
 
 static inline float REM_RobotFeedback_get_ballPos(REM_RobotFeedbackPayload *remrfp){
     uint32_t _ballPos = ((remrfp->payload[14] & 0b11110000) >> 4);
-    return (_ballPos * 0.0666666666666667) + -0.5000000000000000;
+    return (_ballPos * 0.0666666666666667F) + -0.5000000000000000F;
 }
 
 static inline bool REM_RobotFeedback_get_dribblerSeesBall(REM_RobotFeedbackPayload *remrfp){
@@ -259,19 +259,19 @@ static inline void REM_RobotFeedback_set_payloadSize(REM_RobotFeedbackPayload *r
 }
 
 static inline void REM_RobotFeedback_set_rho(REM_RobotFeedbackPayload *remrfp, float rho){
-    uint32_t _rho = (uint32_t)(rho / 0.0001220721751736);
+    uint32_t _rho = (uint32_t)(rho / 0.0001220721751736F);
     remrfp->payload[7] = (_rho >> 8);
     remrfp->payload[8] = _rho;
 }
 
 static inline void REM_RobotFeedback_set_theta(REM_RobotFeedbackPayload *remrfp, float theta){
-    uint32_t _theta = (uint32_t)((theta +3.1415926535897931) / 0.0000958752621833);
+    uint32_t _theta = (uint32_t)((theta +3.1415926535897931F) / 0.0000958752621833F);
     remrfp->payload[9] = (_theta >> 8);
     remrfp->payload[10] = _theta;
 }
 
 static inline void REM_RobotFeedback_set_angle(REM_RobotFeedbackPayload *remrfp, float angle){
-    uint32_t _angle = (uint32_t)((angle +3.1415926535897931) / 0.0000958752621833);
+    uint32_t _angle = (uint32_t)((angle +3.1415926535897931F) / 0.0000958752621833F);
     remrfp->payload[11] = (_angle >> 8);
     remrfp->payload[12] = _angle;
 }
@@ -297,7 +297,7 @@ static inline void REM_RobotFeedback_set_ballSensorSeesBall(REM_RobotFeedbackPay
 }
 
 static inline void REM_RobotFeedback_set_ballPos(REM_RobotFeedbackPayload *remrfp, float ballPos){
-    uint32_t _ballPos = (uint32_t)((ballPos +0.5000000000000000) / 0.0666666666666667);
+    uint32_t _ballPos = (uint32_t)((ballPos +0.5000000000000000F) / 0.0666666666666667F);
     remrfp->payload[14] = ((_ballPos << 4) & 0b11110000) | (remrfp->payload[14] & 0b00001111);
 }
 

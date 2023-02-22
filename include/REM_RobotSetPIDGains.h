@@ -140,77 +140,77 @@ static inline uint32_t REM_RobotSetPIDGains_get_payloadSize(REM_RobotSetPIDGains
 
 static inline float REM_RobotSetPIDGains_get_PbodyX(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _PbodyX = ((remrspidgp->payload[7]) << 8) | ((remrspidgp->payload[8]));
-    return (_PbodyX * 0.0006103608758679) + 0.0000000000000000;
+    return (_PbodyX * 0.0006103608758679F);
 }
 
 static inline float REM_RobotSetPIDGains_get_IbodyX(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _IbodyX = ((remrspidgp->payload[9]) << 8) | ((remrspidgp->payload[10]));
-    return (_IbodyX * 0.0003051804379339) + 0.0000000000000000;
+    return (_IbodyX * 0.0003051804379339F);
 }
 
 static inline float REM_RobotSetPIDGains_get_DbodyX(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _DbodyX = ((remrspidgp->payload[11]) << 8) | ((remrspidgp->payload[12]));
-    return (_DbodyX * 0.0001525902189670) + 0.0000000000000000;
+    return (_DbodyX * 0.0001525902189670F);
 }
 
 static inline float REM_RobotSetPIDGains_get_PbodyY(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _PbodyY = ((remrspidgp->payload[13]) << 8) | ((remrspidgp->payload[14]));
-    return (_PbodyY * 0.0006103608758679) + 0.0000000000000000;
+    return (_PbodyY * 0.0006103608758679F);
 }
 
 static inline float REM_RobotSetPIDGains_get_IbodyY(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _IbodyY = ((remrspidgp->payload[15]) << 8) | ((remrspidgp->payload[16]));
-    return (_IbodyY * 0.0003051804379339) + 0.0000000000000000;
+    return (_IbodyY * 0.0003051804379339F);
 }
 
 static inline float REM_RobotSetPIDGains_get_DbodyY(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _DbodyY = ((remrspidgp->payload[17]) << 8) | ((remrspidgp->payload[18]));
-    return (_DbodyY * 0.0001525902189670) + 0.0000000000000000;
+    return (_DbodyY * 0.0001525902189670F);
 }
 
 static inline float REM_RobotSetPIDGains_get_PbodyW(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _PbodyW = ((remrspidgp->payload[19]) << 8) | ((remrspidgp->payload[20]));
-    return (_PbodyW * 0.0006103608758679) + 0.0000000000000000;
+    return (_PbodyW * 0.0006103608758679F);
 }
 
 static inline float REM_RobotSetPIDGains_get_IbodyW(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _IbodyW = ((remrspidgp->payload[21]) << 8) | ((remrspidgp->payload[22]));
-    return (_IbodyW * 0.0003051804379339) + 0.0000000000000000;
+    return (_IbodyW * 0.0003051804379339F);
 }
 
 static inline float REM_RobotSetPIDGains_get_DbodyW(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _DbodyW = ((remrspidgp->payload[23]) << 8) | ((remrspidgp->payload[24]));
-    return (_DbodyW * 0.0001525902189670) + 0.0000000000000000;
+    return (_DbodyW * 0.0001525902189670F);
 }
 
 static inline float REM_RobotSetPIDGains_get_PbodyYaw(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _PbodyYaw = ((remrspidgp->payload[25]) << 8) | ((remrspidgp->payload[26]));
-    return (_PbodyYaw * 0.0006103608758679) + 0.0000000000000000;
+    return (_PbodyYaw * 0.0006103608758679F);
 }
 
 static inline float REM_RobotSetPIDGains_get_IbodyYaw(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _IbodyYaw = ((remrspidgp->payload[27]) << 8) | ((remrspidgp->payload[28]));
-    return (_IbodyYaw * 0.0003051804379339) + 0.0000000000000000;
+    return (_IbodyYaw * 0.0003051804379339F);
 }
 
 static inline float REM_RobotSetPIDGains_get_DbodyYaw(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _DbodyYaw = ((remrspidgp->payload[29]) << 8) | ((remrspidgp->payload[30]));
-    return (_DbodyYaw * 0.0001525902189670) + 0.0000000000000000;
+    return (_DbodyYaw * 0.0001525902189670F);
 }
 
 static inline float REM_RobotSetPIDGains_get_Pwheels(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _Pwheels = ((remrspidgp->payload[31]) << 8) | ((remrspidgp->payload[32]));
-    return (_Pwheels * 0.0006103608758679) + 0.0000000000000000;
+    return (_Pwheels * 0.0006103608758679F);
 }
 
 static inline float REM_RobotSetPIDGains_get_Iwheels(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _Iwheels = ((remrspidgp->payload[33]) << 8) | ((remrspidgp->payload[34]));
-    return (_Iwheels * 0.0003051804379339) + 0.0000000000000000;
+    return (_Iwheels * 0.0003051804379339F);
 }
 
 static inline float REM_RobotSetPIDGains_get_Dwheels(REM_RobotSetPIDGainsPayload *remrspidgp){
     uint32_t _Dwheels = ((remrspidgp->payload[35]) << 8) | ((remrspidgp->payload[36]));
-    return (_Dwheels * 0.0001525902189670) + 0.0000000000000000;
+    return (_Dwheels * 0.0001525902189670F);
 }
 
 // ================================ SETTERS ================================
@@ -276,91 +276,91 @@ static inline void REM_RobotSetPIDGains_set_payloadSize(REM_RobotSetPIDGainsPayl
 }
 
 static inline void REM_RobotSetPIDGains_set_PbodyX(REM_RobotSetPIDGainsPayload *remrspidgp, float PbodyX){
-    uint32_t _PbodyX = (uint32_t)(PbodyX / 0.0006103608758679);
+    uint32_t _PbodyX = (uint32_t)(PbodyX / 0.0006103608758679F);
     remrspidgp->payload[7] = (_PbodyX >> 8);
     remrspidgp->payload[8] = _PbodyX;
 }
 
 static inline void REM_RobotSetPIDGains_set_IbodyX(REM_RobotSetPIDGainsPayload *remrspidgp, float IbodyX){
-    uint32_t _IbodyX = (uint32_t)(IbodyX / 0.0003051804379339);
+    uint32_t _IbodyX = (uint32_t)(IbodyX / 0.0003051804379339F);
     remrspidgp->payload[9] = (_IbodyX >> 8);
     remrspidgp->payload[10] = _IbodyX;
 }
 
 static inline void REM_RobotSetPIDGains_set_DbodyX(REM_RobotSetPIDGainsPayload *remrspidgp, float DbodyX){
-    uint32_t _DbodyX = (uint32_t)(DbodyX / 0.0001525902189670);
+    uint32_t _DbodyX = (uint32_t)(DbodyX / 0.0001525902189670F);
     remrspidgp->payload[11] = (_DbodyX >> 8);
     remrspidgp->payload[12] = _DbodyX;
 }
 
 static inline void REM_RobotSetPIDGains_set_PbodyY(REM_RobotSetPIDGainsPayload *remrspidgp, float PbodyY){
-    uint32_t _PbodyY = (uint32_t)(PbodyY / 0.0006103608758679);
+    uint32_t _PbodyY = (uint32_t)(PbodyY / 0.0006103608758679F);
     remrspidgp->payload[13] = (_PbodyY >> 8);
     remrspidgp->payload[14] = _PbodyY;
 }
 
 static inline void REM_RobotSetPIDGains_set_IbodyY(REM_RobotSetPIDGainsPayload *remrspidgp, float IbodyY){
-    uint32_t _IbodyY = (uint32_t)(IbodyY / 0.0003051804379339);
+    uint32_t _IbodyY = (uint32_t)(IbodyY / 0.0003051804379339F);
     remrspidgp->payload[15] = (_IbodyY >> 8);
     remrspidgp->payload[16] = _IbodyY;
 }
 
 static inline void REM_RobotSetPIDGains_set_DbodyY(REM_RobotSetPIDGainsPayload *remrspidgp, float DbodyY){
-    uint32_t _DbodyY = (uint32_t)(DbodyY / 0.0001525902189670);
+    uint32_t _DbodyY = (uint32_t)(DbodyY / 0.0001525902189670F);
     remrspidgp->payload[17] = (_DbodyY >> 8);
     remrspidgp->payload[18] = _DbodyY;
 }
 
 static inline void REM_RobotSetPIDGains_set_PbodyW(REM_RobotSetPIDGainsPayload *remrspidgp, float PbodyW){
-    uint32_t _PbodyW = (uint32_t)(PbodyW / 0.0006103608758679);
+    uint32_t _PbodyW = (uint32_t)(PbodyW / 0.0006103608758679F);
     remrspidgp->payload[19] = (_PbodyW >> 8);
     remrspidgp->payload[20] = _PbodyW;
 }
 
 static inline void REM_RobotSetPIDGains_set_IbodyW(REM_RobotSetPIDGainsPayload *remrspidgp, float IbodyW){
-    uint32_t _IbodyW = (uint32_t)(IbodyW / 0.0003051804379339);
+    uint32_t _IbodyW = (uint32_t)(IbodyW / 0.0003051804379339F);
     remrspidgp->payload[21] = (_IbodyW >> 8);
     remrspidgp->payload[22] = _IbodyW;
 }
 
 static inline void REM_RobotSetPIDGains_set_DbodyW(REM_RobotSetPIDGainsPayload *remrspidgp, float DbodyW){
-    uint32_t _DbodyW = (uint32_t)(DbodyW / 0.0001525902189670);
+    uint32_t _DbodyW = (uint32_t)(DbodyW / 0.0001525902189670F);
     remrspidgp->payload[23] = (_DbodyW >> 8);
     remrspidgp->payload[24] = _DbodyW;
 }
 
 static inline void REM_RobotSetPIDGains_set_PbodyYaw(REM_RobotSetPIDGainsPayload *remrspidgp, float PbodyYaw){
-    uint32_t _PbodyYaw = (uint32_t)(PbodyYaw / 0.0006103608758679);
+    uint32_t _PbodyYaw = (uint32_t)(PbodyYaw / 0.0006103608758679F);
     remrspidgp->payload[25] = (_PbodyYaw >> 8);
     remrspidgp->payload[26] = _PbodyYaw;
 }
 
 static inline void REM_RobotSetPIDGains_set_IbodyYaw(REM_RobotSetPIDGainsPayload *remrspidgp, float IbodyYaw){
-    uint32_t _IbodyYaw = (uint32_t)(IbodyYaw / 0.0003051804379339);
+    uint32_t _IbodyYaw = (uint32_t)(IbodyYaw / 0.0003051804379339F);
     remrspidgp->payload[27] = (_IbodyYaw >> 8);
     remrspidgp->payload[28] = _IbodyYaw;
 }
 
 static inline void REM_RobotSetPIDGains_set_DbodyYaw(REM_RobotSetPIDGainsPayload *remrspidgp, float DbodyYaw){
-    uint32_t _DbodyYaw = (uint32_t)(DbodyYaw / 0.0001525902189670);
+    uint32_t _DbodyYaw = (uint32_t)(DbodyYaw / 0.0001525902189670F);
     remrspidgp->payload[29] = (_DbodyYaw >> 8);
     remrspidgp->payload[30] = _DbodyYaw;
 }
 
 static inline void REM_RobotSetPIDGains_set_Pwheels(REM_RobotSetPIDGainsPayload *remrspidgp, float Pwheels){
-    uint32_t _Pwheels = (uint32_t)(Pwheels / 0.0006103608758679);
+    uint32_t _Pwheels = (uint32_t)(Pwheels / 0.0006103608758679F);
     remrspidgp->payload[31] = (_Pwheels >> 8);
     remrspidgp->payload[32] = _Pwheels;
 }
 
 static inline void REM_RobotSetPIDGains_set_Iwheels(REM_RobotSetPIDGainsPayload *remrspidgp, float Iwheels){
-    uint32_t _Iwheels = (uint32_t)(Iwheels / 0.0003051804379339);
+    uint32_t _Iwheels = (uint32_t)(Iwheels / 0.0003051804379339F);
     remrspidgp->payload[33] = (_Iwheels >> 8);
     remrspidgp->payload[34] = _Iwheels;
 }
 
 static inline void REM_RobotSetPIDGains_set_Dwheels(REM_RobotSetPIDGainsPayload *remrspidgp, float Dwheels){
-    uint32_t _Dwheels = (uint32_t)(Dwheels / 0.0001525902189670);
+    uint32_t _Dwheels = (uint32_t)(Dwheels / 0.0001525902189670F);
     remrspidgp->payload[35] = (_Dwheels >> 8);
     remrspidgp->payload[36] = _Dwheels;
 }
