@@ -134,17 +134,17 @@ class REM_RobotFeedback:
     @staticmethod
     def get_rho(payload):
         _rho = ((payload[7]) << 8) | ((payload[8]));
-        return (_rho * 0.0001220721751736) + 0.0000000000000000;
+        return (_rho * 0.0001220721751736F);
 
     @staticmethod
     def get_theta(payload):
         _theta = ((payload[9]) << 8) | ((payload[10]));
-        return (_theta * 0.0000958752621833) + -3.1415926535897931;
+        return (_theta * 0.0000958752621833F) + -3.1415926535897931F;
 
     @staticmethod
     def get_angle(payload):
         _angle = ((payload[11]) << 8) | ((payload[12]));
-        return (_angle * 0.0000958752621833) + -3.1415926535897931;
+        return (_angle * 0.0000958752621833F) + -3.1415926535897931F;
 
     @staticmethod
     def get_batteryLevel(payload):
@@ -169,7 +169,7 @@ class REM_RobotFeedback:
     @staticmethod
     def get_ballPos(payload):
         _ballPos = ((payload[14] & 0b11110000) >> 4);
-        return (_ballPos * 0.0666666666666667) + -0.5000000000000000;
+        return (_ballPos * 0.0666666666666667F) + -0.5000000000000000F;
 
     @staticmethod
     def get_dribblerSeesBall(payload):
@@ -255,19 +255,19 @@ class REM_RobotFeedback:
 
     @staticmethod
     def set_rho(payload, rho):
-        _rho = int(rho / 0.0001220721751736);
+        _rho = int(rho / 0.0001220721751736F);
         payload[7] = (_rho >> 8);
         payload[8] = _rho;
 
     @staticmethod
     def set_theta(payload, theta):
-        _theta = int((theta +3.1415926535897931) / 0.0000958752621833);
+        _theta = int((theta +3.1415926535897931F) / 0.0000958752621833F);
         payload[9] = (_theta >> 8);
         payload[10] = _theta;
 
     @staticmethod
     def set_angle(payload, angle):
-        _angle = int((angle +3.1415926535897931) / 0.0000958752621833);
+        _angle = int((angle +3.1415926535897931F) / 0.0000958752621833F);
         payload[11] = (_angle >> 8);
         payload[12] = _angle;
 
@@ -293,7 +293,7 @@ class REM_RobotFeedback:
 
     @staticmethod
     def set_ballPos(payload, ballPos):
-        _ballPos = int((ballPos +0.5000000000000000) / 0.0666666666666667);
+        _ballPos = int((ballPos +0.5000000000000000F) / 0.0666666666666667F);
         payload[14] = ((_ballPos << 4) & 0b11110000) | (payload[14] & 0b00001111);
 
     @staticmethod

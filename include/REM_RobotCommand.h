@@ -138,27 +138,27 @@ static inline uint32_t REM_RobotCommand_get_payloadSize(REM_RobotCommandPayload 
 
 static inline float REM_RobotCommand_get_rho(REM_RobotCommandPayload *remrcp){
     uint32_t _rho = ((remrcp->payload[7]) << 8) | ((remrcp->payload[8]));
-    return (_rho * 0.0001220721751736) + 0.0000000000000000;
+    return (_rho * 0.0001220721751736F);
 }
 
 static inline float REM_RobotCommand_get_theta(REM_RobotCommandPayload *remrcp){
     uint32_t _theta = ((remrcp->payload[9]) << 8) | ((remrcp->payload[10]));
-    return (_theta * 0.0000958752621833) + -3.1415926535897931;
+    return (_theta * 0.0000958752621833F) + -3.1415926535897931F;
 }
 
 static inline float REM_RobotCommand_get_angle(REM_RobotCommandPayload *remrcp){
     uint32_t _angle = ((remrcp->payload[11]) << 8) | ((remrcp->payload[12]));
-    return (_angle * 0.0000958752621833) + -3.1415926535897931;
+    return (_angle * 0.0000958752621833F) + -3.1415926535897931F;
 }
 
 static inline float REM_RobotCommand_get_angularVelocity(REM_RobotCommandPayload *remrcp){
     uint32_t _angularVelocity = ((remrcp->payload[13]) << 8) | ((remrcp->payload[14]));
-    return (_angularVelocity * 0.0003835010487330) + -12.5663706143591725;
+    return (_angularVelocity * 0.0003835010487330F) + -12.5663706143591725F;
 }
 
 static inline float REM_RobotCommand_get_cameraAngle(REM_RobotCommandPayload *remrcp){
     uint32_t _cameraAngle = ((remrcp->payload[15]) << 8) | ((remrcp->payload[16]));
-    return (_cameraAngle * 0.0000958752621833) + -3.1415926535897931;
+    return (_cameraAngle * 0.0000958752621833F) + -3.1415926535897931F;
 }
 
 static inline bool REM_RobotCommand_get_useCameraAngle(REM_RobotCommandPayload *remrcp){
@@ -171,7 +171,7 @@ static inline bool REM_RobotCommand_get_useAbsoluteAngle(REM_RobotCommandPayload
 
 static inline float REM_RobotCommand_get_dribbler(REM_RobotCommandPayload *remrcp){
     uint32_t _dribbler = ((remrcp->payload[17] & 0b00111000) >> 3);
-    return (_dribbler * 0.1428571428571428) + 0.0000000000000000;
+    return (_dribbler * 0.1428571428571428F);
 }
 
 static inline bool REM_RobotCommand_get_doKick(REM_RobotCommandPayload *remrcp){
@@ -188,7 +188,7 @@ static inline bool REM_RobotCommand_get_kickAtAngle(REM_RobotCommandPayload *rem
 
 static inline float REM_RobotCommand_get_kickChipPower(REM_RobotCommandPayload *remrcp){
     uint32_t _kickChipPower = ((remrcp->payload[18] & 0b11110000) >> 4);
-    return (_kickChipPower * 0.4333333333333333) + 0.0000000000000000;
+    return (_kickChipPower * 0.4333333333333333F);
 }
 
 static inline bool REM_RobotCommand_get_doForce(REM_RobotCommandPayload *remrcp){
@@ -262,31 +262,31 @@ static inline void REM_RobotCommand_set_payloadSize(REM_RobotCommandPayload *rem
 }
 
 static inline void REM_RobotCommand_set_rho(REM_RobotCommandPayload *remrcp, float rho){
-    uint32_t _rho = (uint32_t)(rho / 0.0001220721751736);
+    uint32_t _rho = (uint32_t)(rho / 0.0001220721751736F);
     remrcp->payload[7] = (_rho >> 8);
     remrcp->payload[8] = _rho;
 }
 
 static inline void REM_RobotCommand_set_theta(REM_RobotCommandPayload *remrcp, float theta){
-    uint32_t _theta = (uint32_t)((theta +3.1415926535897931) / 0.0000958752621833);
+    uint32_t _theta = (uint32_t)((theta +3.1415926535897931F) / 0.0000958752621833F);
     remrcp->payload[9] = (_theta >> 8);
     remrcp->payload[10] = _theta;
 }
 
 static inline void REM_RobotCommand_set_angle(REM_RobotCommandPayload *remrcp, float angle){
-    uint32_t _angle = (uint32_t)((angle +3.1415926535897931) / 0.0000958752621833);
+    uint32_t _angle = (uint32_t)((angle +3.1415926535897931F) / 0.0000958752621833F);
     remrcp->payload[11] = (_angle >> 8);
     remrcp->payload[12] = _angle;
 }
 
 static inline void REM_RobotCommand_set_angularVelocity(REM_RobotCommandPayload *remrcp, float angularVelocity){
-    uint32_t _angularVelocity = (uint32_t)((angularVelocity +12.5663706143591725) / 0.0003835010487330);
+    uint32_t _angularVelocity = (uint32_t)((angularVelocity +12.5663706143591725F) / 0.0003835010487330F);
     remrcp->payload[13] = (_angularVelocity >> 8);
     remrcp->payload[14] = _angularVelocity;
 }
 
 static inline void REM_RobotCommand_set_cameraAngle(REM_RobotCommandPayload *remrcp, float cameraAngle){
-    uint32_t _cameraAngle = (uint32_t)((cameraAngle +3.1415926535897931) / 0.0000958752621833);
+    uint32_t _cameraAngle = (uint32_t)((cameraAngle +3.1415926535897931F) / 0.0000958752621833F);
     remrcp->payload[15] = (_cameraAngle >> 8);
     remrcp->payload[16] = _cameraAngle;
 }
@@ -300,7 +300,7 @@ static inline void REM_RobotCommand_set_useAbsoluteAngle(REM_RobotCommandPayload
 }
 
 static inline void REM_RobotCommand_set_dribbler(REM_RobotCommandPayload *remrcp, float dribbler){
-    uint32_t _dribbler = (uint32_t)(dribbler / 0.1428571428571428);
+    uint32_t _dribbler = (uint32_t)(dribbler / 0.1428571428571428F);
     remrcp->payload[17] = ((_dribbler << 3) & 0b00111000) | (remrcp->payload[17] & 0b11000111);
 }
 
@@ -317,7 +317,7 @@ static inline void REM_RobotCommand_set_kickAtAngle(REM_RobotCommandPayload *rem
 }
 
 static inline void REM_RobotCommand_set_kickChipPower(REM_RobotCommandPayload *remrcp, float kickChipPower){
-    uint32_t _kickChipPower = (uint32_t)(kickChipPower / 0.4333333333333333);
+    uint32_t _kickChipPower = (uint32_t)(kickChipPower / 0.4333333333333333F);
     remrcp->payload[18] = ((_kickChipPower << 4) & 0b11110000) | (remrcp->payload[18] & 0b00001111);
 }
 

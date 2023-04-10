@@ -118,7 +118,7 @@ static inline uint32_t REM_RobotBuzzer_get_period(REM_RobotBuzzerPayload *remrbp
 
 static inline float REM_RobotBuzzer_get_duration(REM_RobotBuzzerPayload *remrbp){
     uint32_t _duration = ((remrbp->payload[8] & 0b00001111) << 12) | ((remrbp->payload[9]) << 4) | ((remrbp->payload[10] & 0b11110000) >> 4);
-    return (_duration * 0.0000762951094835) + 0.0000000000000000;
+    return (_duration * 0.0000762951094835F);
 }
 
 // ================================ SETTERS ================================
@@ -189,7 +189,7 @@ static inline void REM_RobotBuzzer_set_period(REM_RobotBuzzerPayload *remrbp, ui
 }
 
 static inline void REM_RobotBuzzer_set_duration(REM_RobotBuzzerPayload *remrbp, float duration){
-    uint32_t _duration = (uint32_t)(duration / 0.0000762951094835);
+    uint32_t _duration = (uint32_t)(duration / 0.0000762951094835F);
     remrbp->payload[8] = ((_duration >> 12) & 0b00001111) | (remrbp->payload[8] & 0b11110000);
     remrbp->payload[9] = (_duration >> 4);
     remrbp->payload[10] = ((_duration << 4) & 0b11110000) | (remrbp->payload[10] & 0b00001111);
