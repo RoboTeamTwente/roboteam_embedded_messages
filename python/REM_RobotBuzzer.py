@@ -114,7 +114,7 @@ class REM_RobotBuzzer:
     @staticmethod
     def get_duration(payload):
         _duration = ((payload[8] & 0b00001111) << 12) | ((payload[9]) << 4) | ((payload[10] & 0b11110000) >> 4);
-        return (_duration * 0.0000762951094835F);
+        return (_duration * 0.0000762951094835);
 
 # ================================ SETTERS ================================
     @staticmethod
@@ -185,7 +185,7 @@ class REM_RobotBuzzer:
 
     @staticmethod
     def set_duration(payload, duration):
-        _duration = int(duration / 0.0000762951094835F);
+        _duration = int(duration / 0.0000762951094835);
         payload[8] = ((_duration >> 12) & 0b00001111) | (payload[8] & 0b11110000);
         payload[9] = (_duration >> 4);
         payload[10] = ((_duration << 4) & 0b11110000) | (payload[10] & 0b00001111);

@@ -134,27 +134,27 @@ class REM_RobotCommand:
     @staticmethod
     def get_rho(payload):
         _rho = ((payload[7]) << 8) | ((payload[8]));
-        return (_rho * 0.0001220721751736F);
+        return (_rho * 0.0001220721751736);
 
     @staticmethod
     def get_theta(payload):
         _theta = ((payload[9]) << 8) | ((payload[10]));
-        return (_theta * 0.0000958752621833F) + -3.1415926535897931F;
+        return (_theta * 0.0000958752621833) + -3.1415926535897931;
 
     @staticmethod
     def get_angle(payload):
         _angle = ((payload[11]) << 8) | ((payload[12]));
-        return (_angle * 0.0000958752621833F) + -3.1415926535897931F;
+        return (_angle * 0.0000958752621833) + -3.1415926535897931;
 
     @staticmethod
     def get_angularVelocity(payload):
         _angularVelocity = ((payload[13]) << 8) | ((payload[14]));
-        return (_angularVelocity * 0.0003835010487330F) + -12.5663706143591725F;
+        return (_angularVelocity * 0.0003835010487330) + -12.5663706143591725;
 
     @staticmethod
     def get_cameraAngle(payload):
         _cameraAngle = ((payload[15]) << 8) | ((payload[16]));
-        return (_cameraAngle * 0.0000958752621833F) + -3.1415926535897931F;
+        return (_cameraAngle * 0.0000958752621833) + -3.1415926535897931;
 
     @staticmethod
     def get_useCameraAngle(payload):
@@ -167,7 +167,7 @@ class REM_RobotCommand:
     @staticmethod
     def get_dribbler(payload):
         _dribbler = ((payload[17] & 0b00111000) >> 3);
-        return (_dribbler * 0.1428571428571428F);
+        return (_dribbler * 0.1428571428571428);
 
     @staticmethod
     def get_doKick(payload):
@@ -184,7 +184,7 @@ class REM_RobotCommand:
     @staticmethod
     def get_kickChipPower(payload):
         _kickChipPower = ((payload[18] & 0b11110000) >> 4);
-        return (_kickChipPower * 0.4333333333333333F);
+        return (_kickChipPower * 0.4333333333333333);
 
     @staticmethod
     def get_doForce(payload):
@@ -258,31 +258,31 @@ class REM_RobotCommand:
 
     @staticmethod
     def set_rho(payload, rho):
-        _rho = int(rho / 0.0001220721751736F);
+        _rho = int(rho / 0.0001220721751736);
         payload[7] = (_rho >> 8);
         payload[8] = _rho;
 
     @staticmethod
     def set_theta(payload, theta):
-        _theta = int((theta +3.1415926535897931F) / 0.0000958752621833F);
+        _theta = int((theta +3.1415926535897931) / 0.0000958752621833);
         payload[9] = (_theta >> 8);
         payload[10] = _theta;
 
     @staticmethod
     def set_angle(payload, angle):
-        _angle = int((angle +3.1415926535897931F) / 0.0000958752621833F);
+        _angle = int((angle +3.1415926535897931) / 0.0000958752621833);
         payload[11] = (_angle >> 8);
         payload[12] = _angle;
 
     @staticmethod
     def set_angularVelocity(payload, angularVelocity):
-        _angularVelocity = int((angularVelocity +12.5663706143591725F) / 0.0003835010487330F);
+        _angularVelocity = int((angularVelocity +12.5663706143591725) / 0.0003835010487330);
         payload[13] = (_angularVelocity >> 8);
         payload[14] = _angularVelocity;
 
     @staticmethod
     def set_cameraAngle(payload, cameraAngle):
-        _cameraAngle = int((cameraAngle +3.1415926535897931F) / 0.0000958752621833F);
+        _cameraAngle = int((cameraAngle +3.1415926535897931) / 0.0000958752621833);
         payload[15] = (_cameraAngle >> 8);
         payload[16] = _cameraAngle;
 
@@ -296,7 +296,7 @@ class REM_RobotCommand:
 
     @staticmethod
     def set_dribbler(payload, dribbler):
-        _dribbler = int(dribbler / 0.1428571428571428F);
+        _dribbler = int(dribbler / 0.1428571428571428);
         payload[17] = ((_dribbler << 3) & 0b00111000) | (payload[17] & 0b11000111);
 
     @staticmethod
@@ -313,7 +313,7 @@ class REM_RobotCommand:
 
     @staticmethod
     def set_kickChipPower(payload, kickChipPower):
-        _kickChipPower = int(kickChipPower / 0.4333333333333333F);
+        _kickChipPower = int(kickChipPower / 0.4333333333333333);
         payload[18] = ((_kickChipPower << 4) & 0b11110000) | (payload[18] & 0b00001111);
 
     @staticmethod

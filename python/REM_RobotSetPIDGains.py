@@ -136,77 +136,77 @@ class REM_RobotSetPIDGains:
     @staticmethod
     def get_PbodyX(payload):
         _PbodyX = ((payload[7]) << 8) | ((payload[8]));
-        return (_PbodyX * 0.0006103608758679F);
+        return (_PbodyX * 0.0006103608758679);
 
     @staticmethod
     def get_IbodyX(payload):
         _IbodyX = ((payload[9]) << 8) | ((payload[10]));
-        return (_IbodyX * 0.0003051804379339F);
+        return (_IbodyX * 0.0003051804379339);
 
     @staticmethod
     def get_DbodyX(payload):
         _DbodyX = ((payload[11]) << 8) | ((payload[12]));
-        return (_DbodyX * 0.0001525902189670F);
+        return (_DbodyX * 0.0001525902189670);
 
     @staticmethod
     def get_PbodyY(payload):
         _PbodyY = ((payload[13]) << 8) | ((payload[14]));
-        return (_PbodyY * 0.0006103608758679F);
+        return (_PbodyY * 0.0006103608758679);
 
     @staticmethod
     def get_IbodyY(payload):
         _IbodyY = ((payload[15]) << 8) | ((payload[16]));
-        return (_IbodyY * 0.0003051804379339F);
+        return (_IbodyY * 0.0003051804379339);
 
     @staticmethod
     def get_DbodyY(payload):
         _DbodyY = ((payload[17]) << 8) | ((payload[18]));
-        return (_DbodyY * 0.0001525902189670F);
+        return (_DbodyY * 0.0001525902189670);
 
     @staticmethod
     def get_PbodyW(payload):
         _PbodyW = ((payload[19]) << 8) | ((payload[20]));
-        return (_PbodyW * 0.0006103608758679F);
+        return (_PbodyW * 0.0006103608758679);
 
     @staticmethod
     def get_IbodyW(payload):
         _IbodyW = ((payload[21]) << 8) | ((payload[22]));
-        return (_IbodyW * 0.0003051804379339F);
+        return (_IbodyW * 0.0003051804379339);
 
     @staticmethod
     def get_DbodyW(payload):
         _DbodyW = ((payload[23]) << 8) | ((payload[24]));
-        return (_DbodyW * 0.0001525902189670F);
+        return (_DbodyW * 0.0001525902189670);
 
     @staticmethod
     def get_PbodyYaw(payload):
         _PbodyYaw = ((payload[25]) << 8) | ((payload[26]));
-        return (_PbodyYaw * 0.0006103608758679F);
+        return (_PbodyYaw * 0.0006103608758679);
 
     @staticmethod
     def get_IbodyYaw(payload):
         _IbodyYaw = ((payload[27]) << 8) | ((payload[28]));
-        return (_IbodyYaw * 0.0003051804379339F);
+        return (_IbodyYaw * 0.0003051804379339);
 
     @staticmethod
     def get_DbodyYaw(payload):
         _DbodyYaw = ((payload[29]) << 8) | ((payload[30]));
-        return (_DbodyYaw * 0.0001525902189670F);
+        return (_DbodyYaw * 0.0001525902189670);
 
     @staticmethod
     def get_Pwheels(payload):
         _Pwheels = ((payload[31]) << 8) | ((payload[32]));
-        return (_Pwheels * 0.0006103608758679F);
+        return (_Pwheels * 0.0006103608758679);
 
     @staticmethod
     def get_Iwheels(payload):
         _Iwheels = ((payload[33]) << 8) | ((payload[34]));
-        return (_Iwheels * 0.0003051804379339F);
+        return (_Iwheels * 0.0003051804379339);
 
     @staticmethod
     def get_Dwheels(payload):
         _Dwheels = ((payload[35]) << 8) | ((payload[36]));
-        return (_Dwheels * 0.0001525902189670F);
+        return (_Dwheels * 0.0001525902189670);
 
 # ================================ SETTERS ================================
     @staticmethod
@@ -272,91 +272,91 @@ class REM_RobotSetPIDGains:
 
     @staticmethod
     def set_PbodyX(payload, PbodyX):
-        _PbodyX = int(PbodyX / 0.0006103608758679F);
+        _PbodyX = int(PbodyX / 0.0006103608758679);
         payload[7] = (_PbodyX >> 8);
         payload[8] = _PbodyX;
 
     @staticmethod
     def set_IbodyX(payload, IbodyX):
-        _IbodyX = int(IbodyX / 0.0003051804379339F);
+        _IbodyX = int(IbodyX / 0.0003051804379339);
         payload[9] = (_IbodyX >> 8);
         payload[10] = _IbodyX;
 
     @staticmethod
     def set_DbodyX(payload, DbodyX):
-        _DbodyX = int(DbodyX / 0.0001525902189670F);
+        _DbodyX = int(DbodyX / 0.0001525902189670);
         payload[11] = (_DbodyX >> 8);
         payload[12] = _DbodyX;
 
     @staticmethod
     def set_PbodyY(payload, PbodyY):
-        _PbodyY = int(PbodyY / 0.0006103608758679F);
+        _PbodyY = int(PbodyY / 0.0006103608758679);
         payload[13] = (_PbodyY >> 8);
         payload[14] = _PbodyY;
 
     @staticmethod
     def set_IbodyY(payload, IbodyY):
-        _IbodyY = int(IbodyY / 0.0003051804379339F);
+        _IbodyY = int(IbodyY / 0.0003051804379339);
         payload[15] = (_IbodyY >> 8);
         payload[16] = _IbodyY;
 
     @staticmethod
     def set_DbodyY(payload, DbodyY):
-        _DbodyY = int(DbodyY / 0.0001525902189670F);
+        _DbodyY = int(DbodyY / 0.0001525902189670);
         payload[17] = (_DbodyY >> 8);
         payload[18] = _DbodyY;
 
     @staticmethod
     def set_PbodyW(payload, PbodyW):
-        _PbodyW = int(PbodyW / 0.0006103608758679F);
+        _PbodyW = int(PbodyW / 0.0006103608758679);
         payload[19] = (_PbodyW >> 8);
         payload[20] = _PbodyW;
 
     @staticmethod
     def set_IbodyW(payload, IbodyW):
-        _IbodyW = int(IbodyW / 0.0003051804379339F);
+        _IbodyW = int(IbodyW / 0.0003051804379339);
         payload[21] = (_IbodyW >> 8);
         payload[22] = _IbodyW;
 
     @staticmethod
     def set_DbodyW(payload, DbodyW):
-        _DbodyW = int(DbodyW / 0.0001525902189670F);
+        _DbodyW = int(DbodyW / 0.0001525902189670);
         payload[23] = (_DbodyW >> 8);
         payload[24] = _DbodyW;
 
     @staticmethod
     def set_PbodyYaw(payload, PbodyYaw):
-        _PbodyYaw = int(PbodyYaw / 0.0006103608758679F);
+        _PbodyYaw = int(PbodyYaw / 0.0006103608758679);
         payload[25] = (_PbodyYaw >> 8);
         payload[26] = _PbodyYaw;
 
     @staticmethod
     def set_IbodyYaw(payload, IbodyYaw):
-        _IbodyYaw = int(IbodyYaw / 0.0003051804379339F);
+        _IbodyYaw = int(IbodyYaw / 0.0003051804379339);
         payload[27] = (_IbodyYaw >> 8);
         payload[28] = _IbodyYaw;
 
     @staticmethod
     def set_DbodyYaw(payload, DbodyYaw):
-        _DbodyYaw = int(DbodyYaw / 0.0001525902189670F);
+        _DbodyYaw = int(DbodyYaw / 0.0001525902189670);
         payload[29] = (_DbodyYaw >> 8);
         payload[30] = _DbodyYaw;
 
     @staticmethod
     def set_Pwheels(payload, Pwheels):
-        _Pwheels = int(Pwheels / 0.0006103608758679F);
+        _Pwheels = int(Pwheels / 0.0006103608758679);
         payload[31] = (_Pwheels >> 8);
         payload[32] = _Pwheels;
 
     @staticmethod
     def set_Iwheels(payload, Iwheels):
-        _Iwheels = int(Iwheels / 0.0003051804379339F);
+        _Iwheels = int(Iwheels / 0.0003051804379339);
         payload[33] = (_Iwheels >> 8);
         payload[34] = _Iwheels;
 
     @staticmethod
     def set_Dwheels(payload, Dwheels):
-        _Dwheels = int(Dwheels / 0.0001525902189670F);
+        _Dwheels = int(Dwheels / 0.0001525902189670);
         payload[35] = (_Dwheels >> 8);
         payload[36] = _Dwheels;
 

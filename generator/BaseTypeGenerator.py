@@ -96,7 +96,7 @@ Table 14-38: Payload Length Definition in FLRC Packet, page 124
 
 				# Return simply 'x' if integer range, or 'x.[abcde]F' if float range
 				# So: float 8.4000 -> 8.4F | float 8.0000F -> 8.F | int 8 -> 8
-				get_value_string = lambda x: f"{x}" if _range is None else f"{x:.16f}".rstrip('0') + "F"
+				get_value_string = lambda x: f"{x}" if _range is None else f"{x:.16f}".rstrip('0') + self.to_float()
 
 				VARIABLE_NAME = CamelCaseToUpper(variable)
 				file_string += self.to_constant(f"REM_PACKET_RANGE_{PACKET_NAME}_{VARIABLE_NAME}_MIN".ljust(60), get_value_string(range_min) ) + "\n"
@@ -137,6 +137,9 @@ Table 14-38: Payload Length Definition in FLRC Packet, page 124
 		raise NotImplementedError()
 	
 	def to_type_obj_mapping(self, types):
+		return ""
+
+	def to_float(self):
 		return ""
 
 class C_BaseTypeGenerator(BaseTypeGenerator):
@@ -186,6 +189,9 @@ class C_BaseTypeGenerator(BaseTypeGenerator):
 		function += """    return false;\n"""
 		function += """}\n"""
 		return function		
+
+	def to_float(self):
+		return "F"
 
 class Python_BaseTypeGenerator(BaseTypeGenerator):
 	def begin_block_comment(self):
