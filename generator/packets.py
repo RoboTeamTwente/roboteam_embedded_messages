@@ -158,7 +158,8 @@ packets = {
         ["header",       8,  None, "Header byte indicating the type of packet"],
         ["remVersion",   4,  None, "Version of roboteam_embedded_messages"],
         ["fillerBits",  36,  None, "SX1280 requires a minimum of 6 bytes payload. See documentation page 124."]
-    ]
+    ],
+    "REM_RobotKillCommand": [],
 
 }
 
