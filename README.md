@@ -14,6 +14,10 @@ This repository contains a generator that takes a packet definition and generate
 
 To generate the code for the packets, run the file `main.py` from within the folder `./generator`. Files are generated for each packet, in the languages C, Python, and Protobuf. These are placed in the corresponding folders `./include`, `./python`, and `./proto`. When `main.py` is executed, the version number `REM_LOCAL_VERSION` will be incremented by 1 (stored in `./generator/latest_rem_version.txt`). To generate with a specific version, use the `version` flag. For example: `python main.py --version 1`. The version goes up to at most 15, and will loop around back to 0. For more information regarding packet generation, read the README in the `./generator` folder.
 
+### REM_BaseTypes
+
+Next to all packet files being generated, there is a special file generated named `REM_BaseTypes.py/.h`. This file contains all the generic variables that are required for each packet. This includes most importantly for each packet its header and size. Additionally, it includes per variable its index, range, and number of bits. It also holds the current version of REM. Finally, it includes some helper functions such as _packet type to size_.
+
 ## Defining a new packet
 
 All packet definitions can be found in the file `generator/packets.py`. New packets can be created by adding a definition of the packet to the `packets` dictionary.
@@ -55,7 +59,7 @@ All packet names are prepended with `REM_`. All variables, both packet names and
 
 ## Floating point variables
 
-Floating point variables cannot directly be sent between two systems (e.g. robot and computer), because their implementations might differ. Instead, a float is first converted to an integer, sent to the other system, and then converted back to a float. This of course leads to a loss of precision, which depends on the number of bits that are reserved for the float. For example, take a floating point variable that can take a value between 0 and 1. 4 bits are reserved for the variable, resulting in a total of 2^4 = 16 different values.
+Floating point variables cannot directly be sent between two systems (e.g. robot and computer), because their implementations of a floating point might differ. Instead, a float is first converted to an integer, sent to the other system, and then converted back to a float. This of course leads to a loss of precision, which depends on the number of bits that are reserved for the float. For example, take a floating point variable that can take a value between 0 and 1. 4 bits are reserved for the variable, resulting in a total of 2^4 = 16 different values.
 
 ```text
 FLOAT IN   0   .1  .2  .3  .4  .5  .6  .7  .8  .9  1 
