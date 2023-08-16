@@ -12,7 +12,7 @@ This repository contains a generator that takes a packet definition and generate
 
 ## Generating packets
 
-Each packet has two representations. The first representation is an instance of that packet, which is a Struct in C and a class instance in Python. While these are simple to use, they can't be sent over a wire. The second representation is compressed / encoded, which is simply an array of bytes.
+To generate the code for the packets, run the file `main.py` from within the folder `./generator`. Files are generated for each packet, in the languages C, Python, and Protobuf. These are placed in the corresponding folders `./include`, `./python`, and `./proto`. When `main.py` is executed, the version number `REM_LOCAL_VERSION` will be incremented by 1 (stored in `./generator/latest_rem_version.txt`). To generate with a specific version, use the `version` flag. For example: `python main.py --version 1`. The version goes up to at most 15, and will loop around back to 0. For more information regarding packet generation, read the README in the `./generator` folder.
 
 ## Defining a new packet
 
