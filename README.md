@@ -20,7 +20,7 @@ All packet definitions can be found in the file `generator/packets.py`. New pack
 
 ### Packet structure
 
-A single definition packet is a 2D list, where each inner list defines a single field of the packet. For example, a cropped version of the `REM_RobotCommand`:
+A single definition packet is a 2D list, where each inner list defines a single variable of the packet. For example, a cropped version of the `REM_RobotCommand`:
 
 ```python
 "REM_RobotCommand" : [
@@ -45,13 +45,13 @@ Each variable consists of the four elements [NAME, N BITS, RANGE, DESCRIPTION];
 
 A packet must always start with a `header` variable! This variable is used to indicate the type of the packet. For example, `RobotCommand` has header `15` and `RobotFeedback` has header `51`.
 
-### Default fields
+### Default variables
 
-Some fields will automatically be added to each packet definition during generation. These fields can be found in the variable `generic_packet_header` in `packets.py`. These fields contain important information regarding packet type, routing, payload size, and REM version. It's the REM equivalent of a TCP packet header. Each packet is required to have these fields (with the exception of the REM_SX1280Filler packet) to ensure that basestation code and logging code works properly.
+Some variables will automatically be added to each packet definition during generation. These variables can be found in the variable `generic_packet_header` in `packets.py`. These variables contain important information regarding packet type, routing, payload size, and REM version. It's the REM equivalent of a TCP packet header. Each packet is required to have these variables (with the exception of the REM_SX1280Filler packet) to ensure that basestation code and logging code works properly.
 
 ### Design patterns
 
-All packet names are prepended with `REM_`. All fields, both packet names and variable names, are in camelCase. The name `BaseTypes` is reserved and can not be used as a packet name.
+All packet names are prepended with `REM_`. All variables, both packet names and variable names, are in camelCase. The name `BaseTypes` is reserved and can not be used as a packet name.
 
 ## Floating point variables
 
@@ -72,13 +72,13 @@ from roboteam_embedded_messages.python.REM_RobotCommand  import REM_RobotCommand
 from roboteam_embedded_messages.python.REM_RobotFeedback import REM_RobotFeedback
 
 cmd = REM_RobotCommand()
-# Set the required fields
+# Set the required variables
 cmd.header = REM_BaseTypes.REM_PACKET_TYPE_REM_ROBOT_COMMAND
 cmd.toRobotId = 7
 cmd.fromPC = 1
 cmd.remVersion = REM_BaseTypes.REM_LOCAL_VERSION
 cmd.payloadSize = REM_BaseTypes.REM_PACKET_SIZE_REM_ROBOT_COMMAND
-# Set the fields to trigger the kicker
+# Set the variables to trigger the kicker
 cmd.doKick = True
 cmd.kickChipPower = 0.5
 cmd.doForce = True
