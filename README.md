@@ -38,10 +38,10 @@ A single definition packet is a 2D list, where each inner list defines a single 
 
 Each variable consists of the four elements [NAME, N BITS, RANGE, DESCRIPTION];
 
-1. The first element (e.g. `rho`, `theta`) indicates the name of the variable.
-2. The second element (`3`, `4`, `16`) indicates the number of bits to be allocated for this variable. An arbitraty number of bits can be allocated, such as 7, 23, 123, or any other number.
-3. The third element indicates the value range the variable can take. This is only used for floating point variables. For example, the variable `rho` can take any value between 0 and 8. The generated code automatically transforms a floating point variable to an integer and back.
-4. The fourth element is the description of the variable.
+1. **NAME** The first element (e.g. `rho`, `theta`) indicates the name of the variable.
+2. **N BITS** The second element (`3`, `4`, `16`) indicates the number of bits to be allocated for this variable. An arbitraty number of bits can be allocated, such as 7, 23, 123, or any other number. The variable with be compressed into these bits. For explanation on how floating point variables are compressed, see the section "Floating point variables" below.
+3. **RANGE** The third element indicates the value range the variable can take. This is only used for floating point variables. For example, the variable `rho` can take any value between 0 and 8. The generated code automatically transforms a floating point variable to an integer and back.
+4. **DESCRIPTION** The fourth element is the description of the variable.
 
 A packet must always start with a `header` variable! This variable is used to indicate the type of the packet. For example, `RobotCommand` has header `15` and `RobotFeedback` has header `51`.
 
