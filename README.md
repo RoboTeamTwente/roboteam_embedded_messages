@@ -1,13 +1,16 @@
 # roboteam_embedded_messages (REM)
 
-This repository holds all definitions and implementations of messages that are sent between (currently) the robothub, the basestation, and the robot.
-This repository is header-only, and is to stay that way.
+This repository holds all definitions and implementations of messages that are sent between (currently) the robothub, the basestation, and the robot. One could see this repository as a mix between Protobuf and TCP. Each packet comes with functions to compress and decompress it   , and has a header that allows for routing. This repository is header-only, and is to stay that way.
+
+## Justification and history
+
+Bandwidth between the robot and the basestation is limited. The instances of the classes and struct that we use within the `roboteam` repository (e.g. `RobotCommand`) can not simply be grabbed from memory and sent to the robot. Instead, they must be compressed and encoded into a byte array, making sure that the size of the packet is as small as possible. For example, the variable that holds a robot id might be 8 bits within a `RobotCommand` struct in `roboteam_ai`, but since a robot id only goes up to 15, it can be compressed to 4 bits. This is what this repository does.
+
+In the beginning of RoboTeam Twente, all of this compression (which includes a lot of bitshifting), was done by hand. If you want to see what we were dealing with back then, please take a look at the file [packing.cpp](https://github.com/RoboTeamTwente/roboteam_robothub/blob/864fe51b29f8a7dc5cf43e65c77e91ca6da4b76e/src/packing.cpp#L145) from 2018. All of that manual bitshifting is prone to errors, and is very hard to maintain. Because if this, we only had two types of packets, `RobotCommand`, and `RobotFeedback`, which were only updated when absolutely necessary. This repository was created to solve this problem.
+
+This repository contains a generator that takes a packet definition and generates code for that packet in C, Python, and Protobuf. This way, we can easily add new packets, and the code is much easier to maintain. At the time of writing (August 2023), I do want to apologise for the code that does the code-generation. It is quite messy.
 
 ## Generating packets
-
-To generate the code for the packets, run the file `main.py` in the folder `./generator`. Files are generated for each packet, in the languages C, Python, and Protobuf. These are placed in the corresponding folders ./include, ./python, and ./proto. When `main.py` is executed, the version number `REM_LOCAL_VERSION` will be incremented by 1. To generate with a specific version, use the `version` flag. For example: `python main.py --version 1`. The version goes up to at most 15, and will loop around back to 0. For more information regarding packet generation, read the README in the `./generator` folder.
-
-### Packet instances and payloads
 
 Each packet has two representations. The first representation is an instance of that packet, which is a Struct in C and a class instance in Python. While these are simple to use, they can't be sent over a wire. The second representation is compressed / encoded, which is simply an array of bytes.
 
