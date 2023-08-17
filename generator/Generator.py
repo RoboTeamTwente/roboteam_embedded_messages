@@ -110,7 +110,17 @@ class Generator:
 
 		return file_string
 
-	def generate_getters(self, packet_name, variables:list[Variable]):
+	def generate_getters(self, packet_name:str, variables:list[Variable]) -> str:
+		""" Generates all getters for a packet. A getter is a function that takes a payload instance, and returns a variable. These
+		are all the get_rho, get_theta, get_* etc functions
+		
+		Args:
+			packet_name (str): The name of the packet
+			variables (list[Variable]): The variables in the packet
+
+		Returns:
+			str: The generated getters
+		"""
 		current_bit = 0
 		getters_string = ""
 		for variable in variables:
@@ -122,7 +132,17 @@ class Generator:
 			current_bit += n_bits
 		return getters_string
 
-	def generate_setters(self, packet_name, variables:list[Variable]):
+	def generate_setters(self, packet_name:str, variables:list[Variable]):
+		""" Generates all setters for a packet. A setter is a function that takes a payload instance, and a variable, and sets the
+		variable in the payload instance. These are all the set_rho, set_theta, set_* etc functions
+
+		Args:
+			packet_name (str): The name of the packet
+			variables (list[Variable]): The variables in the packet
+
+		Returns:
+			str: The generated setters
+		"""
 		current_bit = 0
 		setters_string = ""
 		for variable in variables:
@@ -323,15 +343,39 @@ class Generator:
 		"""
 		raise NotImplementedError()
 
-	def to_decode(self, packet_name, variables):
+	def to_decode(self, packet_name:str, variables:list[Variable]):
+		""" Generates the code for the decode function. This function takes a payload instance, and decodes it into a
+		packet instance
+
+		Args:
+			packet_name (str): The name of the packet
+			variables (list[Variable]): The variables in the packet
+
+		Returns:
+			str: The code for the decode function
+		"""
 		raise NotImplementedError()
 
+	def to_getter(self, packet_name:str, variable:Variable, current_bit:int) -> str:
+		""" Generates the body for the getter function, that gets a variable from a payload instance, decodes it, and returns it
 
-	def to_getter(self, packet_name, variable, current_bit):
-		variable_name, n_bits, _range, desc = variable
-		at_byte, at_bit = current_bit // 8, current_bit % 8
-		_type = getType(n_bits, _range) 
-		float_conversion = _range is not None
+		Example for C REM_RobotCommand_get_rho: 
+			uint32_t _rho = ((remrcp->payload[8]) << 8) | ((remrcp->payload[9]));
+			return (_rho * 0.0001220721751736F);
+
+		Args:
+			packet_name (str): The name of the packet 
+			variable (Variable): The variable to create the getter for
+			current_bit (int): The current bit index within the encoded packet where the start of the variable is located
+
+		Returns:
+			str: The code for the body of the getter function
+		"""
+
+		variable_name, n_bits, _range, desc = variable			# Unpack Variable
+		at_byte, at_bit = current_bit // 8, current_bit % 8		# Calculate byte and bit index of current variable within the encoded packet
+		_type = getType(n_bits, _range) 						# Figure out the type of the variable
+		float_conversion = _range is not None					# Check if the variable needs to be converted from integer to float
 
 		payload_variable = self.get_payload_variable(packet_name)
 
@@ -378,12 +422,26 @@ class Generator:
 				conversion_string += ";\n"
 				return conversion_string
 
+	def to_setter(self, packet_name:str, variable:Variable, current_bit:int) -> str:
+		""" Generates the body for the sets function, that encodes a value, and places it in a payload instance
 
-	def to_setter(self, packet_name, variable, current_bit):
-		variable_name, n_bits, _range, desc = variable
-		at_byte, at_bit = current_bit // 8, current_bit % 8
-		_type = getType(n_bits, _range) 
-		float_conversion = _range is not None
+		Example for C REM_RobotCommand_set_rho: 
+			uint32_t _rho = (uint32_t)(rho / 0.0001220721751736F);
+			remrcp->payload[8] = (_rho >> 8);
+			remrcp->payload[9] = _rho;
+
+		Args:
+			packet_name (str): The name of the packet 
+			variable (Variable): The variable to create the getter for
+			current_bit (int): The current bit index within the encoded packet where the start of the variable is located
+
+		Returns:
+			str: The code for the body of the setter function
+		"""
+		variable_name, n_bits, _range, desc = variable			# Unpack Variable
+		at_byte, at_bit = current_bit // 8, current_bit % 8		# Calculate byte and bit index of current variable within the encoded packet
+		_type = getType(n_bits, _range) 						# Figure out the type of the variable
+		float_conversion = _range is not None					# Check if the variable needs to be converted from integer to float
 
 		payload_variable = self.get_payload_variable(packet_name)
 
