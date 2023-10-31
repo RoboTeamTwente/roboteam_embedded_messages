@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- timestamp
@@ -52,9 +52,9 @@ typedef struct _REM_RobotCommand {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -108,15 +108,15 @@ static inline bool REM_RobotCommand_get_fromColor(REM_RobotCommandPayload *remrc
     return (remrcp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotCommand_get_reserved(REM_RobotCommandPayload *remrcp){
+static inline bool REM_RobotCommand_get_fromBS(REM_RobotCommandPayload *remrcp){
     return (remrcp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotCommand_get_fromBS(REM_RobotCommandPayload *remrcp){
+static inline bool REM_RobotCommand_get_fromPC(REM_RobotCommandPayload *remrcp){
     return (remrcp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotCommand_get_fromPC(REM_RobotCommandPayload *remrcp){
+static inline bool REM_RobotCommand_get_needTimeStamp(REM_RobotCommandPayload *remrcp){
     return (remrcp->payload[2] & 0b00000001) > 0;
 }
 
@@ -232,16 +232,16 @@ static inline void REM_RobotCommand_set_fromColor(REM_RobotCommandPayload *remrc
     remrcp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrcp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotCommand_set_reserved(REM_RobotCommandPayload *remrcp, bool reserved){
-    remrcp->payload[2] = ((reserved << 2) & 0b00000100) | (remrcp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotCommand_set_fromBS(REM_RobotCommandPayload *remrcp, bool fromBS){
-    remrcp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrcp->payload[2] & 0b11111101);
+    remrcp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrcp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotCommand_set_fromPC(REM_RobotCommandPayload *remrcp, bool fromPC){
-    remrcp->payload[2] = (fromPC & 0b00000001) | (remrcp->payload[2] & 0b11111110);
+    remrcp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrcp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotCommand_set_needTimeStamp(REM_RobotCommandPayload *remrcp, bool needTimeStamp){
+    remrcp->payload[2] = (needTimeStamp & 0b00000001) | (remrcp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotCommand_set_remVersion(REM_RobotCommandPayload *remrcp, uint32_t remVersion){
@@ -340,9 +340,9 @@ static inline void encodeREM_RobotCommand(REM_RobotCommandPayload *remrcp, REM_R
     REM_RobotCommand_set_toPC                (remrcp, remrc->toPC);
     REM_RobotCommand_set_fromRobotId         (remrcp, remrc->fromRobotId);
     REM_RobotCommand_set_fromColor           (remrcp, remrc->fromColor);
-    REM_RobotCommand_set_reserved            (remrcp, remrc->reserved);
     REM_RobotCommand_set_fromBS              (remrcp, remrc->fromBS);
     REM_RobotCommand_set_fromPC              (remrcp, remrc->fromPC);
+    REM_RobotCommand_set_needTimeStamp       (remrcp, remrc->needTimeStamp);
     REM_RobotCommand_set_remVersion          (remrcp, remrc->remVersion);
     REM_RobotCommand_set_messageId           (remrcp, remrc->messageId);
     REM_RobotCommand_set_timestamp           (remrcp, remrc->timestamp);
@@ -373,9 +373,9 @@ static inline void decodeREM_RobotCommand(REM_RobotCommand *remrc, REM_RobotComm
     remrc->toPC          = REM_RobotCommand_get_toPC(remrcp);
     remrc->fromRobotId   = REM_RobotCommand_get_fromRobotId(remrcp);
     remrc->fromColor     = REM_RobotCommand_get_fromColor(remrcp);
-    remrc->reserved      = REM_RobotCommand_get_reserved(remrcp);
     remrc->fromBS        = REM_RobotCommand_get_fromBS(remrcp);
     remrc->fromPC        = REM_RobotCommand_get_fromPC(remrcp);
+    remrc->needTimeStamp = REM_RobotCommand_get_needTimeStamp(remrcp);
     remrc->remVersion    = REM_RobotCommand_get_remVersion(remrcp);
     remrc->messageId     = REM_RobotCommand_get_messageId(remrcp);
     remrc->timestamp     = REM_RobotCommand_get_timestamp(remrcp);

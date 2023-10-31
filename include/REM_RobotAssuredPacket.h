@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- -------- timestamp
@@ -40,9 +40,9 @@ typedef struct _REM_RobotAssuredPacket {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -84,15 +84,15 @@ static inline bool REM_RobotAssuredPacket_get_fromColor(REM_RobotAssuredPacketPa
     return (remrapp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotAssuredPacket_get_reserved(REM_RobotAssuredPacketPayload *remrapp){
+static inline bool REM_RobotAssuredPacket_get_fromBS(REM_RobotAssuredPacketPayload *remrapp){
     return (remrapp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotAssuredPacket_get_fromBS(REM_RobotAssuredPacketPayload *remrapp){
+static inline bool REM_RobotAssuredPacket_get_fromPC(REM_RobotAssuredPacketPayload *remrapp){
     return (remrapp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotAssuredPacket_get_fromPC(REM_RobotAssuredPacketPayload *remrapp){
+static inline bool REM_RobotAssuredPacket_get_needTimeStamp(REM_RobotAssuredPacketPayload *remrapp){
     return (remrapp->payload[2] & 0b00000001) > 0;
 }
 
@@ -153,16 +153,16 @@ static inline void REM_RobotAssuredPacket_set_fromColor(REM_RobotAssuredPacketPa
     remrapp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrapp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotAssuredPacket_set_reserved(REM_RobotAssuredPacketPayload *remrapp, bool reserved){
-    remrapp->payload[2] = ((reserved << 2) & 0b00000100) | (remrapp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotAssuredPacket_set_fromBS(REM_RobotAssuredPacketPayload *remrapp, bool fromBS){
-    remrapp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrapp->payload[2] & 0b11111101);
+    remrapp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrapp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotAssuredPacket_set_fromPC(REM_RobotAssuredPacketPayload *remrapp, bool fromPC){
-    remrapp->payload[2] = (fromPC & 0b00000001) | (remrapp->payload[2] & 0b11111110);
+    remrapp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrapp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotAssuredPacket_set_needTimeStamp(REM_RobotAssuredPacketPayload *remrapp, bool needTimeStamp){
+    remrapp->payload[2] = (needTimeStamp & 0b00000001) | (remrapp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotAssuredPacket_set_remVersion(REM_RobotAssuredPacketPayload *remrapp, uint32_t remVersion){
@@ -201,9 +201,9 @@ static inline void encodeREM_RobotAssuredPacket(REM_RobotAssuredPacketPayload *r
     REM_RobotAssuredPacket_set_toPC                (remrapp, remrap->toPC);
     REM_RobotAssuredPacket_set_fromRobotId         (remrapp, remrap->fromRobotId);
     REM_RobotAssuredPacket_set_fromColor           (remrapp, remrap->fromColor);
-    REM_RobotAssuredPacket_set_reserved            (remrapp, remrap->reserved);
     REM_RobotAssuredPacket_set_fromBS              (remrapp, remrap->fromBS);
     REM_RobotAssuredPacket_set_fromPC              (remrapp, remrap->fromPC);
+    REM_RobotAssuredPacket_set_needTimeStamp       (remrapp, remrap->needTimeStamp);
     REM_RobotAssuredPacket_set_remVersion          (remrapp, remrap->remVersion);
     REM_RobotAssuredPacket_set_messageId           (remrapp, remrap->messageId);
     REM_RobotAssuredPacket_set_timestamp           (remrapp, remrap->timestamp);
@@ -222,9 +222,9 @@ static inline void decodeREM_RobotAssuredPacket(REM_RobotAssuredPacket *remrap, 
     remrap->toPC         = REM_RobotAssuredPacket_get_toPC(remrapp);
     remrap->fromRobotId  = REM_RobotAssuredPacket_get_fromRobotId(remrapp);
     remrap->fromColor    = REM_RobotAssuredPacket_get_fromColor(remrapp);
-    remrap->reserved     = REM_RobotAssuredPacket_get_reserved(remrapp);
     remrap->fromBS       = REM_RobotAssuredPacket_get_fromBS(remrapp);
     remrap->fromPC       = REM_RobotAssuredPacket_get_fromPC(remrapp);
+    remrap->needTimeStamp= REM_RobotAssuredPacket_get_needTimeStamp(remrapp);
     remrap->remVersion   = REM_RobotAssuredPacket_get_remVersion(remrapp);
     remrap->messageId    = REM_RobotAssuredPacket_get_messageId(remrapp);
     remrap->timestamp    = REM_RobotAssuredPacket_get_timestamp(remrapp);

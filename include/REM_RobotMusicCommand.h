@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- -------- -------- timestamp
@@ -48,9 +48,9 @@ typedef struct _REM_RobotMusicCommand {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -100,15 +100,15 @@ static inline bool REM_RobotMusicCommand_get_fromColor(REM_RobotMusicCommandPayl
     return (remrmcp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotMusicCommand_get_reserved(REM_RobotMusicCommandPayload *remrmcp){
+static inline bool REM_RobotMusicCommand_get_fromBS(REM_RobotMusicCommandPayload *remrmcp){
     return (remrmcp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotMusicCommand_get_fromBS(REM_RobotMusicCommandPayload *remrmcp){
+static inline bool REM_RobotMusicCommand_get_fromPC(REM_RobotMusicCommandPayload *remrmcp){
     return (remrmcp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotMusicCommand_get_fromPC(REM_RobotMusicCommandPayload *remrmcp){
+static inline bool REM_RobotMusicCommand_get_needTimeStamp(REM_RobotMusicCommandPayload *remrmcp){
     return (remrmcp->payload[2] & 0b00000001) > 0;
 }
 
@@ -201,16 +201,16 @@ static inline void REM_RobotMusicCommand_set_fromColor(REM_RobotMusicCommandPayl
     remrmcp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrmcp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotMusicCommand_set_reserved(REM_RobotMusicCommandPayload *remrmcp, bool reserved){
-    remrmcp->payload[2] = ((reserved << 2) & 0b00000100) | (remrmcp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotMusicCommand_set_fromBS(REM_RobotMusicCommandPayload *remrmcp, bool fromBS){
-    remrmcp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrmcp->payload[2] & 0b11111101);
+    remrmcp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrmcp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotMusicCommand_set_fromPC(REM_RobotMusicCommandPayload *remrmcp, bool fromPC){
-    remrmcp->payload[2] = (fromPC & 0b00000001) | (remrmcp->payload[2] & 0b11111110);
+    remrmcp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrmcp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotMusicCommand_set_needTimeStamp(REM_RobotMusicCommandPayload *remrmcp, bool needTimeStamp){
+    remrmcp->payload[2] = (needTimeStamp & 0b00000001) | (remrmcp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotMusicCommand_set_remVersion(REM_RobotMusicCommandPayload *remrmcp, uint32_t remVersion){
@@ -282,9 +282,9 @@ static inline void encodeREM_RobotMusicCommand(REM_RobotMusicCommandPayload *rem
     REM_RobotMusicCommand_set_toPC                (remrmcp, remrmc->toPC);
     REM_RobotMusicCommand_set_fromRobotId         (remrmcp, remrmc->fromRobotId);
     REM_RobotMusicCommand_set_fromColor           (remrmcp, remrmc->fromColor);
-    REM_RobotMusicCommand_set_reserved            (remrmcp, remrmc->reserved);
     REM_RobotMusicCommand_set_fromBS              (remrmcp, remrmc->fromBS);
     REM_RobotMusicCommand_set_fromPC              (remrmcp, remrmc->fromPC);
+    REM_RobotMusicCommand_set_needTimeStamp       (remrmcp, remrmc->needTimeStamp);
     REM_RobotMusicCommand_set_remVersion          (remrmcp, remrmc->remVersion);
     REM_RobotMusicCommand_set_messageId           (remrmcp, remrmc->messageId);
     REM_RobotMusicCommand_set_timestamp           (remrmcp, remrmc->timestamp);
@@ -311,9 +311,9 @@ static inline void decodeREM_RobotMusicCommand(REM_RobotMusicCommand *remrmc, RE
     remrmc->toPC         = REM_RobotMusicCommand_get_toPC(remrmcp);
     remrmc->fromRobotId  = REM_RobotMusicCommand_get_fromRobotId(remrmcp);
     remrmc->fromColor    = REM_RobotMusicCommand_get_fromColor(remrmcp);
-    remrmc->reserved     = REM_RobotMusicCommand_get_reserved(remrmcp);
     remrmc->fromBS       = REM_RobotMusicCommand_get_fromBS(remrmcp);
     remrmc->fromPC       = REM_RobotMusicCommand_get_fromPC(remrmcp);
+    remrmc->needTimeStamp= REM_RobotMusicCommand_get_needTimeStamp(remrmcp);
     remrmc->remVersion   = REM_RobotMusicCommand_get_remVersion(remrmcp);
     remrmc->messageId    = REM_RobotMusicCommand_get_messageId(remrmcp);
     remrmc->timestamp    = REM_RobotMusicCommand_get_timestamp(remrmcp);

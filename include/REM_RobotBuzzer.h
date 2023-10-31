@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- -------- -------- -------- timestamp
@@ -40,9 +40,9 @@ typedef struct _REM_RobotBuzzer {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -84,15 +84,15 @@ static inline bool REM_RobotBuzzer_get_fromColor(REM_RobotBuzzerPayload *remrbp)
     return (remrbp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotBuzzer_get_reserved(REM_RobotBuzzerPayload *remrbp){
+static inline bool REM_RobotBuzzer_get_fromBS(REM_RobotBuzzerPayload *remrbp){
     return (remrbp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotBuzzer_get_fromBS(REM_RobotBuzzerPayload *remrbp){
+static inline bool REM_RobotBuzzer_get_fromPC(REM_RobotBuzzerPayload *remrbp){
     return (remrbp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotBuzzer_get_fromPC(REM_RobotBuzzerPayload *remrbp){
+static inline bool REM_RobotBuzzer_get_needTimeStamp(REM_RobotBuzzerPayload *remrbp){
     return (remrbp->payload[2] & 0b00000001) > 0;
 }
 
@@ -154,16 +154,16 @@ static inline void REM_RobotBuzzer_set_fromColor(REM_RobotBuzzerPayload *remrbp,
     remrbp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrbp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotBuzzer_set_reserved(REM_RobotBuzzerPayload *remrbp, bool reserved){
-    remrbp->payload[2] = ((reserved << 2) & 0b00000100) | (remrbp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotBuzzer_set_fromBS(REM_RobotBuzzerPayload *remrbp, bool fromBS){
-    remrbp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrbp->payload[2] & 0b11111101);
+    remrbp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrbp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotBuzzer_set_fromPC(REM_RobotBuzzerPayload *remrbp, bool fromPC){
-    remrbp->payload[2] = (fromPC & 0b00000001) | (remrbp->payload[2] & 0b11111110);
+    remrbp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrbp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotBuzzer_set_needTimeStamp(REM_RobotBuzzerPayload *remrbp, bool needTimeStamp){
+    remrbp->payload[2] = (needTimeStamp & 0b00000001) | (remrbp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotBuzzer_set_remVersion(REM_RobotBuzzerPayload *remrbp, uint32_t remVersion){
@@ -206,9 +206,9 @@ static inline void encodeREM_RobotBuzzer(REM_RobotBuzzerPayload *remrbp, REM_Rob
     REM_RobotBuzzer_set_toPC                (remrbp, remrb->toPC);
     REM_RobotBuzzer_set_fromRobotId         (remrbp, remrb->fromRobotId);
     REM_RobotBuzzer_set_fromColor           (remrbp, remrb->fromColor);
-    REM_RobotBuzzer_set_reserved            (remrbp, remrb->reserved);
     REM_RobotBuzzer_set_fromBS              (remrbp, remrb->fromBS);
     REM_RobotBuzzer_set_fromPC              (remrbp, remrb->fromPC);
+    REM_RobotBuzzer_set_needTimeStamp       (remrbp, remrb->needTimeStamp);
     REM_RobotBuzzer_set_remVersion          (remrbp, remrb->remVersion);
     REM_RobotBuzzer_set_messageId           (remrbp, remrb->messageId);
     REM_RobotBuzzer_set_timestamp           (remrbp, remrb->timestamp);
@@ -227,9 +227,9 @@ static inline void decodeREM_RobotBuzzer(REM_RobotBuzzer *remrb, REM_RobotBuzzer
     remrb->toPC          = REM_RobotBuzzer_get_toPC(remrbp);
     remrb->fromRobotId   = REM_RobotBuzzer_get_fromRobotId(remrbp);
     remrb->fromColor     = REM_RobotBuzzer_get_fromColor(remrbp);
-    remrb->reserved      = REM_RobotBuzzer_get_reserved(remrbp);
     remrb->fromBS        = REM_RobotBuzzer_get_fromBS(remrbp);
     remrb->fromPC        = REM_RobotBuzzer_get_fromPC(remrbp);
+    remrb->needTimeStamp = REM_RobotBuzzer_get_needTimeStamp(remrbp);
     remrb->remVersion    = REM_RobotBuzzer_get_remVersion(remrbp);
     remrb->messageId     = REM_RobotBuzzer_get_messageId(remrbp);
     remrb->timestamp     = REM_RobotBuzzer_get_timestamp(remrbp);

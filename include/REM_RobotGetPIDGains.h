@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- timestamp
@@ -38,9 +38,9 @@ typedef struct _REM_RobotGetPIDGains {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -80,15 +80,15 @@ static inline bool REM_RobotGetPIDGains_get_fromColor(REM_RobotGetPIDGainsPayloa
     return (remrgpidgp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotGetPIDGains_get_reserved(REM_RobotGetPIDGainsPayload *remrgpidgp){
+static inline bool REM_RobotGetPIDGains_get_fromBS(REM_RobotGetPIDGainsPayload *remrgpidgp){
     return (remrgpidgp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotGetPIDGains_get_fromBS(REM_RobotGetPIDGainsPayload *remrgpidgp){
+static inline bool REM_RobotGetPIDGains_get_fromPC(REM_RobotGetPIDGainsPayload *remrgpidgp){
     return (remrgpidgp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotGetPIDGains_get_fromPC(REM_RobotGetPIDGainsPayload *remrgpidgp){
+static inline bool REM_RobotGetPIDGains_get_needTimeStamp(REM_RobotGetPIDGainsPayload *remrgpidgp){
     return (remrgpidgp->payload[2] & 0b00000001) > 0;
 }
 
@@ -141,16 +141,16 @@ static inline void REM_RobotGetPIDGains_set_fromColor(REM_RobotGetPIDGainsPayloa
     remrgpidgp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrgpidgp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotGetPIDGains_set_reserved(REM_RobotGetPIDGainsPayload *remrgpidgp, bool reserved){
-    remrgpidgp->payload[2] = ((reserved << 2) & 0b00000100) | (remrgpidgp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotGetPIDGains_set_fromBS(REM_RobotGetPIDGainsPayload *remrgpidgp, bool fromBS){
-    remrgpidgp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrgpidgp->payload[2] & 0b11111101);
+    remrgpidgp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrgpidgp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotGetPIDGains_set_fromPC(REM_RobotGetPIDGainsPayload *remrgpidgp, bool fromPC){
-    remrgpidgp->payload[2] = (fromPC & 0b00000001) | (remrgpidgp->payload[2] & 0b11111110);
+    remrgpidgp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrgpidgp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotGetPIDGains_set_needTimeStamp(REM_RobotGetPIDGainsPayload *remrgpidgp, bool needTimeStamp){
+    remrgpidgp->payload[2] = (needTimeStamp & 0b00000001) | (remrgpidgp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotGetPIDGains_set_remVersion(REM_RobotGetPIDGainsPayload *remrgpidgp, uint32_t remVersion){
@@ -181,9 +181,9 @@ static inline void encodeREM_RobotGetPIDGains(REM_RobotGetPIDGainsPayload *remrg
     REM_RobotGetPIDGains_set_toPC                (remrgpidgp, remrgpidg->toPC);
     REM_RobotGetPIDGains_set_fromRobotId         (remrgpidgp, remrgpidg->fromRobotId);
     REM_RobotGetPIDGains_set_fromColor           (remrgpidgp, remrgpidg->fromColor);
-    REM_RobotGetPIDGains_set_reserved            (remrgpidgp, remrgpidg->reserved);
     REM_RobotGetPIDGains_set_fromBS              (remrgpidgp, remrgpidg->fromBS);
     REM_RobotGetPIDGains_set_fromPC              (remrgpidgp, remrgpidg->fromPC);
+    REM_RobotGetPIDGains_set_needTimeStamp       (remrgpidgp, remrgpidg->needTimeStamp);
     REM_RobotGetPIDGains_set_remVersion          (remrgpidgp, remrgpidg->remVersion);
     REM_RobotGetPIDGains_set_messageId           (remrgpidgp, remrgpidg->messageId);
     REM_RobotGetPIDGains_set_timestamp           (remrgpidgp, remrgpidg->timestamp);
@@ -200,9 +200,9 @@ static inline void decodeREM_RobotGetPIDGains(REM_RobotGetPIDGains *remrgpidg, R
     remrgpidg->toPC      = REM_RobotGetPIDGains_get_toPC(remrgpidgp);
     remrgpidg->fromRobotId= REM_RobotGetPIDGains_get_fromRobotId(remrgpidgp);
     remrgpidg->fromColor = REM_RobotGetPIDGains_get_fromColor(remrgpidgp);
-    remrgpidg->reserved  = REM_RobotGetPIDGains_get_reserved(remrgpidgp);
     remrgpidg->fromBS    = REM_RobotGetPIDGains_get_fromBS(remrgpidgp);
     remrgpidg->fromPC    = REM_RobotGetPIDGains_get_fromPC(remrgpidgp);
+    remrgpidg->needTimeStamp= REM_RobotGetPIDGains_get_needTimeStamp(remrgpidgp);
     remrgpidg->remVersion= REM_RobotGetPIDGains_get_remVersion(remrgpidgp);
     remrgpidg->messageId = REM_RobotGetPIDGains_get_messageId(remrgpidgp);
     remrgpidg->timestamp = REM_RobotGetPIDGains_get_timestamp(remrgpidgp);

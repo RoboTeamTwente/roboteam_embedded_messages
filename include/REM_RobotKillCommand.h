@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- timestamp
@@ -38,9 +38,9 @@ typedef struct _REM_RobotKillCommand {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -80,15 +80,15 @@ static inline bool REM_RobotKillCommand_get_fromColor(REM_RobotKillCommandPayloa
     return (remrkcp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotKillCommand_get_reserved(REM_RobotKillCommandPayload *remrkcp){
+static inline bool REM_RobotKillCommand_get_fromBS(REM_RobotKillCommandPayload *remrkcp){
     return (remrkcp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotKillCommand_get_fromBS(REM_RobotKillCommandPayload *remrkcp){
+static inline bool REM_RobotKillCommand_get_fromPC(REM_RobotKillCommandPayload *remrkcp){
     return (remrkcp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotKillCommand_get_fromPC(REM_RobotKillCommandPayload *remrkcp){
+static inline bool REM_RobotKillCommand_get_needTimeStamp(REM_RobotKillCommandPayload *remrkcp){
     return (remrkcp->payload[2] & 0b00000001) > 0;
 }
 
@@ -141,16 +141,16 @@ static inline void REM_RobotKillCommand_set_fromColor(REM_RobotKillCommandPayloa
     remrkcp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrkcp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotKillCommand_set_reserved(REM_RobotKillCommandPayload *remrkcp, bool reserved){
-    remrkcp->payload[2] = ((reserved << 2) & 0b00000100) | (remrkcp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotKillCommand_set_fromBS(REM_RobotKillCommandPayload *remrkcp, bool fromBS){
-    remrkcp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrkcp->payload[2] & 0b11111101);
+    remrkcp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrkcp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotKillCommand_set_fromPC(REM_RobotKillCommandPayload *remrkcp, bool fromPC){
-    remrkcp->payload[2] = (fromPC & 0b00000001) | (remrkcp->payload[2] & 0b11111110);
+    remrkcp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrkcp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotKillCommand_set_needTimeStamp(REM_RobotKillCommandPayload *remrkcp, bool needTimeStamp){
+    remrkcp->payload[2] = (needTimeStamp & 0b00000001) | (remrkcp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotKillCommand_set_remVersion(REM_RobotKillCommandPayload *remrkcp, uint32_t remVersion){
@@ -181,9 +181,9 @@ static inline void encodeREM_RobotKillCommand(REM_RobotKillCommandPayload *remrk
     REM_RobotKillCommand_set_toPC                (remrkcp, remrkc->toPC);
     REM_RobotKillCommand_set_fromRobotId         (remrkcp, remrkc->fromRobotId);
     REM_RobotKillCommand_set_fromColor           (remrkcp, remrkc->fromColor);
-    REM_RobotKillCommand_set_reserved            (remrkcp, remrkc->reserved);
     REM_RobotKillCommand_set_fromBS              (remrkcp, remrkc->fromBS);
     REM_RobotKillCommand_set_fromPC              (remrkcp, remrkc->fromPC);
+    REM_RobotKillCommand_set_needTimeStamp       (remrkcp, remrkc->needTimeStamp);
     REM_RobotKillCommand_set_remVersion          (remrkcp, remrkc->remVersion);
     REM_RobotKillCommand_set_messageId           (remrkcp, remrkc->messageId);
     REM_RobotKillCommand_set_timestamp           (remrkcp, remrkc->timestamp);
@@ -200,9 +200,9 @@ static inline void decodeREM_RobotKillCommand(REM_RobotKillCommand *remrkc, REM_
     remrkc->toPC         = REM_RobotKillCommand_get_toPC(remrkcp);
     remrkc->fromRobotId  = REM_RobotKillCommand_get_fromRobotId(remrkcp);
     remrkc->fromColor    = REM_RobotKillCommand_get_fromColor(remrkcp);
-    remrkc->reserved     = REM_RobotKillCommand_get_reserved(remrkcp);
     remrkc->fromBS       = REM_RobotKillCommand_get_fromBS(remrkcp);
     remrkc->fromPC       = REM_RobotKillCommand_get_fromPC(remrkcp);
+    remrkc->needTimeStamp= REM_RobotKillCommand_get_needTimeStamp(remrkcp);
     remrkc->remVersion   = REM_RobotKillCommand_get_remVersion(remrkcp);
     remrkc->messageId    = REM_RobotKillCommand_get_messageId(remrkcp);
     remrkc->timestamp    = REM_RobotKillCommand_get_timestamp(remrkcp);

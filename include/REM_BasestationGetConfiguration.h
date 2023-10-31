@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- timestamp
@@ -38,9 +38,9 @@ typedef struct _REM_BasestationGetConfiguration {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -80,15 +80,15 @@ static inline bool REM_BasestationGetConfiguration_get_fromColor(REM_Basestation
     return (rembgcp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_BasestationGetConfiguration_get_reserved(REM_BasestationGetConfigurationPayload *rembgcp){
+static inline bool REM_BasestationGetConfiguration_get_fromBS(REM_BasestationGetConfigurationPayload *rembgcp){
     return (rembgcp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_BasestationGetConfiguration_get_fromBS(REM_BasestationGetConfigurationPayload *rembgcp){
+static inline bool REM_BasestationGetConfiguration_get_fromPC(REM_BasestationGetConfigurationPayload *rembgcp){
     return (rembgcp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_BasestationGetConfiguration_get_fromPC(REM_BasestationGetConfigurationPayload *rembgcp){
+static inline bool REM_BasestationGetConfiguration_get_needTimeStamp(REM_BasestationGetConfigurationPayload *rembgcp){
     return (rembgcp->payload[2] & 0b00000001) > 0;
 }
 
@@ -141,16 +141,16 @@ static inline void REM_BasestationGetConfiguration_set_fromColor(REM_Basestation
     rembgcp->payload[2] = ((fromColor << 3) & 0b00001000) | (rembgcp->payload[2] & 0b11110111);
 }
 
-static inline void REM_BasestationGetConfiguration_set_reserved(REM_BasestationGetConfigurationPayload *rembgcp, bool reserved){
-    rembgcp->payload[2] = ((reserved << 2) & 0b00000100) | (rembgcp->payload[2] & 0b11111011);
-}
-
 static inline void REM_BasestationGetConfiguration_set_fromBS(REM_BasestationGetConfigurationPayload *rembgcp, bool fromBS){
-    rembgcp->payload[2] = ((fromBS << 1) & 0b00000010) | (rembgcp->payload[2] & 0b11111101);
+    rembgcp->payload[2] = ((fromBS << 2) & 0b00000100) | (rembgcp->payload[2] & 0b11111011);
 }
 
 static inline void REM_BasestationGetConfiguration_set_fromPC(REM_BasestationGetConfigurationPayload *rembgcp, bool fromPC){
-    rembgcp->payload[2] = (fromPC & 0b00000001) | (rembgcp->payload[2] & 0b11111110);
+    rembgcp->payload[2] = ((fromPC << 1) & 0b00000010) | (rembgcp->payload[2] & 0b11111101);
+}
+
+static inline void REM_BasestationGetConfiguration_set_needTimeStamp(REM_BasestationGetConfigurationPayload *rembgcp, bool needTimeStamp){
+    rembgcp->payload[2] = (needTimeStamp & 0b00000001) | (rembgcp->payload[2] & 0b11111110);
 }
 
 static inline void REM_BasestationGetConfiguration_set_remVersion(REM_BasestationGetConfigurationPayload *rembgcp, uint32_t remVersion){
@@ -181,9 +181,9 @@ static inline void encodeREM_BasestationGetConfiguration(REM_BasestationGetConfi
     REM_BasestationGetConfiguration_set_toPC                (rembgcp, rembgc->toPC);
     REM_BasestationGetConfiguration_set_fromRobotId         (rembgcp, rembgc->fromRobotId);
     REM_BasestationGetConfiguration_set_fromColor           (rembgcp, rembgc->fromColor);
-    REM_BasestationGetConfiguration_set_reserved            (rembgcp, rembgc->reserved);
     REM_BasestationGetConfiguration_set_fromBS              (rembgcp, rembgc->fromBS);
     REM_BasestationGetConfiguration_set_fromPC              (rembgcp, rembgc->fromPC);
+    REM_BasestationGetConfiguration_set_needTimeStamp       (rembgcp, rembgc->needTimeStamp);
     REM_BasestationGetConfiguration_set_remVersion          (rembgcp, rembgc->remVersion);
     REM_BasestationGetConfiguration_set_messageId           (rembgcp, rembgc->messageId);
     REM_BasestationGetConfiguration_set_timestamp           (rembgcp, rembgc->timestamp);
@@ -200,9 +200,9 @@ static inline void decodeREM_BasestationGetConfiguration(REM_BasestationGetConfi
     rembgc->toPC         = REM_BasestationGetConfiguration_get_toPC(rembgcp);
     rembgc->fromRobotId  = REM_BasestationGetConfiguration_get_fromRobotId(rembgcp);
     rembgc->fromColor    = REM_BasestationGetConfiguration_get_fromColor(rembgcp);
-    rembgc->reserved     = REM_BasestationGetConfiguration_get_reserved(rembgcp);
     rembgc->fromBS       = REM_BasestationGetConfiguration_get_fromBS(rembgcp);
     rembgc->fromPC       = REM_BasestationGetConfiguration_get_fromPC(rembgcp);
+    rembgc->needTimeStamp= REM_BasestationGetConfiguration_get_needTimeStamp(rembgcp);
     rembgc->remVersion   = REM_BasestationGetConfiguration_get_remVersion(rembgcp);
     rembgc->messageId    = REM_BasestationGetConfiguration_get_messageId(rembgcp);
     rembgc->timestamp    = REM_BasestationGetConfiguration_get_timestamp(rembgcp);

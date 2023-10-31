@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- timestamp
@@ -39,9 +39,9 @@ typedef struct _REM_RobotAssuredAck {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -82,15 +82,15 @@ static inline bool REM_RobotAssuredAck_get_fromColor(REM_RobotAssuredAckPayload 
     return (remraap->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotAssuredAck_get_reserved(REM_RobotAssuredAckPayload *remraap){
+static inline bool REM_RobotAssuredAck_get_fromBS(REM_RobotAssuredAckPayload *remraap){
     return (remraap->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotAssuredAck_get_fromBS(REM_RobotAssuredAckPayload *remraap){
+static inline bool REM_RobotAssuredAck_get_fromPC(REM_RobotAssuredAckPayload *remraap){
     return (remraap->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotAssuredAck_get_fromPC(REM_RobotAssuredAckPayload *remraap){
+static inline bool REM_RobotAssuredAck_get_needTimeStamp(REM_RobotAssuredAckPayload *remraap){
     return (remraap->payload[2] & 0b00000001) > 0;
 }
 
@@ -147,16 +147,16 @@ static inline void REM_RobotAssuredAck_set_fromColor(REM_RobotAssuredAckPayload 
     remraap->payload[2] = ((fromColor << 3) & 0b00001000) | (remraap->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotAssuredAck_set_reserved(REM_RobotAssuredAckPayload *remraap, bool reserved){
-    remraap->payload[2] = ((reserved << 2) & 0b00000100) | (remraap->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotAssuredAck_set_fromBS(REM_RobotAssuredAckPayload *remraap, bool fromBS){
-    remraap->payload[2] = ((fromBS << 1) & 0b00000010) | (remraap->payload[2] & 0b11111101);
+    remraap->payload[2] = ((fromBS << 2) & 0b00000100) | (remraap->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotAssuredAck_set_fromPC(REM_RobotAssuredAckPayload *remraap, bool fromPC){
-    remraap->payload[2] = (fromPC & 0b00000001) | (remraap->payload[2] & 0b11111110);
+    remraap->payload[2] = ((fromPC << 1) & 0b00000010) | (remraap->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotAssuredAck_set_needTimeStamp(REM_RobotAssuredAckPayload *remraap, bool needTimeStamp){
+    remraap->payload[2] = (needTimeStamp & 0b00000001) | (remraap->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotAssuredAck_set_remVersion(REM_RobotAssuredAckPayload *remraap, uint32_t remVersion){
@@ -191,9 +191,9 @@ static inline void encodeREM_RobotAssuredAck(REM_RobotAssuredAckPayload *remraap
     REM_RobotAssuredAck_set_toPC                (remraap, remraa->toPC);
     REM_RobotAssuredAck_set_fromRobotId         (remraap, remraa->fromRobotId);
     REM_RobotAssuredAck_set_fromColor           (remraap, remraa->fromColor);
-    REM_RobotAssuredAck_set_reserved            (remraap, remraa->reserved);
     REM_RobotAssuredAck_set_fromBS              (remraap, remraa->fromBS);
     REM_RobotAssuredAck_set_fromPC              (remraap, remraa->fromPC);
+    REM_RobotAssuredAck_set_needTimeStamp       (remraap, remraa->needTimeStamp);
     REM_RobotAssuredAck_set_remVersion          (remraap, remraa->remVersion);
     REM_RobotAssuredAck_set_messageId           (remraap, remraa->messageId);
     REM_RobotAssuredAck_set_timestamp           (remraap, remraa->timestamp);
@@ -211,9 +211,9 @@ static inline void decodeREM_RobotAssuredAck(REM_RobotAssuredAck *remraa, REM_Ro
     remraa->toPC         = REM_RobotAssuredAck_get_toPC(remraap);
     remraa->fromRobotId  = REM_RobotAssuredAck_get_fromRobotId(remraap);
     remraa->fromColor    = REM_RobotAssuredAck_get_fromColor(remraap);
-    remraa->reserved     = REM_RobotAssuredAck_get_reserved(remraap);
     remraa->fromBS       = REM_RobotAssuredAck_get_fromBS(remraap);
     remraa->fromPC       = REM_RobotAssuredAck_get_fromPC(remraap);
+    remraa->needTimeStamp= REM_RobotAssuredAck_get_needTimeStamp(remraap);
     remraa->remVersion   = REM_RobotAssuredAck_get_remVersion(remraap);
     remraa->messageId    = REM_RobotAssuredAck_get_messageId(remraap);
     remraa->timestamp    = REM_RobotAssuredAck_get_timestamp(remraap);

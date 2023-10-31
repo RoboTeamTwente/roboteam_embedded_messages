@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- timestamp
@@ -33,9 +33,9 @@ class REM_RobotAssuredAck:
     toPC = 0                  # integer [0, 1]               Bit indicating this packet is meant for the PC
     fromRobotId = 0           # integer [0, 15]              Id of the transmitting robot
     fromColor = 0             # integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    reserved = 0              # integer [0, 1]               reserved
     fromBS = 0                # integer [0, 1]               Bit indicating this packet is coming from the basestation
     fromPC = 0                # integer [0, 1]               Bit indicating this packet is coming from the PC
+    needTimeStamp = 0         # integer [0, 1]               Bit indicating that source device needs unix timestamp
     remVersion = 0            # integer [0, 15]              Version of roboteam_embedded_messages
     messageId = 0             # integer [0, 15]              messageId. Can be used for aligning packets
     timestamp = 0             # integer [0, 16777215]        Timestamp in milliseconds
@@ -78,15 +78,15 @@ class REM_RobotAssuredAck:
         return (payload[2] & 0b00001000) > 0;
 
     @staticmethod
-    def get_reserved(payload):
+    def get_fromBS(payload):
         return (payload[2] & 0b00000100) > 0;
 
     @staticmethod
-    def get_fromBS(payload):
+    def get_fromPC(payload):
         return (payload[2] & 0b00000010) > 0;
 
     @staticmethod
-    def get_fromPC(payload):
+    def get_needTimeStamp(payload):
         return (payload[2] & 0b00000001) > 0;
 
     @staticmethod
@@ -143,16 +143,16 @@ class REM_RobotAssuredAck:
         payload[2] = ((fromColor << 3) & 0b00001000) | (payload[2] & 0b11110111);
 
     @staticmethod
-    def set_reserved(payload, reserved):
-        payload[2] = ((reserved << 2) & 0b00000100) | (payload[2] & 0b11111011);
-
-    @staticmethod
     def set_fromBS(payload, fromBS):
-        payload[2] = ((fromBS << 1) & 0b00000010) | (payload[2] & 0b11111101);
+        payload[2] = ((fromBS << 2) & 0b00000100) | (payload[2] & 0b11111011);
 
     @staticmethod
     def set_fromPC(payload, fromPC):
-        payload[2] = (fromPC & 0b00000001) | (payload[2] & 0b11111110);
+        payload[2] = ((fromPC << 1) & 0b00000010) | (payload[2] & 0b11111101);
+
+    @staticmethod
+    def set_needTimeStamp(payload, needTimeStamp):
+        payload[2] = (needTimeStamp & 0b00000001) | (payload[2] & 0b11111110);
 
     @staticmethod
     def set_remVersion(payload, remVersion):
@@ -187,9 +187,9 @@ class REM_RobotAssuredAck:
         REM_RobotAssuredAck.set_toPC                (payload, self.toPC)
         REM_RobotAssuredAck.set_fromRobotId         (payload, self.fromRobotId)
         REM_RobotAssuredAck.set_fromColor           (payload, self.fromColor)
-        REM_RobotAssuredAck.set_reserved            (payload, self.reserved)
         REM_RobotAssuredAck.set_fromBS              (payload, self.fromBS)
         REM_RobotAssuredAck.set_fromPC              (payload, self.fromPC)
+        REM_RobotAssuredAck.set_needTimeStamp       (payload, self.needTimeStamp)
         REM_RobotAssuredAck.set_remVersion          (payload, self.remVersion)
         REM_RobotAssuredAck.set_messageId           (payload, self.messageId)
         REM_RobotAssuredAck.set_timestamp           (payload, self.timestamp)
@@ -208,9 +208,9 @@ class REM_RobotAssuredAck:
         self.toPC             = REM_RobotAssuredAck.get_toPC(payload)
         self.fromRobotId      = REM_RobotAssuredAck.get_fromRobotId(payload)
         self.fromColor        = REM_RobotAssuredAck.get_fromColor(payload)
-        self.reserved         = REM_RobotAssuredAck.get_reserved(payload)
         self.fromBS           = REM_RobotAssuredAck.get_fromBS(payload)
         self.fromPC           = REM_RobotAssuredAck.get_fromPC(payload)
+        self.needTimeStamp    = REM_RobotAssuredAck.get_needTimeStamp(payload)
         self.remVersion       = REM_RobotAssuredAck.get_remVersion(payload)
         self.messageId        = REM_RobotAssuredAck.get_messageId(payload)
         self.timestamp        = REM_RobotAssuredAck.get_timestamp(payload)

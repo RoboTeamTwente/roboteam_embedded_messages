@@ -2,24 +2,24 @@ import math
 
 """ This generic header will autmatically be added to every packet defined below. """
 generic_packet_header = [
-    ["header",      8,      None, "Header byte indicating the type of packet"],
+    ["header",          8,      None, "Header byte indicating the type of packet"],
     # Destination
-    ["toRobotId",   4,      None, "Id of the receiving robot"],
-    ["toColor",     1,      None, "Color of the receiving robot / basestation. Yellow = 0, Blue = 1"],
-    ["toBC",        1,      None, "Bit indicating this packet has to be broadcasted to all robots"],
-    ["toBS",        1,      None, "Bit indicating this packet is meant for the basestation"],
-    ["toPC",        1,      None, "Bit indicating this packet is meant for the PC"],
+    ["toRobotId",       4,      None, "Id of the receiving robot"],
+    ["toColor",         1,      None, "Color of the receiving robot / basestation. Yellow = 0, Blue = 1"],
+    ["toBC",            1,      None, "Bit indicating this packet has to be broadcasted to all robots"],
+    ["toBS",            1,      None, "Bit indicating this packet is meant for the basestation"],
+    ["toPC",            1,      None, "Bit indicating this packet is meant for the PC"],
     # Source
-    ["fromRobotId", 4,      None, "Id of the transmitting robot"],
-    ["fromColor",   1,      None, "Color of the transmitting robot / basestation. Yellow = 0, Blue = 1"],
-    ["reserved",    1,      None, "reserved"],
-    ["fromBS",      1,      None, "Bit indicating this packet is coming from the basestation"],
-    ["fromPC",      1,      None, "Bit indicating this packet is coming from the PC"],
+    ["fromRobotId",     4,      None, "Id of the transmitting robot"],
+    ["fromColor",       1,      None, "Color of the transmitting robot / basestation. Yellow = 0, Blue = 1"],
+    ["fromBS",          1,      None, "Bit indicating this packet is coming from the basestation"],
+    ["fromPC",          1,      None, "Bit indicating this packet is coming from the PC"],
+    ["needTimeStamp",   1,      None, "Bit indicating that source device needs unix timestamp"],
 
-    ["remVersion",  4,      None, "Version of roboteam_embedded_messages"],
-    ["messageId",   4,      None, "messageId. Can be used for aligning packets"],
-    ["timestamp",  24,      None, "Timestamp in milliseconds"],
-    ["payloadSize", 8,      None, "Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind"]
+    ["remVersion",      4,      None, "Version of roboteam_embedded_messages"],
+    ["messageId",       4,      None, "messageId. Can be used for aligning packets"],
+    ["timestamp",      24,      None, "Timestamp in milliseconds"],
+    ["payloadSize",     8,      None, "Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind"]
 ]
 
 packets = {
@@ -160,6 +160,9 @@ packets = {
         ["fillerBits",  36,  None, "SX1280 requires a minimum of 6 bytes payload. See documentation page 124."]
     ],
     "REM_RobotKillCommand": [],
+    "REM_TimeStamp": [
+        ["TimeStamp",   48,  None, "Unix TimeStamp"]
+    ],
 
 }
 

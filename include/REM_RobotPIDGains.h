@@ -9,9 +9,9 @@
 -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- toPC
 -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromRobotId
 -------- -------- ----1--- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromColor
--------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- reserved
--------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
--------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -----1-- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromBS
+-------- -------- ------1- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- fromPC
+-------- -------- -------1 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- needTimeStamp
 -------- -------- -------- 1111---- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- remVersion
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- timestamp
@@ -53,9 +53,9 @@ typedef struct _REM_RobotPIDGains {
     bool       toPC                ; // integer [0, 1]               Bit indicating this packet is meant for the PC
     uint32_t   fromRobotId         ; // integer [0, 15]              Id of the transmitting robot
     bool       fromColor           ; // integer [0, 1]               Color of the transmitting robot / basestation. Yellow = 0, Blue = 1
-    bool       reserved            ; // integer [0, 1]               reserved
     bool       fromBS              ; // integer [0, 1]               Bit indicating this packet is coming from the basestation
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
+    bool       needTimeStamp       ; // integer [0, 1]               Bit indicating that source device needs unix timestamp
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint32_t   timestamp           ; // integer [0, 16777215]        Timestamp in milliseconds
@@ -110,15 +110,15 @@ static inline bool REM_RobotPIDGains_get_fromColor(REM_RobotPIDGainsPayload *rem
     return (remrpidgp->payload[2] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotPIDGains_get_reserved(REM_RobotPIDGainsPayload *remrpidgp){
+static inline bool REM_RobotPIDGains_get_fromBS(REM_RobotPIDGainsPayload *remrpidgp){
     return (remrpidgp->payload[2] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotPIDGains_get_fromBS(REM_RobotPIDGainsPayload *remrpidgp){
+static inline bool REM_RobotPIDGains_get_fromPC(REM_RobotPIDGainsPayload *remrpidgp){
     return (remrpidgp->payload[2] & 0b00000010) > 0;
 }
 
-static inline bool REM_RobotPIDGains_get_fromPC(REM_RobotPIDGainsPayload *remrpidgp){
+static inline bool REM_RobotPIDGains_get_needTimeStamp(REM_RobotPIDGainsPayload *remrpidgp){
     return (remrpidgp->payload[2] & 0b00000001) > 0;
 }
 
@@ -246,16 +246,16 @@ static inline void REM_RobotPIDGains_set_fromColor(REM_RobotPIDGainsPayload *rem
     remrpidgp->payload[2] = ((fromColor << 3) & 0b00001000) | (remrpidgp->payload[2] & 0b11110111);
 }
 
-static inline void REM_RobotPIDGains_set_reserved(REM_RobotPIDGainsPayload *remrpidgp, bool reserved){
-    remrpidgp->payload[2] = ((reserved << 2) & 0b00000100) | (remrpidgp->payload[2] & 0b11111011);
-}
-
 static inline void REM_RobotPIDGains_set_fromBS(REM_RobotPIDGainsPayload *remrpidgp, bool fromBS){
-    remrpidgp->payload[2] = ((fromBS << 1) & 0b00000010) | (remrpidgp->payload[2] & 0b11111101);
+    remrpidgp->payload[2] = ((fromBS << 2) & 0b00000100) | (remrpidgp->payload[2] & 0b11111011);
 }
 
 static inline void REM_RobotPIDGains_set_fromPC(REM_RobotPIDGainsPayload *remrpidgp, bool fromPC){
-    remrpidgp->payload[2] = (fromPC & 0b00000001) | (remrpidgp->payload[2] & 0b11111110);
+    remrpidgp->payload[2] = ((fromPC << 1) & 0b00000010) | (remrpidgp->payload[2] & 0b11111101);
+}
+
+static inline void REM_RobotPIDGains_set_needTimeStamp(REM_RobotPIDGainsPayload *remrpidgp, bool needTimeStamp){
+    remrpidgp->payload[2] = (needTimeStamp & 0b00000001) | (remrpidgp->payload[2] & 0b11111110);
 }
 
 static inline void REM_RobotPIDGains_set_remVersion(REM_RobotPIDGainsPayload *remrpidgp, uint32_t remVersion){
@@ -376,9 +376,9 @@ static inline void encodeREM_RobotPIDGains(REM_RobotPIDGainsPayload *remrpidgp, 
     REM_RobotPIDGains_set_toPC                (remrpidgp, remrpidg->toPC);
     REM_RobotPIDGains_set_fromRobotId         (remrpidgp, remrpidg->fromRobotId);
     REM_RobotPIDGains_set_fromColor           (remrpidgp, remrpidg->fromColor);
-    REM_RobotPIDGains_set_reserved            (remrpidgp, remrpidg->reserved);
     REM_RobotPIDGains_set_fromBS              (remrpidgp, remrpidg->fromBS);
     REM_RobotPIDGains_set_fromPC              (remrpidgp, remrpidg->fromPC);
+    REM_RobotPIDGains_set_needTimeStamp       (remrpidgp, remrpidg->needTimeStamp);
     REM_RobotPIDGains_set_remVersion          (remrpidgp, remrpidg->remVersion);
     REM_RobotPIDGains_set_messageId           (remrpidgp, remrpidg->messageId);
     REM_RobotPIDGains_set_timestamp           (remrpidgp, remrpidg->timestamp);
@@ -410,9 +410,9 @@ static inline void decodeREM_RobotPIDGains(REM_RobotPIDGains *remrpidg, REM_Robo
     remrpidg->toPC       = REM_RobotPIDGains_get_toPC(remrpidgp);
     remrpidg->fromRobotId= REM_RobotPIDGains_get_fromRobotId(remrpidgp);
     remrpidg->fromColor  = REM_RobotPIDGains_get_fromColor(remrpidgp);
-    remrpidg->reserved   = REM_RobotPIDGains_get_reserved(remrpidgp);
     remrpidg->fromBS     = REM_RobotPIDGains_get_fromBS(remrpidgp);
     remrpidg->fromPC     = REM_RobotPIDGains_get_fromPC(remrpidgp);
+    remrpidg->needTimeStamp= REM_RobotPIDGains_get_needTimeStamp(remrpidgp);
     remrpidg->remVersion = REM_RobotPIDGains_get_remVersion(remrpidgp);
     remrpidg->messageId  = REM_RobotPIDGains_get_messageId(remrpidgp);
     remrpidg->timestamp  = REM_RobotPIDGains_get_timestamp(remrpidgp);
