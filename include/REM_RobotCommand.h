@@ -129,7 +129,7 @@ static inline uint32_t REM_RobotCommand_get_messageId(REM_RobotCommandPayload *r
 }
 
 static inline uint64_t REM_RobotCommand_get_timestamp(REM_RobotCommandPayload *remrcp){
-    return ((remrcp->payload[4]) << 32) | ((remrcp->payload[5]) << 24) | ((remrcp->payload[6]) << 16) | ((remrcp->payload[7]) << 8) | ((remrcp->payload[8]));
+    return ((uint64_t) (remrcp->payload[4]) << 32) | ((uint32_t) (remrcp->payload[5]) << 24) | ((remrcp->payload[6]) << 16) | ((remrcp->payload[7]) << 8) | ((remrcp->payload[8]));
 }
 
 static inline uint32_t REM_RobotCommand_get_payloadSize(REM_RobotCommandPayload *remrcp){

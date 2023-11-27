@@ -121,7 +121,7 @@ static inline uint32_t REM_RobotMusicCommand_get_messageId(REM_RobotMusicCommand
 }
 
 static inline uint64_t REM_RobotMusicCommand_get_timestamp(REM_RobotMusicCommandPayload *remrmcp){
-    return ((remrmcp->payload[4]) << 32) | ((remrmcp->payload[5]) << 24) | ((remrmcp->payload[6]) << 16) | ((remrmcp->payload[7]) << 8) | ((remrmcp->payload[8]));
+    return ((uint64_t) (remrmcp->payload[4]) << 32) | ((uint32_t) (remrmcp->payload[5]) << 24) | ((remrmcp->payload[6]) << 16) | ((remrmcp->payload[7]) << 8) | ((remrmcp->payload[8]));
 }
 
 static inline uint32_t REM_RobotMusicCommand_get_payloadSize(REM_RobotMusicCommandPayload *remrmcp){

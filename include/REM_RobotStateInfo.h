@@ -139,7 +139,7 @@ static inline uint32_t REM_RobotStateInfo_get_messageId(REM_RobotStateInfoPayloa
 }
 
 static inline uint64_t REM_RobotStateInfo_get_timestamp(REM_RobotStateInfoPayload *remrsip){
-    return ((remrsip->payload[4]) << 32) | ((remrsip->payload[5]) << 24) | ((remrsip->payload[6]) << 16) | ((remrsip->payload[7]) << 8) | ((remrsip->payload[8]));
+    return ((uint64_t) (remrsip->payload[4]) << 32) | ((uint32_t) (remrsip->payload[5]) << 24) | ((remrsip->payload[6]) << 16) | ((remrsip->payload[7]) << 8) | ((remrsip->payload[8]));
 }
 
 static inline uint32_t REM_RobotStateInfo_get_payloadSize(REM_RobotStateInfoPayload *remrsip){
@@ -157,7 +157,7 @@ static inline float REM_RobotStateInfo_get_xsensAcc2(REM_RobotStateInfoPayload *
 }
 
 static inline float REM_RobotStateInfo_get_xsensYaw(REM_RobotStateInfoPayload *remrsip){
-    uint32_t _xsensYaw = ((remrsip->payload[14]) << 24) | ((remrsip->payload[15]) << 16) | ((remrsip->payload[16]) << 8) | ((remrsip->payload[17]));
+    uint32_t _xsensYaw = ((uint32_t) (remrsip->payload[14]) << 24) | ((remrsip->payload[15]) << 16) | ((remrsip->payload[16]) << 8) | ((remrsip->payload[17]));
     return (_xsensYaw * 0.0000232830643708F) + -50000.0000000000000000F;
 }
 

@@ -21,7 +21,7 @@ from .REM_RobotMusicCommand                    import REM_RobotMusicCommand
 from .REM_SX1280Filler                         import REM_SX1280Filler
 from .REM_RobotKillCommand                     import REM_RobotKillCommand
 
-REM_LOCAL_VERSION = 5
+REM_LOCAL_VERSION = 6
 REM_LARGEST_PACKET_IN_BYTES = 50
 """
 Currently, we're splitting the SX1280 256 byte buffer in half. 128 for sending, 128 for receiving

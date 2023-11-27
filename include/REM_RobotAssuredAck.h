@@ -103,7 +103,7 @@ static inline uint32_t REM_RobotAssuredAck_get_messageId(REM_RobotAssuredAckPayl
 }
 
 static inline uint64_t REM_RobotAssuredAck_get_timestamp(REM_RobotAssuredAckPayload *remraap){
-    return ((remraap->payload[4]) << 32) | ((remraap->payload[5]) << 24) | ((remraap->payload[6]) << 16) | ((remraap->payload[7]) << 8) | ((remraap->payload[8]));
+    return ((uint64_t) (remraap->payload[4]) << 32) | ((uint32_t) (remraap->payload[5]) << 24) | ((remraap->payload[6]) << 16) | ((remraap->payload[7]) << 8) | ((remraap->payload[8]));
 }
 
 static inline uint32_t REM_RobotAssuredAck_get_payloadSize(REM_RobotAssuredAckPayload *remraap){

@@ -105,7 +105,7 @@ static inline uint32_t REM_RobotBuzzer_get_messageId(REM_RobotBuzzerPayload *rem
 }
 
 static inline uint64_t REM_RobotBuzzer_get_timestamp(REM_RobotBuzzerPayload *remrbp){
-    return ((remrbp->payload[4]) << 32) | ((remrbp->payload[5]) << 24) | ((remrbp->payload[6]) << 16) | ((remrbp->payload[7]) << 8) | ((remrbp->payload[8]));
+    return ((uint64_t) (remrbp->payload[4]) << 32) | ((uint32_t) (remrbp->payload[5]) << 24) | ((remrbp->payload[6]) << 16) | ((remrbp->payload[7]) << 8) | ((remrbp->payload[8]));
 }
 
 static inline uint32_t REM_RobotBuzzer_get_payloadSize(REM_RobotBuzzerPayload *remrbp){

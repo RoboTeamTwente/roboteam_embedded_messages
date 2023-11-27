@@ -103,7 +103,7 @@ static inline uint32_t REM_BasestationConfiguration_get_messageId(REM_Basestatio
 }
 
 static inline uint64_t REM_BasestationConfiguration_get_timestamp(REM_BasestationConfigurationPayload *rembcp){
-    return ((rembcp->payload[4]) << 32) | ((rembcp->payload[5]) << 24) | ((rembcp->payload[6]) << 16) | ((rembcp->payload[7]) << 8) | ((rembcp->payload[8]));
+    return ((uint64_t) (rembcp->payload[4]) << 32) | ((uint32_t) (rembcp->payload[5]) << 24) | ((rembcp->payload[6]) << 16) | ((rembcp->payload[7]) << 8) | ((rembcp->payload[8]));
 }
 
 static inline uint32_t REM_BasestationConfiguration_get_payloadSize(REM_BasestationConfigurationPayload *rembcp){

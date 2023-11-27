@@ -101,7 +101,7 @@ static inline uint32_t REM_Log_get_messageId(REM_LogPayload *remlp){
 }
 
 static inline uint64_t REM_Log_get_timestamp(REM_LogPayload *remlp){
-    return ((remlp->payload[4]) << 32) | ((remlp->payload[5]) << 24) | ((remlp->payload[6]) << 16) | ((remlp->payload[7]) << 8) | ((remlp->payload[8]));
+    return ((uint64_t) (remlp->payload[4]) << 32) | ((uint32_t) (remlp->payload[5]) << 24) | ((remlp->payload[6]) << 16) | ((remlp->payload[7]) << 8) | ((remlp->payload[8]));
 }
 
 static inline uint32_t REM_Log_get_payloadSize(REM_LogPayload *remlp){

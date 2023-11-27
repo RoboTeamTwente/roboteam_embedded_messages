@@ -399,8 +399,15 @@ class Generator:
 				# Figure out how much we need to shift this baby in total
 				shift_to_right = (8 - stop_bit)
 				shift_to_left = n_bits_remaining - bits_from_byte
+				# for C, figure out if type casting is needed
+				type_cast = ""
+				if type(self) == C_Generator:
+					if shift_to_left >= 32:
+						type_cast = "(uint64_t) "
+					elif shift_to_left >= 24:
+						type_cast = "(uint32_t) "
 
-				bitwise_operation = f"(({payload_variable}[{at_byte}]{bitshift_mask}){shift(shift_to_left, shift_to_right)})"
+				bitwise_operation = f"({type_cast}({payload_variable}[{at_byte}]{bitshift_mask}){shift(shift_to_left, shift_to_right)})"
 				bitwise_operations.append(bitwise_operation)
 
 				n_bits_remaining -= bits_from_byte

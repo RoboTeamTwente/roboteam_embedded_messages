@@ -131,7 +131,7 @@ static inline uint32_t REM_RobotPIDGains_get_messageId(REM_RobotPIDGainsPayload 
 }
 
 static inline uint64_t REM_RobotPIDGains_get_timestamp(REM_RobotPIDGainsPayload *remrpidgp){
-    return ((remrpidgp->payload[4]) << 32) | ((remrpidgp->payload[5]) << 24) | ((remrpidgp->payload[6]) << 16) | ((remrpidgp->payload[7]) << 8) | ((remrpidgp->payload[8]));
+    return ((uint64_t) (remrpidgp->payload[4]) << 32) | ((uint32_t) (remrpidgp->payload[5]) << 24) | ((remrpidgp->payload[6]) << 16) | ((remrpidgp->payload[7]) << 8) | ((remrpidgp->payload[8]));
 }
 
 static inline uint32_t REM_RobotPIDGains_get_payloadSize(REM_RobotPIDGainsPayload *remrpidgp){

@@ -101,7 +101,7 @@ static inline uint32_t REM_RobotKillCommand_get_messageId(REM_RobotKillCommandPa
 }
 
 static inline uint64_t REM_RobotKillCommand_get_timestamp(REM_RobotKillCommandPayload *remrkcp){
-    return ((remrkcp->payload[4]) << 32) | ((remrkcp->payload[5]) << 24) | ((remrkcp->payload[6]) << 16) | ((remrkcp->payload[7]) << 8) | ((remrkcp->payload[8]));
+    return ((uint64_t) (remrkcp->payload[4]) << 32) | ((uint32_t) (remrkcp->payload[5]) << 24) | ((remrkcp->payload[6]) << 16) | ((remrkcp->payload[7]) << 8) | ((remrkcp->payload[8]));
 }
 
 static inline uint32_t REM_RobotKillCommand_get_payloadSize(REM_RobotKillCommandPayload *remrkcp){

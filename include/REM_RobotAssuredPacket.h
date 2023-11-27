@@ -105,7 +105,7 @@ static inline uint32_t REM_RobotAssuredPacket_get_messageId(REM_RobotAssuredPack
 }
 
 static inline uint64_t REM_RobotAssuredPacket_get_timestamp(REM_RobotAssuredPacketPayload *remrapp){
-    return ((remrapp->payload[4]) << 32) | ((remrapp->payload[5]) << 24) | ((remrapp->payload[6]) << 16) | ((remrapp->payload[7]) << 8) | ((remrapp->payload[8]));
+    return ((uint64_t) (remrapp->payload[4]) << 32) | ((uint32_t) (remrapp->payload[5]) << 24) | ((remrapp->payload[6]) << 16) | ((remrapp->payload[7]) << 8) | ((remrapp->payload[8]));
 }
 
 static inline uint32_t REM_RobotAssuredPacket_get_payloadSize(REM_RobotAssuredPacketPayload *remrapp){

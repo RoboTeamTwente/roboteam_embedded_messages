@@ -129,7 +129,7 @@ static inline uint32_t REM_RobotFeedback_get_messageId(REM_RobotFeedbackPayload 
 }
 
 static inline uint64_t REM_RobotFeedback_get_timestamp(REM_RobotFeedbackPayload *remrfp){
-    return ((remrfp->payload[4]) << 32) | ((remrfp->payload[5]) << 24) | ((remrfp->payload[6]) << 16) | ((remrfp->payload[7]) << 8) | ((remrfp->payload[8]));
+    return ((uint64_t) (remrfp->payload[4]) << 32) | ((uint32_t) (remrfp->payload[5]) << 24) | ((remrfp->payload[6]) << 16) | ((remrfp->payload[7]) << 8) | ((remrfp->payload[8]));
 }
 
 static inline uint32_t REM_RobotFeedback_get_payloadSize(REM_RobotFeedbackPayload *remrfp){

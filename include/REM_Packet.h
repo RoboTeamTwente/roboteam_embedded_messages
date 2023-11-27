@@ -101,7 +101,7 @@ static inline uint32_t REM_Packet_get_messageId(REM_PacketPayload *rempp){
 }
 
 static inline uint64_t REM_Packet_get_timestamp(REM_PacketPayload *rempp){
-    return ((rempp->payload[4]) << 32) | ((rempp->payload[5]) << 24) | ((rempp->payload[6]) << 16) | ((rempp->payload[7]) << 8) | ((rempp->payload[8]));
+    return ((uint64_t) (rempp->payload[4]) << 32) | ((uint32_t) (rempp->payload[5]) << 24) | ((rempp->payload[6]) << 16) | ((rempp->payload[7]) << 8) | ((rempp->payload[8]));
 }
 
 static inline uint32_t REM_Packet_get_payloadSize(REM_PacketPayload *rempp){
