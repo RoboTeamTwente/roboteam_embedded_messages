@@ -11,7 +11,7 @@
 #include <stdbool.h>
 
 
-#define REM_LOCAL_VERSION 6
+#define REM_LOCAL_VERSION 5
 #define REM_LARGEST_PACKET_IN_BYTES 50
 /*
 Currently, we're splitting the SX1280 256 byte buffer in half. 128 for sending, 128 for receiving
