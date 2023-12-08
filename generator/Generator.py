@@ -321,6 +321,17 @@ class Generator:
 			str: The code for the function call
 		"""
 		raise NotImplementedError()
+	
+	def to_typecast(self, shift_to_left) -> str:
+		""" Generates the code to peform type casting
+
+		Args:
+			shift_to_left: amount of bits the byte needs to be shifted to the left
+
+		Returns
+			str: The type cast that needs to happen
+		"""
+		raise NotImplementedError()
 
 	def end_function(self) -> str:
 		""" Generates the end of a function, such as '}' or 'pass'
@@ -400,12 +411,7 @@ class Generator:
 				shift_to_right = (8 - stop_bit)
 				shift_to_left = n_bits_remaining - bits_from_byte
 				# for C, figure out if type casting is needed
-				type_cast = ""
-				if type(self) == C_Generator:
-					if shift_to_left >= 32:
-						type_cast = "(uint64_t) "
-					elif shift_to_left >= 24:
-						type_cast = "(uint32_t) "
+				type_cast = self.to_typecast(shift_to_left)		
 
 				bitwise_operation = f"({type_cast}({payload_variable}[{at_byte}]{bitshift_mask}){shift(shift_to_left, shift_to_right)})"
 				bitwise_operations.append(bitwise_operation)
@@ -584,6 +590,12 @@ class C_Generator(Generator):
 		variable_name, n_bits, _range, desc = variable
 		_type = "float" if _range is not None else getType(n_bits, _range) 
 		return f"static inline {_type} {packet_name}_get_{variable_name}({packet_name}Payload *{self.get_payload_name(packet_name)}){{\n"
+	def to_typecast(self, shift_to_left):
+		if shift_to_left >= 32:
+			return "(uint64_t) "
+		elif shift_to_left >= 24:
+			return "(uint32_t) "
+		return ""
 	def to_function_call_set(self, packet_name, variable):
 		variable_name, n_bits, _range, desc = variable
 		_type = "float" if _range is not None else getType(n_bits, _range) 
@@ -671,6 +683,8 @@ class Python_Generator(Generator):
 		function_string  =  "    @staticmethod\n"
 		function_string += f"    def get_{variable[0]}(payload):\n"
 		return function_string
+	def to_typecast(self, shift_to_left):
+		return ""
 	def to_function_call_set(self, packet_name, variable):
 		function_string  =  "    @staticmethod\n"
 		function_string += f"    def set_{variable[0]}(payload, {variable[0]}):\n"
