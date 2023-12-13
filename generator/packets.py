@@ -18,7 +18,7 @@ generic_packet_header = [
 
     ["remVersion",  4,      None, "Version of roboteam_embedded_messages"],
     ["messageId",   4,      None, "messageId. Can be used for aligning packets"],
-    ["timestamp",  24,      None, "Timestamp in milliseconds"],
+    ["timestamp",  40,      None, "Unix Timestamp in centiseconds"],
     ["payloadSize", 8,      None, "Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind"]
 ]
 
@@ -160,7 +160,6 @@ packets = {
         ["fillerBits",  36,  None, "SX1280 requires a minimum of 6 bytes payload. See documentation page 124."]
     ],
     "REM_RobotKillCommand": [],
-
 }
 
 # For each packet, insert 1 header byte to ensure that it's present

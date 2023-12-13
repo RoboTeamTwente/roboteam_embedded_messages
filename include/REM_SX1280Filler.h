@@ -33,7 +33,7 @@ static inline uint32_t REM_SX1280Filler_get_remVersion(REM_SX1280FillerPayload *
 }
 
 static inline uint64_t REM_SX1280Filler_get_fillerBits(REM_SX1280FillerPayload *remsxfp){
-    return ((remsxfp->payload[1] & 0b00001111) << 32) | ((remsxfp->payload[2]) << 24) | ((remsxfp->payload[3]) << 16) | ((remsxfp->payload[4]) << 8) | ((remsxfp->payload[5]));
+    return ((uint64_t) (remsxfp->payload[1] & 0b00001111) << 32) | ((uint32_t) (remsxfp->payload[2]) << 24) | ((remsxfp->payload[3]) << 16) | ((remsxfp->payload[4]) << 8) | ((remsxfp->payload[5]));
 }
 
 // ================================ SETTERS ================================
