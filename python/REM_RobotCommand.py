@@ -21,15 +21,16 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- angle
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- angularVelocity
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- cameraAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- -------- -------- useCameraAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- -------- useAbsoluteAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --111111 11------ -------- dribbler
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- -------- doKick
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- -------- doChip
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- -------- kickAtAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----111 1------- kickChipPower
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- -------- dribbler
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- -------- useCameraAngle
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- useAbsoluteAngle
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1111-- -------- kickChipPower
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- -------- doKick
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 -------- doChip
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- kickAtAngle
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ doForce
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- feedback
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---11111 unused
 """
 
 import numpy as np
@@ -58,15 +59,16 @@ class REM_RobotCommand:
     angle = 0                 # float   [-3.142, 3.142]      Absolute angle (rad)
     angularVelocity = 0       # float   [-31.416, 31.416]    Angular velocity (rad/s)
     cameraAngle = 0           # float   [-3.142, 3.142]      Angle of the robot as seen by camera (rad)
+    dribbler = 0              # float   [0.000, 1.000]       Dribbler speed
     useCameraAngle = 0        # integer [0, 1]               Use the info in 'cameraAngle'
     useAbsoluteAngle = 0      # integer [0, 1]               0 = angular velocity, 1 = absolute angle
-    dribbler = 0              # float   [0.000, 1.000]       Dribbler speed
+    kickChipPower = 0         # float   [0.000, 6.500]       Speed of the ball in m/s
     doKick = 0                # integer [0, 1]               Do a kick if ballsensor
     doChip = 0                # integer [0, 1]               Do a chip if ballsensor
     kickAtAngle = 0           # integer [0, 1]               Do a kick once angle is reached
-    kickChipPower = 0         # float   [0.000, 6.500]       Speed of the ball in m/s
     doForce = 0               # integer [0, 1]               Do regardless of ballsensor
     feedback = 0              # integer [0, 1]               Ignore the packet. Just send feedback
+    unused = 0                # integer [0, 31]              Unused bits
 
 
 
@@ -157,34 +159,34 @@ class REM_RobotCommand:
         return (_cameraAngle * 0.0000958752621833) + -3.1415926535897931;
 
     @staticmethod
-    def get_useCameraAngle(payload):
-        return (payload[20] & 0b10000000) > 0;
-
-    @staticmethod
-    def get_useAbsoluteAngle(payload):
-        return (payload[20] & 0b01000000) > 0;
-
-    @staticmethod
     def get_dribbler(payload):
-        _dribbler = ((payload[20] & 0b00111111) << 2) | ((payload[21] & 0b11000000) >> 6);
+        _dribbler = ((payload[20]));
         return (_dribbler * 0.0039215686274510);
 
     @staticmethod
-    def get_doKick(payload):
-        return (payload[21] & 0b00100000) > 0;
+    def get_useCameraAngle(payload):
+        return (payload[21] & 0b10000000) > 0;
 
     @staticmethod
-    def get_doChip(payload):
-        return (payload[21] & 0b00010000) > 0;
-
-    @staticmethod
-    def get_kickAtAngle(payload):
-        return (payload[21] & 0b00001000) > 0;
+    def get_useAbsoluteAngle(payload):
+        return (payload[21] & 0b01000000) > 0;
 
     @staticmethod
     def get_kickChipPower(payload):
-        _kickChipPower = ((payload[21] & 0b00000111) << 1) | ((payload[22] & 0b10000000) >> 7);
+        _kickChipPower = ((payload[21] & 0b00111100) >> 2);
         return (_kickChipPower * 0.4333333333333333);
+
+    @staticmethod
+    def get_doKick(payload):
+        return (payload[21] & 0b00000010) > 0;
+
+    @staticmethod
+    def get_doChip(payload):
+        return (payload[21] & 0b00000001) > 0;
+
+    @staticmethod
+    def get_kickAtAngle(payload):
+        return (payload[22] & 0b10000000) > 0;
 
     @staticmethod
     def get_doForce(payload):
@@ -193,6 +195,10 @@ class REM_RobotCommand:
     @staticmethod
     def get_feedback(payload):
         return (payload[22] & 0b00100000) > 0;
+
+    @staticmethod
+    def get_unused(payload):
+        return ((payload[22] & 0b00011111));
 
 # ================================ SETTERS ================================
     @staticmethod
@@ -290,36 +296,34 @@ class REM_RobotCommand:
         payload[19] = _cameraAngle;
 
     @staticmethod
+    def set_dribbler(payload, dribbler):
+        _dribbler = int(dribbler / 0.0039215686274510);
+        payload[20] = _dribbler;
+
+    @staticmethod
     def set_useCameraAngle(payload, useCameraAngle):
-        payload[20] = ((useCameraAngle << 7) & 0b10000000) | (payload[20] & 0b01111111);
+        payload[21] = ((useCameraAngle << 7) & 0b10000000) | (payload[21] & 0b01111111);
 
     @staticmethod
     def set_useAbsoluteAngle(payload, useAbsoluteAngle):
-        payload[20] = ((useAbsoluteAngle << 6) & 0b01000000) | (payload[20] & 0b10111111);
-
-    @staticmethod
-    def set_dribbler(payload, dribbler):
-        _dribbler = int(dribbler / 0.0039215686274510);
-        payload[20] = ((_dribbler >> 2) & 0b00111111) | (payload[20] & 0b11000000);
-        payload[21] = ((_dribbler << 6) & 0b11000000) | (payload[21] & 0b00111111);
-
-    @staticmethod
-    def set_doKick(payload, doKick):
-        payload[21] = ((doKick << 5) & 0b00100000) | (payload[21] & 0b11011111);
-
-    @staticmethod
-    def set_doChip(payload, doChip):
-        payload[21] = ((doChip << 4) & 0b00010000) | (payload[21] & 0b11101111);
-
-    @staticmethod
-    def set_kickAtAngle(payload, kickAtAngle):
-        payload[21] = ((kickAtAngle << 3) & 0b00001000) | (payload[21] & 0b11110111);
+        payload[21] = ((useAbsoluteAngle << 6) & 0b01000000) | (payload[21] & 0b10111111);
 
     @staticmethod
     def set_kickChipPower(payload, kickChipPower):
         _kickChipPower = int(kickChipPower / 0.4333333333333333);
-        payload[21] = ((_kickChipPower >> 1) & 0b00000111) | (payload[21] & 0b11111000);
-        payload[22] = ((_kickChipPower << 7) & 0b10000000) | (payload[22] & 0b01111111);
+        payload[21] = ((_kickChipPower << 2) & 0b00111100) | (payload[21] & 0b11000011);
+
+    @staticmethod
+    def set_doKick(payload, doKick):
+        payload[21] = ((doKick << 1) & 0b00000010) | (payload[21] & 0b11111101);
+
+    @staticmethod
+    def set_doChip(payload, doChip):
+        payload[21] = (doChip & 0b00000001) | (payload[21] & 0b11111110);
+
+    @staticmethod
+    def set_kickAtAngle(payload, kickAtAngle):
+        payload[22] = ((kickAtAngle << 7) & 0b10000000) | (payload[22] & 0b01111111);
 
     @staticmethod
     def set_doForce(payload, doForce):
@@ -328,6 +332,10 @@ class REM_RobotCommand:
     @staticmethod
     def set_feedback(payload, feedback):
         payload[22] = ((feedback << 5) & 0b00100000) | (payload[22] & 0b11011111);
+
+    @staticmethod
+    def set_unused(payload, unused):
+        payload[22] = (unused & 0b00011111) | (payload[22] & 0b11100000);
 
 # ================================ ENCODE ================================
     def encode(self):
@@ -352,15 +360,16 @@ class REM_RobotCommand:
         REM_RobotCommand.set_angle               (payload, self.angle)
         REM_RobotCommand.set_angularVelocity     (payload, self.angularVelocity)
         REM_RobotCommand.set_cameraAngle         (payload, self.cameraAngle)
+        REM_RobotCommand.set_dribbler            (payload, self.dribbler)
         REM_RobotCommand.set_useCameraAngle      (payload, self.useCameraAngle)
         REM_RobotCommand.set_useAbsoluteAngle    (payload, self.useAbsoluteAngle)
-        REM_RobotCommand.set_dribbler            (payload, self.dribbler)
+        REM_RobotCommand.set_kickChipPower       (payload, self.kickChipPower)
         REM_RobotCommand.set_doKick              (payload, self.doKick)
         REM_RobotCommand.set_doChip              (payload, self.doChip)
         REM_RobotCommand.set_kickAtAngle         (payload, self.kickAtAngle)
-        REM_RobotCommand.set_kickChipPower       (payload, self.kickChipPower)
         REM_RobotCommand.set_doForce             (payload, self.doForce)
         REM_RobotCommand.set_feedback            (payload, self.feedback)
+        REM_RobotCommand.set_unused              (payload, self.unused)
         return payload
 
 
@@ -386,15 +395,16 @@ class REM_RobotCommand:
         self.angle            = REM_RobotCommand.get_angle(payload)
         self.angularVelocity  = REM_RobotCommand.get_angularVelocity(payload)
         self.cameraAngle      = REM_RobotCommand.get_cameraAngle(payload)
+        self.dribbler         = REM_RobotCommand.get_dribbler(payload)
         self.useCameraAngle   = REM_RobotCommand.get_useCameraAngle(payload)
         self.useAbsoluteAngle = REM_RobotCommand.get_useAbsoluteAngle(payload)
-        self.dribbler         = REM_RobotCommand.get_dribbler(payload)
+        self.kickChipPower    = REM_RobotCommand.get_kickChipPower(payload)
         self.doKick           = REM_RobotCommand.get_doKick(payload)
         self.doChip           = REM_RobotCommand.get_doChip(payload)
         self.kickAtAngle      = REM_RobotCommand.get_kickAtAngle(payload)
-        self.kickChipPower    = REM_RobotCommand.get_kickChipPower(payload)
         self.doForce          = REM_RobotCommand.get_doForce(payload)
         self.feedback         = REM_RobotCommand.get_feedback(payload)
+        self.unused           = REM_RobotCommand.get_unused(payload)
 
 
     def print_bit_string(self):

@@ -31,17 +31,19 @@ packets = {
         ["angle",              16, [-math.pi, math.pi], "Absolute angle (rad)"],
         ["angularVelocity",    16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
         ["cameraAngle",        16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
-        ["useCameraAngle",      1,  None, "Use the info in 'cameraAngle'"],
-        ["useAbsoluteAngle",    1,  None, "0 = angular velocity, 1 = absolute angle"],
         # Dribbler
         ["dribbler",            8,  [0, 1], "Dribbler speed"],
+        # Angle
+        ["useCameraAngle",      1,  None, "Use the info in 'cameraAngle'"],
+        ["useAbsoluteAngle",    1,  None, "0 = angular velocity, 1 = absolute angle"],
         # Kicker / Chipper
+        ["kickChipPower",       4,  [0, 6.5], "Speed of the ball in m/s"],
         ["doKick",              1,  None, "Do a kick if ballsensor"],
         ["doChip",              1,  None, "Do a chip if ballsensor"],
         ["kickAtAngle",         1,  None, "Do a kick once angle is reached"],
-        ["kickChipPower",       4,  [0, 6.5], "Speed of the ball in m/s"],
         ["doForce",             1,  None, "Do regardless of ballsensor"],
         ["feedback",            1,  None, "Ignore the packet. Just send feedback"],
+        ["unused",              5,  None, "Unused bits"]
     ],
     "REM_RobotFeedback" : [
         # Movement

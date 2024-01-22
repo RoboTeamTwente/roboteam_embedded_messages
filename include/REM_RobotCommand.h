@@ -21,15 +21,16 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- angle
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- angularVelocity
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- cameraAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- -------- -------- useCameraAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- -------- useAbsoluteAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --111111 11------ -------- dribbler
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- -------- doKick
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- -------- doChip
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- -------- kickAtAngle
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----111 1------- kickChipPower
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- -------- dribbler
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- -------- useCameraAngle
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- useAbsoluteAngle
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1111-- -------- kickChipPower
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- -------- doKick
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 -------- doChip
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- kickAtAngle
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ doForce
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- feedback
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---11111 unused
 */
 
 #ifndef __REM_ROBOT_COMMAND_H
@@ -64,15 +65,16 @@ typedef struct _REM_RobotCommand {
     float      angle               ; // float   [-3.142, 3.142]      Absolute angle (rad)
     float      angularVelocity     ; // float   [-31.416, 31.416]    Angular velocity (rad/s)
     float      cameraAngle         ; // float   [-3.142, 3.142]      Angle of the robot as seen by camera (rad)
+    float      dribbler            ; // float   [0.000, 1.000]       Dribbler speed
     bool       useCameraAngle      ; // integer [0, 1]               Use the info in 'cameraAngle'
     bool       useAbsoluteAngle    ; // integer [0, 1]               0 = angular velocity, 1 = absolute angle
-    float      dribbler            ; // float   [0.000, 1.000]       Dribbler speed
+    float      kickChipPower       ; // float   [0.000, 6.500]       Speed of the ball in m/s
     bool       doKick              ; // integer [0, 1]               Do a kick if ballsensor
     bool       doChip              ; // integer [0, 1]               Do a chip if ballsensor
     bool       kickAtAngle         ; // integer [0, 1]               Do a kick once angle is reached
-    float      kickChipPower       ; // float   [0.000, 6.500]       Speed of the ball in m/s
     bool       doForce             ; // integer [0, 1]               Do regardless of ballsensor
     bool       feedback            ; // integer [0, 1]               Ignore the packet. Just send feedback
+    uint32_t   unused              ; // integer [0, 31]              Unused bits
 } REM_RobotCommand;
 
 // ================================ GETTERS ================================
@@ -161,34 +163,34 @@ static inline float REM_RobotCommand_get_cameraAngle(REM_RobotCommandPayload *re
     return (_cameraAngle * 0.0000958752621833F) + -3.1415926535897931F;
 }
 
-static inline bool REM_RobotCommand_get_useCameraAngle(REM_RobotCommandPayload *remrcp){
-    return (remrcp->payload[20] & 0b10000000) > 0;
-}
-
-static inline bool REM_RobotCommand_get_useAbsoluteAngle(REM_RobotCommandPayload *remrcp){
-    return (remrcp->payload[20] & 0b01000000) > 0;
-}
-
 static inline float REM_RobotCommand_get_dribbler(REM_RobotCommandPayload *remrcp){
-    uint32_t _dribbler = ((remrcp->payload[20] & 0b00111111) << 2) | ((remrcp->payload[21] & 0b11000000) >> 6);
+    uint32_t _dribbler = ((remrcp->payload[20]));
     return (_dribbler * 0.0039215686274510F);
 }
 
-static inline bool REM_RobotCommand_get_doKick(REM_RobotCommandPayload *remrcp){
-    return (remrcp->payload[21] & 0b00100000) > 0;
+static inline bool REM_RobotCommand_get_useCameraAngle(REM_RobotCommandPayload *remrcp){
+    return (remrcp->payload[21] & 0b10000000) > 0;
 }
 
-static inline bool REM_RobotCommand_get_doChip(REM_RobotCommandPayload *remrcp){
-    return (remrcp->payload[21] & 0b00010000) > 0;
-}
-
-static inline bool REM_RobotCommand_get_kickAtAngle(REM_RobotCommandPayload *remrcp){
-    return (remrcp->payload[21] & 0b00001000) > 0;
+static inline bool REM_RobotCommand_get_useAbsoluteAngle(REM_RobotCommandPayload *remrcp){
+    return (remrcp->payload[21] & 0b01000000) > 0;
 }
 
 static inline float REM_RobotCommand_get_kickChipPower(REM_RobotCommandPayload *remrcp){
-    uint32_t _kickChipPower = ((remrcp->payload[21] & 0b00000111) << 1) | ((remrcp->payload[22] & 0b10000000) >> 7);
+    uint32_t _kickChipPower = ((remrcp->payload[21] & 0b00111100) >> 2);
     return (_kickChipPower * 0.4333333333333333F);
+}
+
+static inline bool REM_RobotCommand_get_doKick(REM_RobotCommandPayload *remrcp){
+    return (remrcp->payload[21] & 0b00000010) > 0;
+}
+
+static inline bool REM_RobotCommand_get_doChip(REM_RobotCommandPayload *remrcp){
+    return (remrcp->payload[21] & 0b00000001) > 0;
+}
+
+static inline bool REM_RobotCommand_get_kickAtAngle(REM_RobotCommandPayload *remrcp){
+    return (remrcp->payload[22] & 0b10000000) > 0;
 }
 
 static inline bool REM_RobotCommand_get_doForce(REM_RobotCommandPayload *remrcp){
@@ -197,6 +199,10 @@ static inline bool REM_RobotCommand_get_doForce(REM_RobotCommandPayload *remrcp)
 
 static inline bool REM_RobotCommand_get_feedback(REM_RobotCommandPayload *remrcp){
     return (remrcp->payload[22] & 0b00100000) > 0;
+}
+
+static inline uint32_t REM_RobotCommand_get_unused(REM_RobotCommandPayload *remrcp){
+    return ((remrcp->payload[22] & 0b00011111));
 }
 
 // ================================ SETTERS ================================
@@ -294,36 +300,34 @@ static inline void REM_RobotCommand_set_cameraAngle(REM_RobotCommandPayload *rem
     remrcp->payload[19] = _cameraAngle;
 }
 
+static inline void REM_RobotCommand_set_dribbler(REM_RobotCommandPayload *remrcp, float dribbler){
+    uint32_t _dribbler = (uint32_t)(dribbler / 0.0039215686274510F);
+    remrcp->payload[20] = _dribbler;
+}
+
 static inline void REM_RobotCommand_set_useCameraAngle(REM_RobotCommandPayload *remrcp, bool useCameraAngle){
-    remrcp->payload[20] = ((useCameraAngle << 7) & 0b10000000) | (remrcp->payload[20] & 0b01111111);
+    remrcp->payload[21] = ((useCameraAngle << 7) & 0b10000000) | (remrcp->payload[21] & 0b01111111);
 }
 
 static inline void REM_RobotCommand_set_useAbsoluteAngle(REM_RobotCommandPayload *remrcp, bool useAbsoluteAngle){
-    remrcp->payload[20] = ((useAbsoluteAngle << 6) & 0b01000000) | (remrcp->payload[20] & 0b10111111);
-}
-
-static inline void REM_RobotCommand_set_dribbler(REM_RobotCommandPayload *remrcp, float dribbler){
-    uint32_t _dribbler = (uint32_t)(dribbler / 0.0039215686274510F);
-    remrcp->payload[20] = ((_dribbler >> 2) & 0b00111111) | (remrcp->payload[20] & 0b11000000);
-    remrcp->payload[21] = ((_dribbler << 6) & 0b11000000) | (remrcp->payload[21] & 0b00111111);
-}
-
-static inline void REM_RobotCommand_set_doKick(REM_RobotCommandPayload *remrcp, bool doKick){
-    remrcp->payload[21] = ((doKick << 5) & 0b00100000) | (remrcp->payload[21] & 0b11011111);
-}
-
-static inline void REM_RobotCommand_set_doChip(REM_RobotCommandPayload *remrcp, bool doChip){
-    remrcp->payload[21] = ((doChip << 4) & 0b00010000) | (remrcp->payload[21] & 0b11101111);
-}
-
-static inline void REM_RobotCommand_set_kickAtAngle(REM_RobotCommandPayload *remrcp, bool kickAtAngle){
-    remrcp->payload[21] = ((kickAtAngle << 3) & 0b00001000) | (remrcp->payload[21] & 0b11110111);
+    remrcp->payload[21] = ((useAbsoluteAngle << 6) & 0b01000000) | (remrcp->payload[21] & 0b10111111);
 }
 
 static inline void REM_RobotCommand_set_kickChipPower(REM_RobotCommandPayload *remrcp, float kickChipPower){
     uint32_t _kickChipPower = (uint32_t)(kickChipPower / 0.4333333333333333F);
-    remrcp->payload[21] = ((_kickChipPower >> 1) & 0b00000111) | (remrcp->payload[21] & 0b11111000);
-    remrcp->payload[22] = ((_kickChipPower << 7) & 0b10000000) | (remrcp->payload[22] & 0b01111111);
+    remrcp->payload[21] = ((_kickChipPower << 2) & 0b00111100) | (remrcp->payload[21] & 0b11000011);
+}
+
+static inline void REM_RobotCommand_set_doKick(REM_RobotCommandPayload *remrcp, bool doKick){
+    remrcp->payload[21] = ((doKick << 1) & 0b00000010) | (remrcp->payload[21] & 0b11111101);
+}
+
+static inline void REM_RobotCommand_set_doChip(REM_RobotCommandPayload *remrcp, bool doChip){
+    remrcp->payload[21] = (doChip & 0b00000001) | (remrcp->payload[21] & 0b11111110);
+}
+
+static inline void REM_RobotCommand_set_kickAtAngle(REM_RobotCommandPayload *remrcp, bool kickAtAngle){
+    remrcp->payload[22] = ((kickAtAngle << 7) & 0b10000000) | (remrcp->payload[22] & 0b01111111);
 }
 
 static inline void REM_RobotCommand_set_doForce(REM_RobotCommandPayload *remrcp, bool doForce){
@@ -332,6 +336,10 @@ static inline void REM_RobotCommand_set_doForce(REM_RobotCommandPayload *remrcp,
 
 static inline void REM_RobotCommand_set_feedback(REM_RobotCommandPayload *remrcp, bool feedback){
     remrcp->payload[22] = ((feedback << 5) & 0b00100000) | (remrcp->payload[22] & 0b11011111);
+}
+
+static inline void REM_RobotCommand_set_unused(REM_RobotCommandPayload *remrcp, uint32_t unused){
+    remrcp->payload[22] = (unused & 0b00011111) | (remrcp->payload[22] & 0b11100000);
 }
 
 // ================================ ENCODE ================================
@@ -356,15 +364,16 @@ static inline void encodeREM_RobotCommand(REM_RobotCommandPayload *remrcp, REM_R
     REM_RobotCommand_set_angle               (remrcp, remrc->angle);
     REM_RobotCommand_set_angularVelocity     (remrcp, remrc->angularVelocity);
     REM_RobotCommand_set_cameraAngle         (remrcp, remrc->cameraAngle);
+    REM_RobotCommand_set_dribbler            (remrcp, remrc->dribbler);
     REM_RobotCommand_set_useCameraAngle      (remrcp, remrc->useCameraAngle);
     REM_RobotCommand_set_useAbsoluteAngle    (remrcp, remrc->useAbsoluteAngle);
-    REM_RobotCommand_set_dribbler            (remrcp, remrc->dribbler);
+    REM_RobotCommand_set_kickChipPower       (remrcp, remrc->kickChipPower);
     REM_RobotCommand_set_doKick              (remrcp, remrc->doKick);
     REM_RobotCommand_set_doChip              (remrcp, remrc->doChip);
     REM_RobotCommand_set_kickAtAngle         (remrcp, remrc->kickAtAngle);
-    REM_RobotCommand_set_kickChipPower       (remrcp, remrc->kickChipPower);
     REM_RobotCommand_set_doForce             (remrcp, remrc->doForce);
     REM_RobotCommand_set_feedback            (remrcp, remrc->feedback);
+    REM_RobotCommand_set_unused              (remrcp, remrc->unused);
 }
 
 // ================================ DECODE ================================
@@ -389,15 +398,16 @@ static inline void decodeREM_RobotCommand(REM_RobotCommand *remrc, REM_RobotComm
     remrc->angle         = REM_RobotCommand_get_angle(remrcp);
     remrc->angularVelocity= REM_RobotCommand_get_angularVelocity(remrcp);
     remrc->cameraAngle   = REM_RobotCommand_get_cameraAngle(remrcp);
+    remrc->dribbler      = REM_RobotCommand_get_dribbler(remrcp);
     remrc->useCameraAngle= REM_RobotCommand_get_useCameraAngle(remrcp);
     remrc->useAbsoluteAngle= REM_RobotCommand_get_useAbsoluteAngle(remrcp);
-    remrc->dribbler      = REM_RobotCommand_get_dribbler(remrcp);
+    remrc->kickChipPower = REM_RobotCommand_get_kickChipPower(remrcp);
     remrc->doKick        = REM_RobotCommand_get_doKick(remrcp);
     remrc->doChip        = REM_RobotCommand_get_doChip(remrcp);
     remrc->kickAtAngle   = REM_RobotCommand_get_kickAtAngle(remrcp);
-    remrc->kickChipPower = REM_RobotCommand_get_kickChipPower(remrcp);
     remrc->doForce       = REM_RobotCommand_get_doForce(remrcp);
     remrc->feedback      = REM_RobotCommand_get_feedback(remrcp);
+    remrc->unused        = REM_RobotCommand_get_unused(remrcp);
 }
 
 #endif /*__REM_ROBOT_COMMAND_H*/
