@@ -2,7 +2,7 @@ import math
 
 """ This generic header will autmatically be added to every packet defined below. """
 generic_packet_header = [
-    ["header",      8,      None, "Header byte indicating the type of packet"],
+    ["packetType",  8,      None, "Header byte indicating the type of packet"],
     # Destination
     ["toRobotId",   4,      None, "Id of the receiving robot"],
     ["toColor",     1,      None, "Color of the receiving robot / basestation. Yellow = 0, Blue = 1"],
@@ -18,7 +18,7 @@ generic_packet_header = [
 
     ["remVersion",  4,      None, "Version of roboteam_embedded_messages"],
     ["messageId",   4,      None, "messageId. Can be used for aligning packets"],
-    ["timestamp",  40,      None, "Unix Timestamp in centiseconds"],
+    ["timestamp",  48,      None, "Unix Timestamp in centiseconds"],
     ["payloadSize", 8,      None, "Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind"]
 ]
 
@@ -28,30 +28,32 @@ packets = {
         # Movement
         ["rho",                16, [0, 30], "Magnitude of movement (m/s)"],
         ["theta",              16, [-math.pi, math.pi], "Direction of movement (radians)"],
-        ["angle",              16, [-math.pi, math.pi], "Absolute angle (rad)"],
+        ["yaw",                16, [-math.pi, math.pi], "Absolute facing angle (rad)"],
         ["angularVelocity",    16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
-        ["cameraAngle",        16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
+        ["cameraYaw",          16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
         # Dribbler
         ["dribbler",            8,  [0, 1], "Dribbler speed"],
-        # Angle
-        ["useCameraAngle",      1,  None, "Use the info in 'cameraAngle'"],
-        ["useAbsoluteAngle",    1,  None, "0 = angular velocity, 1 = absolute angle"],
         # Kicker / Chipper
-        ["kickChipPower",       4,  [0, 6.5], "Speed of the ball in m/s"],
+        ["kickChipPower",       8,  [0, 6.5], "Speed of the ball in m/s"],
         ["doKick",              1,  None, "Do a kick if ballsensor"],
         ["doChip",              1,  None, "Do a chip if ballsensor"],
-        ["kickAtAngle",         1,  None, "Do a kick once angle is reached"],
+        ["kickAtYaw",           1,  None, "Do a kick once yaw is reached"],
         ["doForce",             1,  None, "Do regardless of ballsensor"],
+        # Angle
+        ["useCameraAngle",      1,  None, "Use the info in 'cameraYaw'"],
+        ["useYaw",              1,  None, "0 = angular velocity, 1 = yaw"],
+        # Other
+        ["wheelsOff",           1,  None, "Indicate that the robot should stop moving"],
         ["feedback",            1,  None, "Ignore the packet. Just send feedback"],
-        ["unused",              5,  None, "Unused bits"]
+        ["reboot",              1,  None, "Reboot the robot remotely"],        
     ],
     "REM_RobotCommandTesting" : [
         # Movement
         ["rho",                 16, [0, 30], "Magnitude of movement (m/s)"],
         ["theta",               16, [-math.pi, math.pi], "Direction of movement (radians)"],
-        ["angle",               16, [-math.pi, math.pi], "Absolute angle (rad)"],
+        ["yaw",                 16, [-math.pi, math.pi], "Absolute angle (rad)"],
         ["angularVelocity",     16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
-        ["cameraAngle",         16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
+        ["cameraYaw",           16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
         ["wheelSpeedRef1",      16, [-1000, 1000] , "Bypass the body control loop and directly set the refernce of wheel 1"],
         ["wheelSpeedRef2",      16, [-1000, 1000] , "Bypass the body control loop and directly set the refernce of wheel 2"],
         ["wheelSpeedRef3",      16, [-1000, 1000] , "Bypass the body control loop and directly set the refernce of wheel 3"],
@@ -63,39 +65,37 @@ packets = {
         ["useWheelSpeedRef",    1,  None, "If set to 1 use the wheelSpeedRefX, if set to 0 use the rho/theta/angle/angular velocity"],
         ["useWheelPWMRef",      1,  None, "If set to 1 use the wheelPWMRefX, if set to 0 use the rho/theta/angle/angular velocity"],
         # Kicker / Chipper
-        ["kickChipPower",       4,  [0, 6.5], "Speed of the ball in m/s"],
         ["doKick",              1,  None, "Do a kick if ballsensor"],
         ["doChip",              1,  None, "Do a chip if ballsensor"],
         ["kickAtAngle",         1,  None, "Do a kick once angle is reached"],
         ["doForce",             1,  None, "Do regardless of ballsensor"],
+        ["wheelsOff",           1,  None, "Indicate that the robot should stop moving"],
         ["feedback",            1,  None, "Ignore the packet. Just send feedback"],
+        ["kickChipPower",       8,  [0, 6.5], "Speed of the ball in m/s"],
+        ["reboot",              1,  None, "Reboot the robot remotely"],        
         # Angle
-        ["useCameraAngle",      1,  None, "Use the info in 'cameraAngle'"],
-        ["useAbsoluteAngle",    1,  None, "0 = angular velocity, 1 = absolute angle"],
-        ["unused",              3,  None, "Unused bits"],
+        ["useCameraYaw",        1,  None, "Use the info in 'cameraYaw'"],
+        ["useAbsoluteYaw",      1,  None, "0 = angular velocity, 1 = absolute yaw"],
+        ["unused",              5,  None, "Unused bits"],
         # Dribbler
         ["dribbler",            8,  [0, 1], "Dribbler speed"]
     ],
     "REM_RobotFeedback" : [
         # Movement
-        ["rho",                16, [0, 30],                "The estimated magnitude of movement (m/s)"],
-        ["theta",              16, [-math.pi, math.pi],    "The estimated direction of movement (rad)"],
-        ["angle",              16, [-math.pi, math.pi],    "The estimated angle (rad)"],
+        ["rho",                 16, [0, 30],                "The estimated magnitude of movement (m/s)"],
+        ["theta",               16, [-math.pi, math.pi],    "The estimated direction of movement (rad)"],
+        ["yaw",                 16, [-math.pi, math.pi],    "The estimated angle (rad)"],
         
-        ["batteryLevel",        16, [0, 30],    "The voltage level of the battery"],
+        ["batteryLevel",        8,  [20, 30],    "The voltage level of the battery"],
         ["XsensCalibrated",     1,  None,       "Indicates if the XSens IMU is calibrated"],
         ["capacitorCharged",    1,  None,       "Indicates if the capacitor for kicking and chipping is charged"],
         # Ball handling
         ["ballSensorWorking",   1,  None, "Indicates if the ballsensor is working"],
         ["ballSensorSeesBall",  1,  None, "Indicates if the ballsensor sees the ball"],
-        ["ballPos",             4,  [-0.5, 0.5],  "Indicates where in front of the ballsensor the ball is"],
         ["dribblerSeesBall",    1,  None, "Indicates if the dribbler sees the ball"],
-        ["reserved1",           3,  None, "reserved1"],
-
-        ["wheelLocked",         4,  None, "Indicates if a wheel is locked. One bit per wheel"],
-        ["wheelBraking",        4,  None, "Indicates if a wheel is slipping. One bit per wheel"],
-        ["rssi",                8,  None, "Signal strength of the last packet received by the robot"]
-    
+        ["kickerFault",         1,  None, "Indicates if the kicker sends back a fault"],
+        ["kickerOff",           1,  None, "Indicates if the kicker is off"],
+        ["reserved1",           1,  None, "reserved1"],    
     ],
     "REM_RobotStateInfo" : [
         ["xsensAcc1",          16, [-100, 100], "xsensAcc1"],
