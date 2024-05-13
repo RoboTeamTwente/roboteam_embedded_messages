@@ -38,7 +38,7 @@ packets = {
         ["kickAtYaw",           1,  None, "Do a kick once yaw is reached"],
         ["doForce",             1,  None, "Do regardless of ballsensor"],
         # Angle
-        ["useCameraAngle",      1,  None, "Use the info in 'cameraYaw'"],
+        ["useCameraYaw",        1,  None, "Use the info in 'cameraYaw'"],
         ["useYaw",              1,  None, "0 = angular velocity, 1 = yaw"],
         # Dribbler
         ["dribblerOn",          1,  None, "Dribbler on/off"],
