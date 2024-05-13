@@ -31,8 +31,6 @@ packets = {
         ["yaw",                16, [-math.pi, math.pi], "Absolute facing angle (rad)"],
         ["angularVelocity",    16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
         ["cameraYaw",          16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
-        # Dribbler
-        ["dribbler",            8,  [0, 1], "Dribbler speed"],
         # Kicker / Chipper
         ["kickChipPower",       8,  [0, 6.5], "Speed of the ball in m/s"],
         ["doKick",              1,  None, "Do a kick if ballsensor"],
@@ -42,9 +40,17 @@ packets = {
         # Angle
         ["useCameraAngle",      1,  None, "Use the info in 'cameraYaw'"],
         ["useYaw",              1,  None, "0 = angular velocity, 1 = yaw"],
+        # Dribbler
+        ["dribblerOn",          1,  None, "Dribbler on/off"],
+        ["dribblerOption1",     1,  None, "Dribbler option 1"],
+        ["dribblerOption2",     1,  None, "Dribbler option 2"],
+        ["dribblerOption3",     1,  None, "Dribbler option 3"],
+        ["dribblerOption4",     1,  None, "Dribbler option 4"],
+        ["dribblerOption5",     1,  None, "Dribbler option 5"],
+        ["dribblerOption6",     1,  None, "Dribbler option 6"],
+        ["dribblerOption7",     1,  None, "Dribbler option 7"],
         # Other
         ["wheelsOff",           1,  None, "Indicate that the robot should stop moving"],
-        ["feedback",            1,  None, "Ignore the packet. Just send feedback"],
         ["reboot",              1,  None, "Reboot the robot remotely"],        
     ],
     "REM_RobotCommandTesting" : [
