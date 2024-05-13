@@ -26,7 +26,7 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- doChip
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- -------- kickAtYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- -------- doForce
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- -------- useCameraAngle
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- -------- useCameraYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- -------- useYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- -------- dribblerOn
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 -------- dribblerOption1
@@ -71,7 +71,7 @@ class REM_RobotCommand:
     doChip = 0                # integer [0, 1]               Do a chip if ballsensor
     kickAtYaw = 0             # integer [0, 1]               Do a kick once yaw is reached
     doForce = 0               # integer [0, 1]               Do regardless of ballsensor
-    useCameraAngle = 0        # integer [0, 1]               Use the info in 'cameraYaw'
+    useCameraYaw = 0          # integer [0, 1]               Use the info in 'cameraYaw'
     useYaw = 0                # integer [0, 1]               0 = angular velocity, 1 = yaw
     dribblerOn = 0            # integer [0, 1]               Dribbler on/off
     dribblerOption1 = 0       # integer [0, 1]               Dribbler option 1
@@ -194,7 +194,7 @@ class REM_RobotCommand:
         return (payload[22] & 0b00010000) > 0;
 
     @staticmethod
-    def get_useCameraAngle(payload):
+    def get_useCameraYaw(payload):
         return (payload[22] & 0b00001000) > 0;
 
     @staticmethod
@@ -359,8 +359,8 @@ class REM_RobotCommand:
         payload[22] = ((doForce << 4) & 0b00010000) | (payload[22] & 0b11101111);
 
     @staticmethod
-    def set_useCameraAngle(payload, useCameraAngle):
-        payload[22] = ((useCameraAngle << 3) & 0b00001000) | (payload[22] & 0b11110111);
+    def set_useCameraYaw(payload, useCameraYaw):
+        payload[22] = ((useCameraYaw << 3) & 0b00001000) | (payload[22] & 0b11110111);
 
     @staticmethod
     def set_useYaw(payload, useYaw):
@@ -434,7 +434,7 @@ class REM_RobotCommand:
         REM_RobotCommand.set_doChip              (payload, self.doChip)
         REM_RobotCommand.set_kickAtYaw           (payload, self.kickAtYaw)
         REM_RobotCommand.set_doForce             (payload, self.doForce)
-        REM_RobotCommand.set_useCameraAngle      (payload, self.useCameraAngle)
+        REM_RobotCommand.set_useCameraYaw        (payload, self.useCameraYaw)
         REM_RobotCommand.set_useYaw              (payload, self.useYaw)
         REM_RobotCommand.set_dribblerOn          (payload, self.dribblerOn)
         REM_RobotCommand.set_dribblerOption1     (payload, self.dribblerOption1)
@@ -476,7 +476,7 @@ class REM_RobotCommand:
         self.doChip           = REM_RobotCommand.get_doChip(payload)
         self.kickAtYaw        = REM_RobotCommand.get_kickAtYaw(payload)
         self.doForce          = REM_RobotCommand.get_doForce(payload)
-        self.useCameraAngle   = REM_RobotCommand.get_useCameraAngle(payload)
+        self.useCameraYaw     = REM_RobotCommand.get_useCameraYaw(payload)
         self.useYaw           = REM_RobotCommand.get_useYaw(payload)
         self.dribblerOn       = REM_RobotCommand.get_dribblerOn(payload)
         self.dribblerOption1  = REM_RobotCommand.get_dribblerOption1(payload)

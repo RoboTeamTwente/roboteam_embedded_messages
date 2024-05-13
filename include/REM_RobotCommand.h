@@ -26,7 +26,7 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- doChip
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- -------- kickAtYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- -------- doForce
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- -------- useCameraAngle
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- -------- useCameraYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- -------- useYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- -------- dribblerOn
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 -------- dribblerOption1
@@ -77,7 +77,7 @@ typedef struct _REM_RobotCommand {
     bool       doChip              ; // integer [0, 1]               Do a chip if ballsensor
     bool       kickAtYaw           ; // integer [0, 1]               Do a kick once yaw is reached
     bool       doForce             ; // integer [0, 1]               Do regardless of ballsensor
-    bool       useCameraAngle      ; // integer [0, 1]               Use the info in 'cameraYaw'
+    bool       useCameraYaw        ; // integer [0, 1]               Use the info in 'cameraYaw'
     bool       useYaw              ; // integer [0, 1]               0 = angular velocity, 1 = yaw
     bool       dribblerOn          ; // integer [0, 1]               Dribbler on/off
     bool       dribblerOption1     ; // integer [0, 1]               Dribbler option 1
@@ -198,7 +198,7 @@ static inline bool REM_RobotCommand_get_doForce(REM_RobotCommandPayload *remrcp)
     return (remrcp->payload[22] & 0b00010000) > 0;
 }
 
-static inline bool REM_RobotCommand_get_useCameraAngle(REM_RobotCommandPayload *remrcp){
+static inline bool REM_RobotCommand_get_useCameraYaw(REM_RobotCommandPayload *remrcp){
     return (remrcp->payload[22] & 0b00001000) > 0;
 }
 
@@ -363,8 +363,8 @@ static inline void REM_RobotCommand_set_doForce(REM_RobotCommandPayload *remrcp,
     remrcp->payload[22] = ((doForce << 4) & 0b00010000) | (remrcp->payload[22] & 0b11101111);
 }
 
-static inline void REM_RobotCommand_set_useCameraAngle(REM_RobotCommandPayload *remrcp, bool useCameraAngle){
-    remrcp->payload[22] = ((useCameraAngle << 3) & 0b00001000) | (remrcp->payload[22] & 0b11110111);
+static inline void REM_RobotCommand_set_useCameraYaw(REM_RobotCommandPayload *remrcp, bool useCameraYaw){
+    remrcp->payload[22] = ((useCameraYaw << 3) & 0b00001000) | (remrcp->payload[22] & 0b11110111);
 }
 
 static inline void REM_RobotCommand_set_useYaw(REM_RobotCommandPayload *remrcp, bool useYaw){
@@ -438,7 +438,7 @@ static inline void encodeREM_RobotCommand(REM_RobotCommandPayload *remrcp, REM_R
     REM_RobotCommand_set_doChip              (remrcp, remrc->doChip);
     REM_RobotCommand_set_kickAtYaw           (remrcp, remrc->kickAtYaw);
     REM_RobotCommand_set_doForce             (remrcp, remrc->doForce);
-    REM_RobotCommand_set_useCameraAngle      (remrcp, remrc->useCameraAngle);
+    REM_RobotCommand_set_useCameraYaw        (remrcp, remrc->useCameraYaw);
     REM_RobotCommand_set_useYaw              (remrcp, remrc->useYaw);
     REM_RobotCommand_set_dribblerOn          (remrcp, remrc->dribblerOn);
     REM_RobotCommand_set_dribblerOption1     (remrcp, remrc->dribblerOption1);
@@ -479,7 +479,7 @@ static inline void decodeREM_RobotCommand(REM_RobotCommand *remrc, REM_RobotComm
     remrc->doChip        = REM_RobotCommand_get_doChip(remrcp);
     remrc->kickAtYaw     = REM_RobotCommand_get_kickAtYaw(remrcp);
     remrc->doForce       = REM_RobotCommand_get_doForce(remrcp);
-    remrc->useCameraAngle= REM_RobotCommand_get_useCameraAngle(remrcp);
+    remrc->useCameraYaw  = REM_RobotCommand_get_useCameraYaw(remrcp);
     remrc->useYaw        = REM_RobotCommand_get_useYaw(remrcp);
     remrc->dribblerOn    = REM_RobotCommand_get_dribblerOn(remrcp);
     remrc->dribblerOption1= REM_RobotCommand_get_dribblerOption1(remrcp);
