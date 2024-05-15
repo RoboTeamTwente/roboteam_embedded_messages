@@ -94,13 +94,14 @@ packets = {
         
         ["batteryLevel",        8,  [20, 30],    "The voltage level of the battery"],
         ["XsensCalibrated",     1,  None,       "Indicates if the XSens IMU is calibrated"],
-        ["capacitorCharged",    1,  None,       "Indicates if the capacitor for kicking and chipping is charged"],
         # Ball handling
         ["ballSensorWorking",   1,  None, "Indicates if the ballsensor is working"],
         ["ballSensorSeesBall",  1,  None, "Indicates if the ballsensor sees the ball"],
         ["dribblerSeesBall",    1,  None, "Indicates if the dribbler sees the ball"],
+        # Kicker
         ["kickerFault",         1,  None, "Indicates if the kicker sends back a fault"],
         ["kickerOff",           1,  None, "Indicates if the kicker is off"],
+        ["capacitorCharged",    1,  None,       "Indicates if the capacitor for kicking and chipping is charged"],
         ["reserved1",           1,  None, "reserved1"],    
     ],
     "REM_RobotStateInfo" : [
@@ -125,7 +126,9 @@ packets = {
         ["wheel4Integral",  	16, [-5000., 5000.], "Integral value from the PID for Wheel_4"],
         ["bodyController_u",    16, [-100, 100],    "Body u controller output"],
         ["bodyController_v",    16, [-100, 100],    "Body v controller output"],
-        ["bodyController_w",    16, [-100, 100],    "Body w controller output"]
+        ["bodyController_w",    16, [-100, 100],    "Body w controller output"],
+        ["kickerVoltage",       10, None,           "Capacitor voltage"],
+        ["unused",               6, None,           "unused"]
     ],
     "REM_RobotStateInfoExtended" : [
         ["xsensAcc1",          16, [-100, 100], "xsensAcc1"],
@@ -171,6 +174,8 @@ packets = {
         ["bodyYDerivativeFiltered",       16, [-100, 100],   "Filtered derivative for the PID for body_y"],
         ["bodyZDerivativeFiltered",       16, [-100, 100],   "Filtered derivative for the PID for body_z"],
         ["bodyYawDerivativeFiltered",     16, [-100, 100],   "Filtered derivative for the PID for body_yaw"],
+        ["kickerVoltage",       10, None,           "Capacitor voltage"],
+        ["unused",               6, None,           "unused"]
     ],
     "REM_RobotBuzzer" : [
     	["period",             12, None, "Sound that the buzzer makes."],
@@ -290,21 +295,4 @@ packets = {
 for packet_name in packets:
     if packet_name == "REM_SX1280Filler": continue
     packets[packet_name] = generic_packet_header + packets[packet_name]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

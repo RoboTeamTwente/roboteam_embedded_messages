@@ -21,12 +21,12 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- yaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- batteryLevel
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- XsensCalibrated
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ capacitorCharged
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- ballSensorWorking
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- ballSensorSeesBall
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- dribblerSeesBall
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerFault
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- kickerOff
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ ballSensorWorking
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- ballSensorSeesBall
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerSeesBall
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- kickerFault
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerOff
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- capacitorCharged
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 reserved1
 """
 
@@ -56,12 +56,12 @@ class REM_RobotFeedback:
     yaw = 0                   # float   [-3.142, 3.142]      The estimated angle (rad)
     batteryLevel = 0          # float   [20.000, 30.000]     The voltage level of the battery
     XsensCalibrated = 0       # integer [0, 1]               Indicates if the XSens IMU is calibrated
-    capacitorCharged = 0      # integer [0, 1]               Indicates if the capacitor for kicking and chipping is charged
     ballSensorWorking = 0     # integer [0, 1]               Indicates if the ballsensor is working
     ballSensorSeesBall = 0    # integer [0, 1]               Indicates if the ballsensor sees the ball
     dribblerSeesBall = 0      # integer [0, 1]               Indicates if the dribbler sees the ball
     kickerFault = 0           # integer [0, 1]               Indicates if the kicker sends back a fault
     kickerOff = 0             # integer [0, 1]               Indicates if the kicker is off
+    capacitorCharged = 0      # integer [0, 1]               Indicates if the capacitor for kicking and chipping is charged
     reserved1 = 0             # integer [0, 1]               reserved1
 
 
@@ -152,27 +152,27 @@ class REM_RobotFeedback:
         return (payload[18] & 0b10000000) > 0;
 
     @staticmethod
-    def get_capacitorCharged(payload):
+    def get_ballSensorWorking(payload):
         return (payload[18] & 0b01000000) > 0;
 
     @staticmethod
-    def get_ballSensorWorking(payload):
+    def get_ballSensorSeesBall(payload):
         return (payload[18] & 0b00100000) > 0;
 
     @staticmethod
-    def get_ballSensorSeesBall(payload):
+    def get_dribblerSeesBall(payload):
         return (payload[18] & 0b00010000) > 0;
 
     @staticmethod
-    def get_dribblerSeesBall(payload):
+    def get_kickerFault(payload):
         return (payload[18] & 0b00001000) > 0;
 
     @staticmethod
-    def get_kickerFault(payload):
+    def get_kickerOff(payload):
         return (payload[18] & 0b00000100) > 0;
 
     @staticmethod
-    def get_kickerOff(payload):
+    def get_capacitorCharged(payload):
         return (payload[18] & 0b00000010) > 0;
 
     @staticmethod
@@ -273,28 +273,28 @@ class REM_RobotFeedback:
         payload[18] = ((XsensCalibrated << 7) & 0b10000000) | (payload[18] & 0b01111111);
 
     @staticmethod
-    def set_capacitorCharged(payload, capacitorCharged):
-        payload[18] = ((capacitorCharged << 6) & 0b01000000) | (payload[18] & 0b10111111);
-
-    @staticmethod
     def set_ballSensorWorking(payload, ballSensorWorking):
-        payload[18] = ((ballSensorWorking << 5) & 0b00100000) | (payload[18] & 0b11011111);
+        payload[18] = ((ballSensorWorking << 6) & 0b01000000) | (payload[18] & 0b10111111);
 
     @staticmethod
     def set_ballSensorSeesBall(payload, ballSensorSeesBall):
-        payload[18] = ((ballSensorSeesBall << 4) & 0b00010000) | (payload[18] & 0b11101111);
+        payload[18] = ((ballSensorSeesBall << 5) & 0b00100000) | (payload[18] & 0b11011111);
 
     @staticmethod
     def set_dribblerSeesBall(payload, dribblerSeesBall):
-        payload[18] = ((dribblerSeesBall << 3) & 0b00001000) | (payload[18] & 0b11110111);
+        payload[18] = ((dribblerSeesBall << 4) & 0b00010000) | (payload[18] & 0b11101111);
 
     @staticmethod
     def set_kickerFault(payload, kickerFault):
-        payload[18] = ((kickerFault << 2) & 0b00000100) | (payload[18] & 0b11111011);
+        payload[18] = ((kickerFault << 3) & 0b00001000) | (payload[18] & 0b11110111);
 
     @staticmethod
     def set_kickerOff(payload, kickerOff):
-        payload[18] = ((kickerOff << 1) & 0b00000010) | (payload[18] & 0b11111101);
+        payload[18] = ((kickerOff << 2) & 0b00000100) | (payload[18] & 0b11111011);
+
+    @staticmethod
+    def set_capacitorCharged(payload, capacitorCharged):
+        payload[18] = ((capacitorCharged << 1) & 0b00000010) | (payload[18] & 0b11111101);
 
     @staticmethod
     def set_reserved1(payload, reserved1):
@@ -323,12 +323,12 @@ class REM_RobotFeedback:
         REM_RobotFeedback.set_yaw                 (payload, self.yaw)
         REM_RobotFeedback.set_batteryLevel        (payload, self.batteryLevel)
         REM_RobotFeedback.set_XsensCalibrated     (payload, self.XsensCalibrated)
-        REM_RobotFeedback.set_capacitorCharged    (payload, self.capacitorCharged)
         REM_RobotFeedback.set_ballSensorWorking   (payload, self.ballSensorWorking)
         REM_RobotFeedback.set_ballSensorSeesBall  (payload, self.ballSensorSeesBall)
         REM_RobotFeedback.set_dribblerSeesBall    (payload, self.dribblerSeesBall)
         REM_RobotFeedback.set_kickerFault         (payload, self.kickerFault)
         REM_RobotFeedback.set_kickerOff           (payload, self.kickerOff)
+        REM_RobotFeedback.set_capacitorCharged    (payload, self.capacitorCharged)
         REM_RobotFeedback.set_reserved1           (payload, self.reserved1)
         return payload
 
@@ -355,12 +355,12 @@ class REM_RobotFeedback:
         self.yaw              = REM_RobotFeedback.get_yaw(payload)
         self.batteryLevel     = REM_RobotFeedback.get_batteryLevel(payload)
         self.XsensCalibrated  = REM_RobotFeedback.get_XsensCalibrated(payload)
-        self.capacitorCharged = REM_RobotFeedback.get_capacitorCharged(payload)
         self.ballSensorWorking= REM_RobotFeedback.get_ballSensorWorking(payload)
         self.ballSensorSeesBall= REM_RobotFeedback.get_ballSensorSeesBall(payload)
         self.dribblerSeesBall = REM_RobotFeedback.get_dribblerSeesBall(payload)
         self.kickerFault      = REM_RobotFeedback.get_kickerFault(payload)
         self.kickerOff        = REM_RobotFeedback.get_kickerOff(payload)
+        self.capacitorCharged = REM_RobotFeedback.get_capacitorCharged(payload)
         self.reserved1        = REM_RobotFeedback.get_reserved1(payload)
 
 

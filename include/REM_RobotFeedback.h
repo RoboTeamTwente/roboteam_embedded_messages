@@ -21,12 +21,12 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- yaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- batteryLevel
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- XsensCalibrated
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ capacitorCharged
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- ballSensorWorking
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- ballSensorSeesBall
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- dribblerSeesBall
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerFault
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- kickerOff
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ ballSensorWorking
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- ballSensorSeesBall
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerSeesBall
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- kickerFault
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerOff
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- capacitorCharged
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 reserved1
 */
 
@@ -62,12 +62,12 @@ typedef struct _REM_RobotFeedback {
     float      yaw                 ; // float   [-3.142, 3.142]      The estimated angle (rad)
     float      batteryLevel        ; // float   [20.000, 30.000]     The voltage level of the battery
     bool       XsensCalibrated     ; // integer [0, 1]               Indicates if the XSens IMU is calibrated
-    bool       capacitorCharged    ; // integer [0, 1]               Indicates if the capacitor for kicking and chipping is charged
     bool       ballSensorWorking   ; // integer [0, 1]               Indicates if the ballsensor is working
     bool       ballSensorSeesBall  ; // integer [0, 1]               Indicates if the ballsensor sees the ball
     bool       dribblerSeesBall    ; // integer [0, 1]               Indicates if the dribbler sees the ball
     bool       kickerFault         ; // integer [0, 1]               Indicates if the kicker sends back a fault
     bool       kickerOff           ; // integer [0, 1]               Indicates if the kicker is off
+    bool       capacitorCharged    ; // integer [0, 1]               Indicates if the capacitor for kicking and chipping is charged
     bool       reserved1           ; // integer [0, 1]               reserved1
 } REM_RobotFeedback;
 
@@ -156,27 +156,27 @@ static inline bool REM_RobotFeedback_get_XsensCalibrated(REM_RobotFeedbackPayloa
     return (remrfp->payload[18] & 0b10000000) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_capacitorCharged(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_ballSensorWorking(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b01000000) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_ballSensorWorking(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_ballSensorSeesBall(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b00100000) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_ballSensorSeesBall(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_dribblerSeesBall(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b00010000) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_dribblerSeesBall(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_kickerFault(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_kickerFault(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_kickerOff(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b00000100) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_kickerOff(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_capacitorCharged(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b00000010) > 0;
 }
 
@@ -277,28 +277,28 @@ static inline void REM_RobotFeedback_set_XsensCalibrated(REM_RobotFeedbackPayloa
     remrfp->payload[18] = ((XsensCalibrated << 7) & 0b10000000) | (remrfp->payload[18] & 0b01111111);
 }
 
-static inline void REM_RobotFeedback_set_capacitorCharged(REM_RobotFeedbackPayload *remrfp, bool capacitorCharged){
-    remrfp->payload[18] = ((capacitorCharged << 6) & 0b01000000) | (remrfp->payload[18] & 0b10111111);
-}
-
 static inline void REM_RobotFeedback_set_ballSensorWorking(REM_RobotFeedbackPayload *remrfp, bool ballSensorWorking){
-    remrfp->payload[18] = ((ballSensorWorking << 5) & 0b00100000) | (remrfp->payload[18] & 0b11011111);
+    remrfp->payload[18] = ((ballSensorWorking << 6) & 0b01000000) | (remrfp->payload[18] & 0b10111111);
 }
 
 static inline void REM_RobotFeedback_set_ballSensorSeesBall(REM_RobotFeedbackPayload *remrfp, bool ballSensorSeesBall){
-    remrfp->payload[18] = ((ballSensorSeesBall << 4) & 0b00010000) | (remrfp->payload[18] & 0b11101111);
+    remrfp->payload[18] = ((ballSensorSeesBall << 5) & 0b00100000) | (remrfp->payload[18] & 0b11011111);
 }
 
 static inline void REM_RobotFeedback_set_dribblerSeesBall(REM_RobotFeedbackPayload *remrfp, bool dribblerSeesBall){
-    remrfp->payload[18] = ((dribblerSeesBall << 3) & 0b00001000) | (remrfp->payload[18] & 0b11110111);
+    remrfp->payload[18] = ((dribblerSeesBall << 4) & 0b00010000) | (remrfp->payload[18] & 0b11101111);
 }
 
 static inline void REM_RobotFeedback_set_kickerFault(REM_RobotFeedbackPayload *remrfp, bool kickerFault){
-    remrfp->payload[18] = ((kickerFault << 2) & 0b00000100) | (remrfp->payload[18] & 0b11111011);
+    remrfp->payload[18] = ((kickerFault << 3) & 0b00001000) | (remrfp->payload[18] & 0b11110111);
 }
 
 static inline void REM_RobotFeedback_set_kickerOff(REM_RobotFeedbackPayload *remrfp, bool kickerOff){
-    remrfp->payload[18] = ((kickerOff << 1) & 0b00000010) | (remrfp->payload[18] & 0b11111101);
+    remrfp->payload[18] = ((kickerOff << 2) & 0b00000100) | (remrfp->payload[18] & 0b11111011);
+}
+
+static inline void REM_RobotFeedback_set_capacitorCharged(REM_RobotFeedbackPayload *remrfp, bool capacitorCharged){
+    remrfp->payload[18] = ((capacitorCharged << 1) & 0b00000010) | (remrfp->payload[18] & 0b11111101);
 }
 
 static inline void REM_RobotFeedback_set_reserved1(REM_RobotFeedbackPayload *remrfp, bool reserved1){
@@ -327,12 +327,12 @@ static inline void encodeREM_RobotFeedback(REM_RobotFeedbackPayload *remrfp, REM
     REM_RobotFeedback_set_yaw                 (remrfp, remrf->yaw);
     REM_RobotFeedback_set_batteryLevel        (remrfp, remrf->batteryLevel);
     REM_RobotFeedback_set_XsensCalibrated     (remrfp, remrf->XsensCalibrated);
-    REM_RobotFeedback_set_capacitorCharged    (remrfp, remrf->capacitorCharged);
     REM_RobotFeedback_set_ballSensorWorking   (remrfp, remrf->ballSensorWorking);
     REM_RobotFeedback_set_ballSensorSeesBall  (remrfp, remrf->ballSensorSeesBall);
     REM_RobotFeedback_set_dribblerSeesBall    (remrfp, remrf->dribblerSeesBall);
     REM_RobotFeedback_set_kickerFault         (remrfp, remrf->kickerFault);
     REM_RobotFeedback_set_kickerOff           (remrfp, remrf->kickerOff);
+    REM_RobotFeedback_set_capacitorCharged    (remrfp, remrf->capacitorCharged);
     REM_RobotFeedback_set_reserved1           (remrfp, remrf->reserved1);
 }
 
@@ -358,12 +358,12 @@ static inline void decodeREM_RobotFeedback(REM_RobotFeedback *remrf, REM_RobotFe
     remrf->yaw           = REM_RobotFeedback_get_yaw(remrfp);
     remrf->batteryLevel  = REM_RobotFeedback_get_batteryLevel(remrfp);
     remrf->XsensCalibrated= REM_RobotFeedback_get_XsensCalibrated(remrfp);
-    remrf->capacitorCharged= REM_RobotFeedback_get_capacitorCharged(remrfp);
     remrf->ballSensorWorking= REM_RobotFeedback_get_ballSensorWorking(remrfp);
     remrf->ballSensorSeesBall= REM_RobotFeedback_get_ballSensorSeesBall(remrfp);
     remrf->dribblerSeesBall= REM_RobotFeedback_get_dribblerSeesBall(remrfp);
     remrf->kickerFault   = REM_RobotFeedback_get_kickerFault(remrfp);
     remrf->kickerOff     = REM_RobotFeedback_get_kickerOff(remrfp);
+    remrf->capacitorCharged= REM_RobotFeedback_get_capacitorCharged(remrfp);
     remrf->reserved1     = REM_RobotFeedback_get_reserved1(remrfp);
 }
 
