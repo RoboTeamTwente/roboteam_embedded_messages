@@ -2,7 +2,7 @@ import math
 
 """ This generic header will autmatically be added to every packet defined below. """
 generic_packet_header = [
-    ["packetType",  8,      None, "Header byte indicating the type of packet"],
+    ["packetType",  8,      None, "Byte indicating the type of packet"],
     # Destination
     ["toRobotId",   4,      None, "Id of the receiving robot"],
     ["toColor",     1,      None, "Color of the receiving robot / basestation. Yellow = 0, Blue = 1"],
@@ -18,7 +18,7 @@ generic_packet_header = [
 
     ["remVersion",  4,      None, "Version of roboteam_embedded_messages"],
     ["messageId",   4,      None, "messageId. Can be used for aligning packets"],
-    ["timestamp",  48,      None, "Unix Timestamp in centiseconds"],
+    ["timestamp",  48,      None, "Unix Timestamp in milliseconds"],
     ["payloadSize", 8,      None, "Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind"]
 ]
 
@@ -101,7 +101,7 @@ packets = {
         # Kicker
         ["kickerFault",         1,  None, "Indicates if the kicker sends back a fault"],
         ["kickerOff",           1,  None, "Indicates if the kicker is off"],
-        ["capacitorCharged",    1,  None,       "Indicates if the capacitor for kicking and chipping is charged"],
+        ["capacitorCharged",    1,  None, "Indicates if the capacitor for kicking and chipping is charged"],
         ["reserved1",           1,  None, "reserved1"],    
     ],
     "REM_RobotStateInfo" : [
@@ -128,7 +128,7 @@ packets = {
         ["bodyController_v",    16, [-100, 100],    "Body v controller output"],
         ["bodyController_w",    16, [-100, 100],    "Body w controller output"],
         ["kickerVoltage",       10, None,           "Capacitor voltage"],
-        ["unused",               6, None,           "unused"]
+        ["unused",               6, None,           "unused bits"]
     ],
     "REM_RobotStateInfoExtended" : [
         ["xsensAcc1",          16, [-100, 100], "xsensAcc1"],
@@ -175,7 +175,7 @@ packets = {
         ["bodyZDerivativeFiltered",       16, [-100, 100],   "Filtered derivative for the PID for body_z"],
         ["bodyYawDerivativeFiltered",     16, [-100, 100],   "Filtered derivative for the PID for body_yaw"],
         ["kickerVoltage",       10, None,           "Capacitor voltage"],
-        ["unused",               6, None,           "unused"]
+        ["unused",               6, None,           "unused bits"]
     ],
     "REM_RobotBuzzer" : [
     	["period",             12, None, "Sound that the buzzer makes."],

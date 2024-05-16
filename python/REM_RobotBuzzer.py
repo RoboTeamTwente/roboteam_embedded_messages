@@ -26,7 +26,7 @@ from . import REM_BaseTypes
 
 
 class REM_RobotBuzzer:
-    packetType = 0            # integer [0, 255]             Header byte indicating the type of packet
+    packetType = 0            # integer [0, 255]             Byte indicating the type of packet
     toRobotId = 0             # integer [0, 15]              Id of the receiving robot
     toColor = 0               # integer [0, 1]               Color of the receiving robot / basestation. Yellow = 0, Blue = 1
     toBC = 0                  # integer [0, 1]               Bit indicating this packet has to be broadcasted to all robots
@@ -39,7 +39,7 @@ class REM_RobotBuzzer:
     fromPC = 0                # integer [0, 1]               Bit indicating this packet is coming from the PC
     remVersion = 0            # integer [0, 15]              Version of roboteam_embedded_messages
     messageId = 0             # integer [0, 15]              messageId. Can be used for aligning packets
-    timestamp = 0             # integer [0, 281474976710655] Unix Timestamp in centiseconds
+    timestamp = 0             # integer [0, 281474976710655] Unix Timestamp in milliseconds
     payloadSize = 0           # integer [0, 255]             Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind
     period = 0                # integer [0, 4095]            Sound that the buzzer makes.
     duration = 0              # float   [0.000, 5.000]       Duration of the sound

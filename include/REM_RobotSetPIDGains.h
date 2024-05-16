@@ -73,7 +73,7 @@ typedef struct _REM_RobotSetPIDGainsPayload {
 } REM_RobotSetPIDGainsPayload;
 
 typedef struct _REM_RobotSetPIDGains {
-    uint32_t   packetType          ; // integer [0, 255]             Header byte indicating the type of packet
+    uint32_t   packetType          ; // integer [0, 255]             Byte indicating the type of packet
     uint32_t   toRobotId           ; // integer [0, 15]              Id of the receiving robot
     bool       toColor             ; // integer [0, 1]               Color of the receiving robot / basestation. Yellow = 0, Blue = 1
     bool       toBC                ; // integer [0, 1]               Bit indicating this packet has to be broadcasted to all robots
@@ -86,7 +86,7 @@ typedef struct _REM_RobotSetPIDGains {
     bool       fromPC              ; // integer [0, 1]               Bit indicating this packet is coming from the PC
     uint32_t   remVersion          ; // integer [0, 15]              Version of roboteam_embedded_messages
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
-    uint64_t   timestamp           ; // integer [0, 281474976710655] Unix Timestamp in centiseconds
+    uint64_t   timestamp           ; // integer [0, 281474976710655] Unix Timestamp in milliseconds
     uint32_t   payloadSize         ; // integer [0, 255]             Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind
     float      PbodyX              ; // float   [0.000, 100.000]     Commanded P gain of the PID for body_x (x-direction)
     float      IbodyX              ; // float   [0.000, 100.000]     Commanded I gain of the PID for body_x (x-direction)

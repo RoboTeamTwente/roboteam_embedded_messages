@@ -66,7 +66,7 @@ syntax="proto3";
 package proto;
 
 message REM_RobotSetPIDGains {
-    uint32 packetType = 1;    // integer [0, 255]             Header byte indicating the type of packet
+    uint32 packetType = 1;    // integer [0, 255]             Byte indicating the type of packet
     uint32 toRobotId = 2;     // integer [0, 15]              Id of the receiving robot
     bool toColor = 3;         // integer [0, 1]               Color of the receiving robot / basestation. Yellow = 0, Blue = 1
     bool toBC = 4;            // integer [0, 1]               Bit indicating this packet has to be broadcasted to all robots
@@ -79,7 +79,7 @@ message REM_RobotSetPIDGains {
     bool fromPC = 11;         // integer [0, 1]               Bit indicating this packet is coming from the PC
     uint32 remVersion = 12;   // integer [0, 15]              Version of roboteam_embedded_messages
     uint32 messageId = 13;    // integer [0, 15]              messageId. Can be used for aligning packets
-    uint64 timestamp = 14;    // integer [0, 281474976710655] Unix Timestamp in centiseconds
+    uint64 timestamp = 14;    // integer [0, 281474976710655] Unix Timestamp in milliseconds
     uint32 payloadSize = 15;  // integer [0, 255]             Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind
     float PbodyX = 16;        // float   [0.000, 100.000]     Commanded P gain of the PID for body_x (x-direction)
     float IbodyX = 17;        // float   [0.000, 100.000]     Commanded I gain of the PID for body_x (x-direction)
