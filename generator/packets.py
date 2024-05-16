@@ -100,7 +100,7 @@ packets = {
         ["dribblerSeesBall",    1,  None, "Indicates if the dribbler sees the ball"],
         # Kicker
         ["kickerFault",         1,  None, "Indicates if the kicker sends back a fault"],
-        ["kickerOff",           1,  None, "Indicates if the kicker is off"],
+        ["kickerOn",           1,  None, "Indicates if the kicker is on"],
         ["capacitorCharged",    1,  None, "Indicates if the capacitor for kicking and chipping is charged"],
         ["reserved1",           1,  None, "reserved1"],    
     ],

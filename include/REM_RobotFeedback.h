@@ -25,7 +25,7 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- ballSensorSeesBall
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerSeesBall
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- kickerFault
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerOff
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerOn
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- capacitorCharged
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 reserved1
 */
@@ -66,7 +66,7 @@ typedef struct _REM_RobotFeedback {
     bool       ballSensorSeesBall  ; // integer [0, 1]               Indicates if the ballsensor sees the ball
     bool       dribblerSeesBall    ; // integer [0, 1]               Indicates if the dribbler sees the ball
     bool       kickerFault         ; // integer [0, 1]               Indicates if the kicker sends back a fault
-    bool       kickerOff           ; // integer [0, 1]               Indicates if the kicker is off
+    bool       kickerOn            ; // integer [0, 1]               Indicates if the kicker is on
     bool       capacitorCharged    ; // integer [0, 1]               Indicates if the capacitor for kicking and chipping is charged
     bool       reserved1           ; // integer [0, 1]               reserved1
 } REM_RobotFeedback;
@@ -172,7 +172,7 @@ static inline bool REM_RobotFeedback_get_kickerFault(REM_RobotFeedbackPayload *r
     return (remrfp->payload[18] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotFeedback_get_kickerOff(REM_RobotFeedbackPayload *remrfp){
+static inline bool REM_RobotFeedback_get_kickerOn(REM_RobotFeedbackPayload *remrfp){
     return (remrfp->payload[18] & 0b00000100) > 0;
 }
 
@@ -293,8 +293,8 @@ static inline void REM_RobotFeedback_set_kickerFault(REM_RobotFeedbackPayload *r
     remrfp->payload[18] = ((kickerFault << 3) & 0b00001000) | (remrfp->payload[18] & 0b11110111);
 }
 
-static inline void REM_RobotFeedback_set_kickerOff(REM_RobotFeedbackPayload *remrfp, bool kickerOff){
-    remrfp->payload[18] = ((kickerOff << 2) & 0b00000100) | (remrfp->payload[18] & 0b11111011);
+static inline void REM_RobotFeedback_set_kickerOn(REM_RobotFeedbackPayload *remrfp, bool kickerOn){
+    remrfp->payload[18] = ((kickerOn << 2) & 0b00000100) | (remrfp->payload[18] & 0b11111011);
 }
 
 static inline void REM_RobotFeedback_set_capacitorCharged(REM_RobotFeedbackPayload *remrfp, bool capacitorCharged){
@@ -331,7 +331,7 @@ static inline void encodeREM_RobotFeedback(REM_RobotFeedbackPayload *remrfp, REM
     REM_RobotFeedback_set_ballSensorSeesBall  (remrfp, remrf->ballSensorSeesBall);
     REM_RobotFeedback_set_dribblerSeesBall    (remrfp, remrf->dribblerSeesBall);
     REM_RobotFeedback_set_kickerFault         (remrfp, remrf->kickerFault);
-    REM_RobotFeedback_set_kickerOff           (remrfp, remrf->kickerOff);
+    REM_RobotFeedback_set_kickerOn            (remrfp, remrf->kickerOn);
     REM_RobotFeedback_set_capacitorCharged    (remrfp, remrf->capacitorCharged);
     REM_RobotFeedback_set_reserved1           (remrfp, remrf->reserved1);
 }
@@ -362,7 +362,7 @@ static inline void decodeREM_RobotFeedback(REM_RobotFeedback *remrf, REM_RobotFe
     remrf->ballSensorSeesBall= REM_RobotFeedback_get_ballSensorSeesBall(remrfp);
     remrf->dribblerSeesBall= REM_RobotFeedback_get_dribblerSeesBall(remrfp);
     remrf->kickerFault   = REM_RobotFeedback_get_kickerFault(remrfp);
-    remrf->kickerOff     = REM_RobotFeedback_get_kickerOff(remrfp);
+    remrf->kickerOn      = REM_RobotFeedback_get_kickerOn(remrfp);
     remrf->capacitorCharged= REM_RobotFeedback_get_capacitorCharged(remrfp);
     remrf->reserved1     = REM_RobotFeedback_get_reserved1(remrfp);
 }

@@ -25,7 +25,7 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- ballSensorSeesBall
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerSeesBall
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- kickerFault
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerOff
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- kickerOn
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- capacitorCharged
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 reserved1
 """
@@ -60,7 +60,7 @@ class REM_RobotFeedback:
     ballSensorSeesBall = 0    # integer [0, 1]               Indicates if the ballsensor sees the ball
     dribblerSeesBall = 0      # integer [0, 1]               Indicates if the dribbler sees the ball
     kickerFault = 0           # integer [0, 1]               Indicates if the kicker sends back a fault
-    kickerOff = 0             # integer [0, 1]               Indicates if the kicker is off
+    kickerOn = 0              # integer [0, 1]               Indicates if the kicker is on
     capacitorCharged = 0      # integer [0, 1]               Indicates if the capacitor for kicking and chipping is charged
     reserved1 = 0             # integer [0, 1]               reserved1
 
@@ -168,7 +168,7 @@ class REM_RobotFeedback:
         return (payload[18] & 0b00001000) > 0;
 
     @staticmethod
-    def get_kickerOff(payload):
+    def get_kickerOn(payload):
         return (payload[18] & 0b00000100) > 0;
 
     @staticmethod
@@ -289,8 +289,8 @@ class REM_RobotFeedback:
         payload[18] = ((kickerFault << 3) & 0b00001000) | (payload[18] & 0b11110111);
 
     @staticmethod
-    def set_kickerOff(payload, kickerOff):
-        payload[18] = ((kickerOff << 2) & 0b00000100) | (payload[18] & 0b11111011);
+    def set_kickerOn(payload, kickerOn):
+        payload[18] = ((kickerOn << 2) & 0b00000100) | (payload[18] & 0b11111011);
 
     @staticmethod
     def set_capacitorCharged(payload, capacitorCharged):
@@ -327,7 +327,7 @@ class REM_RobotFeedback:
         REM_RobotFeedback.set_ballSensorSeesBall  (payload, self.ballSensorSeesBall)
         REM_RobotFeedback.set_dribblerSeesBall    (payload, self.dribblerSeesBall)
         REM_RobotFeedback.set_kickerFault         (payload, self.kickerFault)
-        REM_RobotFeedback.set_kickerOff           (payload, self.kickerOff)
+        REM_RobotFeedback.set_kickerOn            (payload, self.kickerOn)
         REM_RobotFeedback.set_capacitorCharged    (payload, self.capacitorCharged)
         REM_RobotFeedback.set_reserved1           (payload, self.reserved1)
         return payload
@@ -359,7 +359,7 @@ class REM_RobotFeedback:
         self.ballSensorSeesBall= REM_RobotFeedback.get_ballSensorSeesBall(payload)
         self.dribblerSeesBall = REM_RobotFeedback.get_dribblerSeesBall(payload)
         self.kickerFault      = REM_RobotFeedback.get_kickerFault(payload)
-        self.kickerOff        = REM_RobotFeedback.get_kickerOff(payload)
+        self.kickerOn         = REM_RobotFeedback.get_kickerOn(payload)
         self.capacitorCharged = REM_RobotFeedback.get_capacitorCharged(payload)
         self.reserved1        = REM_RobotFeedback.get_reserved1(payload)
 
