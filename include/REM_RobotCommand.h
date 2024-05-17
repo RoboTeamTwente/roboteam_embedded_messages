@@ -35,7 +35,7 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- dribblerOption4
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerOption5
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- dribblerOption6
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- dribblerOption7
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- sendStateInfo
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- wheelsOff
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 reboot
 */
@@ -86,7 +86,7 @@ typedef struct _REM_RobotCommand {
     bool       dribblerOption4     ; // integer [0, 1]               Dribbler option 4
     bool       dribblerOption5     ; // integer [0, 1]               Dribbler option 5
     bool       dribblerOption6     ; // integer [0, 1]               Dribbler option 6
-    bool       dribblerOption7     ; // integer [0, 1]               Dribbler option 7
+    bool       sendStateInfo       ; // integer [0, 1]               Indicate if stateInfo should be send back
     bool       wheelsOff           ; // integer [0, 1]               Indicate that the robot should stop moving
     bool       reboot              ; // integer [0, 1]               Reboot the robot remotely
 } REM_RobotCommand;
@@ -234,7 +234,7 @@ static inline bool REM_RobotCommand_get_dribblerOption6(REM_RobotCommandPayload 
     return (remrcp->payload[23] & 0b00001000) > 0;
 }
 
-static inline bool REM_RobotCommand_get_dribblerOption7(REM_RobotCommandPayload *remrcp){
+static inline bool REM_RobotCommand_get_sendStateInfo(REM_RobotCommandPayload *remrcp){
     return (remrcp->payload[23] & 0b00000100) > 0;
 }
 
@@ -399,8 +399,8 @@ static inline void REM_RobotCommand_set_dribblerOption6(REM_RobotCommandPayload 
     remrcp->payload[23] = ((dribblerOption6 << 3) & 0b00001000) | (remrcp->payload[23] & 0b11110111);
 }
 
-static inline void REM_RobotCommand_set_dribblerOption7(REM_RobotCommandPayload *remrcp, bool dribblerOption7){
-    remrcp->payload[23] = ((dribblerOption7 << 2) & 0b00000100) | (remrcp->payload[23] & 0b11111011);
+static inline void REM_RobotCommand_set_sendStateInfo(REM_RobotCommandPayload *remrcp, bool sendStateInfo){
+    remrcp->payload[23] = ((sendStateInfo << 2) & 0b00000100) | (remrcp->payload[23] & 0b11111011);
 }
 
 static inline void REM_RobotCommand_set_wheelsOff(REM_RobotCommandPayload *remrcp, bool wheelsOff){
@@ -447,7 +447,7 @@ static inline void encodeREM_RobotCommand(REM_RobotCommandPayload *remrcp, REM_R
     REM_RobotCommand_set_dribblerOption4     (remrcp, remrc->dribblerOption4);
     REM_RobotCommand_set_dribblerOption5     (remrcp, remrc->dribblerOption5);
     REM_RobotCommand_set_dribblerOption6     (remrcp, remrc->dribblerOption6);
-    REM_RobotCommand_set_dribblerOption7     (remrcp, remrc->dribblerOption7);
+    REM_RobotCommand_set_sendStateInfo       (remrcp, remrc->sendStateInfo);
     REM_RobotCommand_set_wheelsOff           (remrcp, remrc->wheelsOff);
     REM_RobotCommand_set_reboot              (remrcp, remrc->reboot);
 }
@@ -488,7 +488,7 @@ static inline void decodeREM_RobotCommand(REM_RobotCommand *remrc, REM_RobotComm
     remrc->dribblerOption4= REM_RobotCommand_get_dribblerOption4(remrcp);
     remrc->dribblerOption5= REM_RobotCommand_get_dribblerOption5(remrcp);
     remrc->dribblerOption6= REM_RobotCommand_get_dribblerOption6(remrcp);
-    remrc->dribblerOption7= REM_RobotCommand_get_dribblerOption7(remrcp);
+    remrc->sendStateInfo = REM_RobotCommand_get_sendStateInfo(remrcp);
     remrc->wheelsOff     = REM_RobotCommand_get_wheelsOff(remrcp);
     remrc->reboot        = REM_RobotCommand_get_reboot(remrcp);
 }

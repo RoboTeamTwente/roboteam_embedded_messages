@@ -42,7 +42,14 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- useCameraYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- -------- useAbsoluteYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---11111 -------- unused
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 dribbler
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- dribblerOn
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ dribblerOption1
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- dribblerOption2
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerOption3
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- dribblerOption4
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- dribblerOption5
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- dribblerOption6
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 sendStateInfo
 """
 
 import numpy as np
@@ -92,7 +99,14 @@ class REM_RobotCommandTesting:
     useCameraYaw = 0          # integer [0, 1]               Use the info in 'cameraYaw'
     useAbsoluteYaw = 0        # integer [0, 1]               0 = angular velocity, 1 = absolute yaw
     unused = 0                # integer [0, 31]              Unused bits
-    dribbler = 0              # float   [0.000, 1.000]       Dribbler speed
+    dribblerOn = 0            # integer [0, 1]               Dribbler on/off
+    dribblerOption1 = 0       # integer [0, 1]               Dribbler option 1
+    dribblerOption2 = 0       # integer [0, 1]               Dribbler option 2
+    dribblerOption3 = 0       # integer [0, 1]               Dribbler option 3
+    dribblerOption4 = 0       # integer [0, 1]               Dribbler option 4
+    dribblerOption5 = 0       # integer [0, 1]               Dribbler option 5
+    dribblerOption6 = 0       # integer [0, 1]               Dribbler option 6
+    sendStateInfo = 0         # integer [0, 1]               Indicate if stateInfo should be send back
 
 
 
@@ -276,9 +290,36 @@ class REM_RobotCommandTesting:
         return ((payload[39] & 0b00011111));
 
     @staticmethod
-    def get_dribbler(payload):
-        _dribbler = ((payload[40]));
-        return (_dribbler * 0.0039215686274510);
+    def get_dribblerOn(payload):
+        return (payload[40] & 0b10000000) > 0;
+
+    @staticmethod
+    def get_dribblerOption1(payload):
+        return (payload[40] & 0b01000000) > 0;
+
+    @staticmethod
+    def get_dribblerOption2(payload):
+        return (payload[40] & 0b00100000) > 0;
+
+    @staticmethod
+    def get_dribblerOption3(payload):
+        return (payload[40] & 0b00010000) > 0;
+
+    @staticmethod
+    def get_dribblerOption4(payload):
+        return (payload[40] & 0b00001000) > 0;
+
+    @staticmethod
+    def get_dribblerOption5(payload):
+        return (payload[40] & 0b00000100) > 0;
+
+    @staticmethod
+    def get_dribblerOption6(payload):
+        return (payload[40] & 0b00000010) > 0;
+
+    @staticmethod
+    def get_sendStateInfo(payload):
+        return (payload[40] & 0b00000001) > 0;
 
 # ================================ SETTERS ================================
     @staticmethod
@@ -478,9 +519,36 @@ class REM_RobotCommandTesting:
         payload[39] = (unused & 0b00011111) | (payload[39] & 0b11100000);
 
     @staticmethod
-    def set_dribbler(payload, dribbler):
-        _dribbler = int(dribbler / 0.0039215686274510);
-        payload[40] = _dribbler;
+    def set_dribblerOn(payload, dribblerOn):
+        payload[40] = ((dribblerOn << 7) & 0b10000000) | (payload[40] & 0b01111111);
+
+    @staticmethod
+    def set_dribblerOption1(payload, dribblerOption1):
+        payload[40] = ((dribblerOption1 << 6) & 0b01000000) | (payload[40] & 0b10111111);
+
+    @staticmethod
+    def set_dribblerOption2(payload, dribblerOption2):
+        payload[40] = ((dribblerOption2 << 5) & 0b00100000) | (payload[40] & 0b11011111);
+
+    @staticmethod
+    def set_dribblerOption3(payload, dribblerOption3):
+        payload[40] = ((dribblerOption3 << 4) & 0b00010000) | (payload[40] & 0b11101111);
+
+    @staticmethod
+    def set_dribblerOption4(payload, dribblerOption4):
+        payload[40] = ((dribblerOption4 << 3) & 0b00001000) | (payload[40] & 0b11110111);
+
+    @staticmethod
+    def set_dribblerOption5(payload, dribblerOption5):
+        payload[40] = ((dribblerOption5 << 2) & 0b00000100) | (payload[40] & 0b11111011);
+
+    @staticmethod
+    def set_dribblerOption6(payload, dribblerOption6):
+        payload[40] = ((dribblerOption6 << 1) & 0b00000010) | (payload[40] & 0b11111101);
+
+    @staticmethod
+    def set_sendStateInfo(payload, sendStateInfo):
+        payload[40] = (sendStateInfo & 0b00000001) | (payload[40] & 0b11111110);
 
 # ================================ ENCODE ================================
     def encode(self):
@@ -526,7 +594,14 @@ class REM_RobotCommandTesting:
         REM_RobotCommandTesting.set_useCameraYaw        (payload, self.useCameraYaw)
         REM_RobotCommandTesting.set_useAbsoluteYaw      (payload, self.useAbsoluteYaw)
         REM_RobotCommandTesting.set_unused              (payload, self.unused)
-        REM_RobotCommandTesting.set_dribbler            (payload, self.dribbler)
+        REM_RobotCommandTesting.set_dribblerOn          (payload, self.dribblerOn)
+        REM_RobotCommandTesting.set_dribblerOption1     (payload, self.dribblerOption1)
+        REM_RobotCommandTesting.set_dribblerOption2     (payload, self.dribblerOption2)
+        REM_RobotCommandTesting.set_dribblerOption3     (payload, self.dribblerOption3)
+        REM_RobotCommandTesting.set_dribblerOption4     (payload, self.dribblerOption4)
+        REM_RobotCommandTesting.set_dribblerOption5     (payload, self.dribblerOption5)
+        REM_RobotCommandTesting.set_dribblerOption6     (payload, self.dribblerOption6)
+        REM_RobotCommandTesting.set_sendStateInfo       (payload, self.sendStateInfo)
         return payload
 
 
@@ -573,7 +648,14 @@ class REM_RobotCommandTesting:
         self.useCameraYaw     = REM_RobotCommandTesting.get_useCameraYaw(payload)
         self.useAbsoluteYaw   = REM_RobotCommandTesting.get_useAbsoluteYaw(payload)
         self.unused           = REM_RobotCommandTesting.get_unused(payload)
-        self.dribbler         = REM_RobotCommandTesting.get_dribbler(payload)
+        self.dribblerOn       = REM_RobotCommandTesting.get_dribblerOn(payload)
+        self.dribblerOption1  = REM_RobotCommandTesting.get_dribblerOption1(payload)
+        self.dribblerOption2  = REM_RobotCommandTesting.get_dribblerOption2(payload)
+        self.dribblerOption3  = REM_RobotCommandTesting.get_dribblerOption3(payload)
+        self.dribblerOption4  = REM_RobotCommandTesting.get_dribblerOption4(payload)
+        self.dribblerOption5  = REM_RobotCommandTesting.get_dribblerOption5(payload)
+        self.dribblerOption6  = REM_RobotCommandTesting.get_dribblerOption6(payload)
+        self.sendStateInfo    = REM_RobotCommandTesting.get_sendStateInfo(payload)
 
 
     def print_bit_string(self):

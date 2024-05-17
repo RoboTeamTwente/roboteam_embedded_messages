@@ -42,7 +42,14 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ -------- useCameraYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- -------- useAbsoluteYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---11111 -------- unused
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 dribbler
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 1------- dribblerOn
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -1------ dribblerOption1
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- dribblerOption2
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerOption3
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- dribblerOption4
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- dribblerOption5
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- dribblerOption6
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 sendStateInfo
 */
 
 #ifndef __REM_ROBOT_COMMAND_TESTING_H
@@ -98,7 +105,14 @@ typedef struct _REM_RobotCommandTesting {
     bool       useCameraYaw        ; // integer [0, 1]               Use the info in 'cameraYaw'
     bool       useAbsoluteYaw      ; // integer [0, 1]               0 = angular velocity, 1 = absolute yaw
     uint32_t   unused              ; // integer [0, 31]              Unused bits
-    float      dribbler            ; // float   [0.000, 1.000]       Dribbler speed
+    bool       dribblerOn          ; // integer [0, 1]               Dribbler on/off
+    bool       dribblerOption1     ; // integer [0, 1]               Dribbler option 1
+    bool       dribblerOption2     ; // integer [0, 1]               Dribbler option 2
+    bool       dribblerOption3     ; // integer [0, 1]               Dribbler option 3
+    bool       dribblerOption4     ; // integer [0, 1]               Dribbler option 4
+    bool       dribblerOption5     ; // integer [0, 1]               Dribbler option 5
+    bool       dribblerOption6     ; // integer [0, 1]               Dribbler option 6
+    bool       sendStateInfo       ; // integer [0, 1]               Indicate if stateInfo should be send back
 } REM_RobotCommandTesting;
 
 // ================================ GETTERS ================================
@@ -280,9 +294,36 @@ static inline uint32_t REM_RobotCommandTesting_get_unused(REM_RobotCommandTestin
     return ((remrctp->payload[39] & 0b00011111));
 }
 
-static inline float REM_RobotCommandTesting_get_dribbler(REM_RobotCommandTestingPayload *remrctp){
-    uint32_t _dribbler = ((remrctp->payload[40]));
-    return (_dribbler * 0.0039215686274510F);
+static inline bool REM_RobotCommandTesting_get_dribblerOn(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b10000000) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_dribblerOption1(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b01000000) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_dribblerOption2(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b00100000) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_dribblerOption3(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b00010000) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_dribblerOption4(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b00001000) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_dribblerOption5(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b00000100) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_dribblerOption6(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b00000010) > 0;
+}
+
+static inline bool REM_RobotCommandTesting_get_sendStateInfo(REM_RobotCommandTestingPayload *remrctp){
+    return (remrctp->payload[40] & 0b00000001) > 0;
 }
 
 // ================================ SETTERS ================================
@@ -482,9 +523,36 @@ static inline void REM_RobotCommandTesting_set_unused(REM_RobotCommandTestingPay
     remrctp->payload[39] = (unused & 0b00011111) | (remrctp->payload[39] & 0b11100000);
 }
 
-static inline void REM_RobotCommandTesting_set_dribbler(REM_RobotCommandTestingPayload *remrctp, float dribbler){
-    uint32_t _dribbler = (uint32_t)(dribbler / 0.0039215686274510F);
-    remrctp->payload[40] = _dribbler;
+static inline void REM_RobotCommandTesting_set_dribblerOn(REM_RobotCommandTestingPayload *remrctp, bool dribblerOn){
+    remrctp->payload[40] = ((dribblerOn << 7) & 0b10000000) | (remrctp->payload[40] & 0b01111111);
+}
+
+static inline void REM_RobotCommandTesting_set_dribblerOption1(REM_RobotCommandTestingPayload *remrctp, bool dribblerOption1){
+    remrctp->payload[40] = ((dribblerOption1 << 6) & 0b01000000) | (remrctp->payload[40] & 0b10111111);
+}
+
+static inline void REM_RobotCommandTesting_set_dribblerOption2(REM_RobotCommandTestingPayload *remrctp, bool dribblerOption2){
+    remrctp->payload[40] = ((dribblerOption2 << 5) & 0b00100000) | (remrctp->payload[40] & 0b11011111);
+}
+
+static inline void REM_RobotCommandTesting_set_dribblerOption3(REM_RobotCommandTestingPayload *remrctp, bool dribblerOption3){
+    remrctp->payload[40] = ((dribblerOption3 << 4) & 0b00010000) | (remrctp->payload[40] & 0b11101111);
+}
+
+static inline void REM_RobotCommandTesting_set_dribblerOption4(REM_RobotCommandTestingPayload *remrctp, bool dribblerOption4){
+    remrctp->payload[40] = ((dribblerOption4 << 3) & 0b00001000) | (remrctp->payload[40] & 0b11110111);
+}
+
+static inline void REM_RobotCommandTesting_set_dribblerOption5(REM_RobotCommandTestingPayload *remrctp, bool dribblerOption5){
+    remrctp->payload[40] = ((dribblerOption5 << 2) & 0b00000100) | (remrctp->payload[40] & 0b11111011);
+}
+
+static inline void REM_RobotCommandTesting_set_dribblerOption6(REM_RobotCommandTestingPayload *remrctp, bool dribblerOption6){
+    remrctp->payload[40] = ((dribblerOption6 << 1) & 0b00000010) | (remrctp->payload[40] & 0b11111101);
+}
+
+static inline void REM_RobotCommandTesting_set_sendStateInfo(REM_RobotCommandTestingPayload *remrctp, bool sendStateInfo){
+    remrctp->payload[40] = (sendStateInfo & 0b00000001) | (remrctp->payload[40] & 0b11111110);
 }
 
 // ================================ ENCODE ================================
@@ -530,7 +598,14 @@ static inline void encodeREM_RobotCommandTesting(REM_RobotCommandTestingPayload 
     REM_RobotCommandTesting_set_useCameraYaw        (remrctp, remrct->useCameraYaw);
     REM_RobotCommandTesting_set_useAbsoluteYaw      (remrctp, remrct->useAbsoluteYaw);
     REM_RobotCommandTesting_set_unused              (remrctp, remrct->unused);
-    REM_RobotCommandTesting_set_dribbler            (remrctp, remrct->dribbler);
+    REM_RobotCommandTesting_set_dribblerOn          (remrctp, remrct->dribblerOn);
+    REM_RobotCommandTesting_set_dribblerOption1     (remrctp, remrct->dribblerOption1);
+    REM_RobotCommandTesting_set_dribblerOption2     (remrctp, remrct->dribblerOption2);
+    REM_RobotCommandTesting_set_dribblerOption3     (remrctp, remrct->dribblerOption3);
+    REM_RobotCommandTesting_set_dribblerOption4     (remrctp, remrct->dribblerOption4);
+    REM_RobotCommandTesting_set_dribblerOption5     (remrctp, remrct->dribblerOption5);
+    REM_RobotCommandTesting_set_dribblerOption6     (remrctp, remrct->dribblerOption6);
+    REM_RobotCommandTesting_set_sendStateInfo       (remrctp, remrct->sendStateInfo);
 }
 
 // ================================ DECODE ================================
@@ -576,7 +651,14 @@ static inline void decodeREM_RobotCommandTesting(REM_RobotCommandTesting *remrct
     remrct->useCameraYaw = REM_RobotCommandTesting_get_useCameraYaw(remrctp);
     remrct->useAbsoluteYaw= REM_RobotCommandTesting_get_useAbsoluteYaw(remrctp);
     remrct->unused       = REM_RobotCommandTesting_get_unused(remrctp);
-    remrct->dribbler     = REM_RobotCommandTesting_get_dribbler(remrctp);
+    remrct->dribblerOn   = REM_RobotCommandTesting_get_dribblerOn(remrctp);
+    remrct->dribblerOption1= REM_RobotCommandTesting_get_dribblerOption1(remrctp);
+    remrct->dribblerOption2= REM_RobotCommandTesting_get_dribblerOption2(remrctp);
+    remrct->dribblerOption3= REM_RobotCommandTesting_get_dribblerOption3(remrctp);
+    remrct->dribblerOption4= REM_RobotCommandTesting_get_dribblerOption4(remrctp);
+    remrct->dribblerOption5= REM_RobotCommandTesting_get_dribblerOption5(remrctp);
+    remrct->dribblerOption6= REM_RobotCommandTesting_get_dribblerOption6(remrctp);
+    remrct->sendStateInfo= REM_RobotCommandTesting_get_sendStateInfo(remrctp);
 }
 
 #endif /*__REM_ROBOT_COMMAND_TESTING_H*/

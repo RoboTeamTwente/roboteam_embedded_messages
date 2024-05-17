@@ -35,7 +35,7 @@
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --1----- dribblerOption4
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ---1---- dribblerOption5
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ----1--- dribblerOption6
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- dribblerOption7
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -----1-- sendStateInfo
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- ------1- wheelsOff
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------1 reboot
 """
@@ -80,7 +80,7 @@ class REM_RobotCommand:
     dribblerOption4 = 0       # integer [0, 1]               Dribbler option 4
     dribblerOption5 = 0       # integer [0, 1]               Dribbler option 5
     dribblerOption6 = 0       # integer [0, 1]               Dribbler option 6
-    dribblerOption7 = 0       # integer [0, 1]               Dribbler option 7
+    sendStateInfo = 0         # integer [0, 1]               Indicate if stateInfo should be send back
     wheelsOff = 0             # integer [0, 1]               Indicate that the robot should stop moving
     reboot = 0                # integer [0, 1]               Reboot the robot remotely
 
@@ -230,7 +230,7 @@ class REM_RobotCommand:
         return (payload[23] & 0b00001000) > 0;
 
     @staticmethod
-    def get_dribblerOption7(payload):
+    def get_sendStateInfo(payload):
         return (payload[23] & 0b00000100) > 0;
 
     @staticmethod
@@ -395,8 +395,8 @@ class REM_RobotCommand:
         payload[23] = ((dribblerOption6 << 3) & 0b00001000) | (payload[23] & 0b11110111);
 
     @staticmethod
-    def set_dribblerOption7(payload, dribblerOption7):
-        payload[23] = ((dribblerOption7 << 2) & 0b00000100) | (payload[23] & 0b11111011);
+    def set_sendStateInfo(payload, sendStateInfo):
+        payload[23] = ((sendStateInfo << 2) & 0b00000100) | (payload[23] & 0b11111011);
 
     @staticmethod
     def set_wheelsOff(payload, wheelsOff):
@@ -443,7 +443,7 @@ class REM_RobotCommand:
         REM_RobotCommand.set_dribblerOption4     (payload, self.dribblerOption4)
         REM_RobotCommand.set_dribblerOption5     (payload, self.dribblerOption5)
         REM_RobotCommand.set_dribblerOption6     (payload, self.dribblerOption6)
-        REM_RobotCommand.set_dribblerOption7     (payload, self.dribblerOption7)
+        REM_RobotCommand.set_sendStateInfo       (payload, self.sendStateInfo)
         REM_RobotCommand.set_wheelsOff           (payload, self.wheelsOff)
         REM_RobotCommand.set_reboot              (payload, self.reboot)
         return payload
@@ -485,7 +485,7 @@ class REM_RobotCommand:
         self.dribblerOption4  = REM_RobotCommand.get_dribblerOption4(payload)
         self.dribblerOption5  = REM_RobotCommand.get_dribblerOption5(payload)
         self.dribblerOption6  = REM_RobotCommand.get_dribblerOption6(payload)
-        self.dribblerOption7  = REM_RobotCommand.get_dribblerOption7(payload)
+        self.sendStateInfo    = REM_RobotCommand.get_sendStateInfo(payload)
         self.wheelsOff        = REM_RobotCommand.get_wheelsOff(payload)
         self.reboot           = REM_RobotCommand.get_reboot(payload)
 
