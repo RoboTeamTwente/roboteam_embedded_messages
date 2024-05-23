@@ -53,7 +53,7 @@ message REM_RobotFeedback {
     float rho = 16;           // float   [0.000, 30.000]      The estimated magnitude of movement (m/s)
     float theta = 17;         // float   [-3.142, 3.142]      The estimated direction of movement (rad)
     float yaw = 18;           // float   [-3.142, 3.142]      The estimated angle (rad)
-    float batteryLevel = 19;  // float   [20.000, 30.000]     The voltage level of the battery
+    float batteryLevel = 19;  // float   [15.000, 30.000]     The voltage level of the battery
     bool XsensCalibrated = 20; // integer [0, 1]               Indicates if the XSens IMU is calibrated
     bool ballSensorWorking = 21; // integer [0, 1]               Indicates if the ballsensor is working
     bool ballSensorSeesBall = 22; // integer [0, 1]               Indicates if the ballsensor sees the ball

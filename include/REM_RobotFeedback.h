@@ -60,7 +60,7 @@ typedef struct _REM_RobotFeedback {
     float      rho                 ; // float   [0.000, 30.000]      The estimated magnitude of movement (m/s)
     float      theta               ; // float   [-3.142, 3.142]      The estimated direction of movement (rad)
     float      yaw                 ; // float   [-3.142, 3.142]      The estimated angle (rad)
-    float      batteryLevel        ; // float   [20.000, 30.000]     The voltage level of the battery
+    float      batteryLevel        ; // float   [15.000, 30.000]     The voltage level of the battery
     bool       XsensCalibrated     ; // integer [0, 1]               Indicates if the XSens IMU is calibrated
     bool       ballSensorWorking   ; // integer [0, 1]               Indicates if the ballsensor is working
     bool       ballSensorSeesBall  ; // integer [0, 1]               Indicates if the ballsensor sees the ball
@@ -149,7 +149,7 @@ static inline float REM_RobotFeedback_get_yaw(REM_RobotFeedbackPayload *remrfp){
 
 static inline float REM_RobotFeedback_get_batteryLevel(REM_RobotFeedbackPayload *remrfp){
     uint32_t _batteryLevel = ((remrfp->payload[17]));
-    return (_batteryLevel * 0.0392156862745098F) + 20.0000000000000000F;
+    return (_batteryLevel * 0.0588235294117647F) + 15.0000000000000000F;
 }
 
 static inline bool REM_RobotFeedback_get_XsensCalibrated(REM_RobotFeedbackPayload *remrfp){
@@ -269,7 +269,7 @@ static inline void REM_RobotFeedback_set_yaw(REM_RobotFeedbackPayload *remrfp, f
 }
 
 static inline void REM_RobotFeedback_set_batteryLevel(REM_RobotFeedbackPayload *remrfp, float batteryLevel){
-    uint32_t _batteryLevel = (uint32_t)((batteryLevel -20.0000000000000000F) / 0.0392156862745098F);
+    uint32_t _batteryLevel = (uint32_t)((batteryLevel -15.0000000000000000F) / 0.0588235294117647F);
     remrfp->payload[17] = _batteryLevel;
 }
 

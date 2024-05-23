@@ -54,7 +54,7 @@ class REM_RobotFeedback:
     rho = 0                   # float   [0.000, 30.000]      The estimated magnitude of movement (m/s)
     theta = 0                 # float   [-3.142, 3.142]      The estimated direction of movement (rad)
     yaw = 0                   # float   [-3.142, 3.142]      The estimated angle (rad)
-    batteryLevel = 0          # float   [20.000, 30.000]     The voltage level of the battery
+    batteryLevel = 0          # float   [15.000, 30.000]     The voltage level of the battery
     XsensCalibrated = 0       # integer [0, 1]               Indicates if the XSens IMU is calibrated
     ballSensorWorking = 0     # integer [0, 1]               Indicates if the ballsensor is working
     ballSensorSeesBall = 0    # integer [0, 1]               Indicates if the ballsensor sees the ball
@@ -145,7 +145,7 @@ class REM_RobotFeedback:
     @staticmethod
     def get_batteryLevel(payload):
         _batteryLevel = ((payload[17]));
-        return (_batteryLevel * 0.0392156862745098) + 20.0000000000000000;
+        return (_batteryLevel * 0.0588235294117647) + 15.0000000000000000;
 
     @staticmethod
     def get_XsensCalibrated(payload):
@@ -265,7 +265,7 @@ class REM_RobotFeedback:
 
     @staticmethod
     def set_batteryLevel(payload, batteryLevel):
-        _batteryLevel = int((batteryLevel -20.0000000000000000) / 0.0392156862745098);
+        _batteryLevel = int((batteryLevel -15.0000000000000000) / 0.0588235294117647);
         payload[17] = _batteryLevel;
 
     @staticmethod

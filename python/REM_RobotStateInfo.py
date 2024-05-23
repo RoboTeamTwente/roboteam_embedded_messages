@@ -118,11 +118,11 @@ class REM_RobotStateInfo:
     bodyController_u = 0      # float   [-100.000, 100.000]  Body u controller output
     bodyController_v = 0      # float   [-100.000, 100.000]  Body v controller output
     bodyController_w = 0      # float   [-100.000, 100.000]  Body w controller output
-    bodyController_yaw = 0    # float   [-3.142, 3.142]      Body yaw controller output
+    bodyController_yaw = 0    # float   [-1000.000, 1000.000] Body yaw controller output
     bodyControllerRef_u = 0   # float   [-100.000, 100.000]  Reference speed body velocity u
     bodyControllerRef_v = 0   # float   [-100.000, 100.000]  Reference speed body velocity v
     bodyControllerRef_w = 0   # float   [-100.000, 100.000]  Reference speed body velocity w
-    bodyControllerRef_yaw = 0 # float   [-3.142, 3.142]      Reference speed body velocity yaw
+    bodyControllerRef_yaw = 0 # float   [-1000.000, 1000.000] Reference speed body velocity yaw
     wheelSpeedDerivativeFiltered1 = 0 # float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_1
     wheelSpeedDerivativeFiltered2 = 0 # float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_2
     wheelSpeedDerivativeFiltered3 = 0 # float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_3
@@ -360,7 +360,7 @@ class REM_RobotStateInfo:
     @staticmethod
     def get_bodyController_yaw(payload):
         _bodyController_yaw = ((payload[77]) << 8) | ((payload[78]));
-        return (_bodyController_yaw * 0.0000958752621833) + -3.1415926535897931;
+        return (_bodyController_yaw * 0.0305180437933928) + -1000.0000000000000000;
 
     @staticmethod
     def get_bodyControllerRef_u(payload):
@@ -380,7 +380,7 @@ class REM_RobotStateInfo:
     @staticmethod
     def get_bodyControllerRef_yaw(payload):
         _bodyControllerRef_yaw = ((payload[85]) << 8) | ((payload[86]));
-        return (_bodyControllerRef_yaw * 0.0000958752621833) + -3.1415926535897931;
+        return (_bodyControllerRef_yaw * 0.0305180437933928) + -1000.0000000000000000;
 
     @staticmethod
     def get_wheelSpeedDerivativeFiltered1(payload):
@@ -692,7 +692,7 @@ class REM_RobotStateInfo:
 
     @staticmethod
     def set_bodyController_yaw(payload, bodyController_yaw):
-        _bodyController_yaw = int((bodyController_yaw +3.1415926535897931) / 0.0000958752621833);
+        _bodyController_yaw = int((bodyController_yaw +1000.0000000000000000) / 0.0305180437933928);
         payload[77] = (_bodyController_yaw >> 8);
         payload[78] = _bodyController_yaw;
 
@@ -716,7 +716,7 @@ class REM_RobotStateInfo:
 
     @staticmethod
     def set_bodyControllerRef_yaw(payload, bodyControllerRef_yaw):
-        _bodyControllerRef_yaw = int((bodyControllerRef_yaw +3.1415926535897931) / 0.0000958752621833);
+        _bodyControllerRef_yaw = int((bodyControllerRef_yaw +1000.0000000000000000) / 0.0305180437933928);
         payload[85] = (_bodyControllerRef_yaw >> 8);
         payload[86] = _bodyControllerRef_yaw;
 

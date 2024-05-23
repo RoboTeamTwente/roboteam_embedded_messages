@@ -99,7 +99,7 @@ packets = {
         ["theta",               16, [-math.pi, math.pi],    "The estimated direction of movement (rad)"],
         ["yaw",                 16, [-math.pi, math.pi],    "The estimated angle (rad)"],
         
-        ["batteryLevel",        8,  [20, 30],    "The voltage level of the battery"],
+        ["batteryLevel",        8,  [15, 30],    "The voltage level of the battery"],
         ["XsensCalibrated",     1,  None,       "Indicates if the XSens IMU is calibrated"],
         # Ball handling
         ["ballSensorWorking",   1,  None, "Indicates if the ballsensor is working"],
@@ -107,7 +107,7 @@ packets = {
         ["dribblerSeesBall",    1,  None, "Indicates if the dribbler sees the ball"],
         # Kicker
         ["kickerFault",         1,  None, "Indicates if the kicker sends back a fault"],
-        ["kickerOn",           1,  None, "Indicates if the kicker is on"],
+        ["kickerOn",            1,  None, "Indicates if the kicker is on"],
         ["capacitorCharged",    1,  None, "Indicates if the capacitor for kicking and chipping is charged"],
         ["reserved1",           1,  None, "reserved1"],    
     ],
@@ -144,11 +144,11 @@ packets = {
         ["bodyController_u",    16, [-100, 100],    "Body u controller output"],
         ["bodyController_v",    16, [-100, 100],    "Body v controller output"],
         ["bodyController_w",    16, [-100, 100],    "Body w controller output"],
-        ["bodyController_yaw",    16, [-math.pi, math.pi],    "Body yaw controller output"],
+        ["bodyController_yaw",    16, [-1000, 1000],    "Body yaw controller output"],
         ["bodyControllerRef_u", 16, [-100, 100],    "Reference speed body velocity u"],
         ["bodyControllerRef_v", 16, [-100, 100],    "Reference speed body velocity v"],
         ["bodyControllerRef_w", 16, [-100, 100],    "Reference speed body velocity w"],
-        ["bodyControllerRef_yaw", 16, [-math.pi, math.pi],    "Reference speed body velocity yaw"],
+        ["bodyControllerRef_yaw", 16, [-1000, 1000],    "Reference speed body velocity yaw"],
         ["wheelSpeedDerivativeFiltered1", 16, [-1000, 1000], "Filtered derivative value for the PID for wheel_1"],
         ["wheelSpeedDerivativeFiltered2", 16, [-1000, 1000], "Filtered derivative value for the PID for wheel_2"],
         ["wheelSpeedDerivativeFiltered3", 16, [-1000, 1000], "Filtered derivative value for the PID for wheel_3"],

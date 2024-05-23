@@ -117,11 +117,11 @@ message REM_RobotStateInfo {
     float bodyController_u = 45; // float   [-100.000, 100.000]  Body u controller output
     float bodyController_v = 46; // float   [-100.000, 100.000]  Body v controller output
     float bodyController_w = 47; // float   [-100.000, 100.000]  Body w controller output
-    float bodyController_yaw = 48; // float   [-3.142, 3.142]      Body yaw controller output
+    float bodyController_yaw = 48; // float   [-1000.000, 1000.000] Body yaw controller output
     float bodyControllerRef_u = 49; // float   [-100.000, 100.000]  Reference speed body velocity u
     float bodyControllerRef_v = 50; // float   [-100.000, 100.000]  Reference speed body velocity v
     float bodyControllerRef_w = 51; // float   [-100.000, 100.000]  Reference speed body velocity w
-    float bodyControllerRef_yaw = 52; // float   [-3.142, 3.142]      Reference speed body velocity yaw
+    float bodyControllerRef_yaw = 52; // float   [-1000.000, 1000.000] Reference speed body velocity yaw
     float wheelSpeedDerivativeFiltered1 = 53; // float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_1
     float wheelSpeedDerivativeFiltered2 = 54; // float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_2
     float wheelSpeedDerivativeFiltered3 = 55; // float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_3

@@ -124,11 +124,11 @@ typedef struct _REM_RobotStateInfo {
     float      bodyController_u    ; // float   [-100.000, 100.000]  Body u controller output
     float      bodyController_v    ; // float   [-100.000, 100.000]  Body v controller output
     float      bodyController_w    ; // float   [-100.000, 100.000]  Body w controller output
-    float      bodyController_yaw  ; // float   [-3.142, 3.142]      Body yaw controller output
+    float      bodyController_yaw  ; // float   [-1000.000, 1000.000] Body yaw controller output
     float      bodyControllerRef_u ; // float   [-100.000, 100.000]  Reference speed body velocity u
     float      bodyControllerRef_v ; // float   [-100.000, 100.000]  Reference speed body velocity v
     float      bodyControllerRef_w ; // float   [-100.000, 100.000]  Reference speed body velocity w
-    float      bodyControllerRef_yaw; // float   [-3.142, 3.142]      Reference speed body velocity yaw
+    float      bodyControllerRef_yaw; // float   [-1000.000, 1000.000] Reference speed body velocity yaw
     float      wheelSpeedDerivativeFiltered1; // float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_1
     float      wheelSpeedDerivativeFiltered2; // float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_2
     float      wheelSpeedDerivativeFiltered3; // float   [-1000.000, 1000.000] Filtered derivative value for the PID for wheel_3
@@ -364,7 +364,7 @@ static inline float REM_RobotStateInfo_get_bodyController_w(REM_RobotStateInfoPa
 
 static inline float REM_RobotStateInfo_get_bodyController_yaw(REM_RobotStateInfoPayload *remrsip){
     uint32_t _bodyController_yaw = ((remrsip->payload[77]) << 8) | ((remrsip->payload[78]));
-    return (_bodyController_yaw * 0.0000958752621833F) + -3.1415926535897931F;
+    return (_bodyController_yaw * 0.0305180437933928F) + -1000.0000000000000000F;
 }
 
 static inline float REM_RobotStateInfo_get_bodyControllerRef_u(REM_RobotStateInfoPayload *remrsip){
@@ -384,7 +384,7 @@ static inline float REM_RobotStateInfo_get_bodyControllerRef_w(REM_RobotStateInf
 
 static inline float REM_RobotStateInfo_get_bodyControllerRef_yaw(REM_RobotStateInfoPayload *remrsip){
     uint32_t _bodyControllerRef_yaw = ((remrsip->payload[85]) << 8) | ((remrsip->payload[86]));
-    return (_bodyControllerRef_yaw * 0.0000958752621833F) + -3.1415926535897931F;
+    return (_bodyControllerRef_yaw * 0.0305180437933928F) + -1000.0000000000000000F;
 }
 
 static inline float REM_RobotStateInfo_get_wheelSpeedDerivativeFiltered1(REM_RobotStateInfoPayload *remrsip){
@@ -696,7 +696,7 @@ static inline void REM_RobotStateInfo_set_bodyController_w(REM_RobotStateInfoPay
 }
 
 static inline void REM_RobotStateInfo_set_bodyController_yaw(REM_RobotStateInfoPayload *remrsip, float bodyController_yaw){
-    uint32_t _bodyController_yaw = (uint32_t)((bodyController_yaw +3.1415926535897931F) / 0.0000958752621833F);
+    uint32_t _bodyController_yaw = (uint32_t)((bodyController_yaw +1000.0000000000000000F) / 0.0305180437933928F);
     remrsip->payload[77] = (_bodyController_yaw >> 8);
     remrsip->payload[78] = _bodyController_yaw;
 }
@@ -720,7 +720,7 @@ static inline void REM_RobotStateInfo_set_bodyControllerRef_w(REM_RobotStateInfo
 }
 
 static inline void REM_RobotStateInfo_set_bodyControllerRef_yaw(REM_RobotStateInfoPayload *remrsip, float bodyControllerRef_yaw){
-    uint32_t _bodyControllerRef_yaw = (uint32_t)((bodyControllerRef_yaw +3.1415926535897931F) / 0.0000958752621833F);
+    uint32_t _bodyControllerRef_yaw = (uint32_t)((bodyControllerRef_yaw +1000.0000000000000000F) / 0.0305180437933928F);
     remrsip->payload[85] = (_bodyControllerRef_yaw >> 8);
     remrsip->payload[86] = _bodyControllerRef_yaw;
 }
