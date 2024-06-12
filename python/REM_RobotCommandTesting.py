@@ -94,7 +94,7 @@ class REM_RobotCommandTesting:
     doForce = 0               # integer [0, 1]               Do regardless of ballsensor
     wheelsOff = 0             # integer [0, 1]               Indicate that the robot should stop moving
     feedback = 0              # integer [0, 1]               Ignore the packet. Just send feedback
-    kickChipPower = 0         # float   [0.000, 6.500]       Speed of the ball in m/s
+    kickChipPower = 0         # float   [0.000, 8.000]       Speed of the ball in m/s
     reboot = 0                # integer [0, 1]               Reboot the robot remotely
     useCameraYaw = 0          # integer [0, 1]               Use the info in 'cameraYaw'
     useAbsoluteYaw = 0        # integer [0, 1]               0 = angular velocity, 1 = absolute yaw
@@ -271,7 +271,7 @@ class REM_RobotCommandTesting:
     @staticmethod
     def get_kickChipPower(payload):
         _kickChipPower = ((payload[38]));
-        return (_kickChipPower * 0.0254901960784314);
+        return (_kickChipPower * 0.0313725490196078);
 
     @staticmethod
     def get_reboot(payload):
@@ -499,7 +499,7 @@ class REM_RobotCommandTesting:
 
     @staticmethod
     def set_kickChipPower(payload, kickChipPower):
-        _kickChipPower = int(kickChipPower / 0.0254901960784314);
+        _kickChipPower = int(kickChipPower / 0.0313725490196078);
         payload[38] = _kickChipPower;
 
     @staticmethod
