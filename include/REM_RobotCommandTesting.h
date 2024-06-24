@@ -100,7 +100,7 @@ typedef struct _REM_RobotCommandTesting {
     bool       doForce             ; // integer [0, 1]               Do regardless of ballsensor
     bool       wheelsOff           ; // integer [0, 1]               Indicate that the robot should stop moving
     bool       feedback            ; // integer [0, 1]               Ignore the packet. Just send feedback
-    float      kickChipPower       ; // float   [0.000, 6.500]       Speed of the ball in m/s
+    float      kickChipPower       ; // float   [0.000, 8.000]       Speed of the ball in m/s
     bool       reboot              ; // integer [0, 1]               Reboot the robot remotely
     bool       useCameraYaw        ; // integer [0, 1]               Use the info in 'cameraYaw'
     bool       useAbsoluteYaw      ; // integer [0, 1]               0 = angular velocity, 1 = absolute yaw
@@ -275,7 +275,7 @@ static inline bool REM_RobotCommandTesting_get_feedback(REM_RobotCommandTestingP
 
 static inline float REM_RobotCommandTesting_get_kickChipPower(REM_RobotCommandTestingPayload *remrctp){
     uint32_t _kickChipPower = ((remrctp->payload[38]));
-    return (_kickChipPower * 0.0254901960784314F);
+    return (_kickChipPower * 0.0313725490196078F);
 }
 
 static inline bool REM_RobotCommandTesting_get_reboot(REM_RobotCommandTestingPayload *remrctp){
@@ -503,7 +503,7 @@ static inline void REM_RobotCommandTesting_set_feedback(REM_RobotCommandTestingP
 }
 
 static inline void REM_RobotCommandTesting_set_kickChipPower(REM_RobotCommandTestingPayload *remrctp, float kickChipPower){
-    uint32_t _kickChipPower = (uint32_t)(kickChipPower / 0.0254901960784314F);
+    uint32_t _kickChipPower = (uint32_t)(kickChipPower / 0.0313725490196078F);
     remrctp->payload[38] = _kickChipPower;
 }
 

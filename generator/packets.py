@@ -31,13 +31,15 @@ packets = {
         ["yaw",                16, [-math.pi, math.pi], "Absolute facing angle (rad)"],
         ["angularVelocity",    16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
         ["cameraYaw",          16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
+        ["acceleration_magnitude", 16, [-15, 15], "Magnitude of acceleration (m/s^2)"],
+        ["acceleration_angle", 16, [-math.pi, math.pi], "Angle of acceleration (rad)"],
         # Kicker / Chipper
-        ["kickChipPower",       8,  [0, 6.5], "Speed of the ball in m/s"],
+        ["kickChipPower",       8,  [0, 8.0], "Speed of the ball in m/s"],
         ["doKick",              1,  None, "Do a kick if ballsensor"],
         ["doChip",              1,  None, "Do a chip if ballsensor"],
         ["kickAtYaw",           1,  None, "Do a kick once yaw is reached"],
         ["doForce",             1,  None, "Do regardless of ballsensor"],
-        # Angle
+        # Yaw
         ["useCameraYaw",        1,  None, "Use the info in 'cameraYaw'"],
         ["useYaw",              1,  None, "0 = angular velocity, 1 = yaw"],
         # Dribbler
@@ -77,7 +79,7 @@ packets = {
         ["doForce",             1,  None, "Do regardless of ballsensor"],
         ["wheelsOff",           1,  None, "Indicate that the robot should stop moving"],
         ["feedback",            1,  None, "Ignore the packet. Just send feedback"],
-        ["kickChipPower",       8,  [0, 6.5], "Speed of the ball in m/s"],
+        ["kickChipPower",       8,  [0, 8.0], "Speed of the ball in m/s"],
         ["reboot",              1,  None, "Reboot the robot remotely"],        
         # Angle
         ["useCameraYaw",        1,  None, "Use the info in 'cameraYaw'"],
@@ -111,13 +113,11 @@ packets = {
         ["capacitorCharged",    1,  None, "Indicates if the capacitor for kicking and chipping is charged"],
         ["reserved1",           1,  None, "reserved1"],    
         ["kickerVoltage",       10, None, "Capacitor voltage"],
-        ["filler",              22, None, "filler bits to have equal or more bytes than REM_RobotCommand"]
+        ["filler",              54, None, "filler bits to have equal or more bytes than REM_RobotCommand"]
     ],
     "REM_RobotStateInfo" : [
         ["xsensAcc1",          16, [-100, 100], "xsensAcc1"],
         ["xsensAcc2",          16, [-100, 100], "xsensAcc2"],
-        ["xsensAccFiltered1",    16, [-100, 100],    "xsensAcc1 filtered"],
-        ["xsensAccFiltered2",    16, [-100, 100],    "xsensAcc2 filtered"],
         ["xsensYaw",           32, [-50000., 50000.], "xsensYaw"],
         ["rateOfTurn",         16, [-20., 20.], "rateOfTurn"],
         ["wheelSpeed1",        16, [-1000., 1000.], "wheelSpeed1"],
