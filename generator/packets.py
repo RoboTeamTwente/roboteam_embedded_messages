@@ -25,14 +25,18 @@ generic_packet_header = [
 packets = {
     "REM_Packet" : [],
     "REM_RobotCommand" : [
-        # Movement
-        ["rho",                16, [0, 30], "Magnitude of movement (m/s)"],
-        ["theta",              16, [-math.pi, math.pi], "Direction of movement (radians)"],
+            # Movement
+        #------------------------ Addedd ----------------------
+         ["x", 16, [-30, 30], "X coordinate of the robot's position (m)"],
+         ["y", 16, [-30, 30], "Y coordinate of the robot's position (m)"],
+
+       # ["rho",                16, [0, 30], "Magnitude of movement (m/s)"],
+       # ["theta",              16, [-math.pi, math.pi], "Direction of movement (radians)"],
         ["yaw",                16, [-math.pi, math.pi], "Absolute facing angle (rad)"],
-        ["angularVelocity",    16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
+       # ["angularVelocity",    16, [-10*math.pi, 10*math.pi], "Angular velocity (rad/s)"],
         ["cameraYaw",          16, [-math.pi, math.pi], "Angle of the robot as seen by camera (rad)"],
-        ["acceleration_magnitude", 16, [-15, 15], "Magnitude of acceleration (m/s^2)"],
-        ["acceleration_angle", 16, [-math.pi, math.pi], "Angle of acceleration (rad)"],
+       # ["acceleration_magnitude", 16, [-15, 15], "Magnitude of acceleration (m/s^2)"],
+       # ["acceleration_angle", 16, [-math.pi, math.pi], "Angle of acceleration (rad)"],
         # Kicker / Chipper
         ["kickChipPower",       8,  [0, 8.0], "Speed of the ball in m/s"],
         ["doKick",              1,  None, "Do a kick if ballsensor"],
