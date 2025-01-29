@@ -73,7 +73,7 @@ Table 14-38: Payload Length Definition in FLRC Packet, page 124
 		for iPacket, packet_name in enumerate(packets.keys()):
 			
 			total_bytes = packet_to_size_in_bytes(packets[packet_name])
-			if total_bytes > 116:
+			if total_bytes > 127:
 				raise ValueError("Packet is too large")
 			PACKET_NAME = CamelCaseToUpper(packet_name)
 
