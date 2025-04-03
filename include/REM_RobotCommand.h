@@ -16,8 +16,8 @@
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 11111111 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- timestamp
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- payloadSize
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- x
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- y
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- targetX
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- targetY
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- yaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- cameraYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- -------- kickChipPower
@@ -66,8 +66,8 @@ typedef struct _REM_RobotCommand {
     uint32_t   messageId           ; // integer [0, 15]              messageId. Can be used for aligning packets
     uint64_t   timestamp           ; // integer [0, 281474976710655] Unix Timestamp in milliseconds
     uint32_t   payloadSize         ; // integer [0, 255]             Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind
-    float      x                   ; // float   [-30.000, 30.000]    X coordinate of the robot's position (m)
-    float      y                   ; // float   [-30.000, 30.000]    Y coordinate of the robot's position (m)
+    float      targetX             ; // float   [0.000, 4.000]       X coordinate to reach
+    float      targetY             ; // float   [0.000, 6.000]       Y coordinate to reach
     float      yaw                 ; // float   [-3.142, 3.142]      Absolute facing angle (rad)
     float      cameraYaw           ; // float   [-3.142, 3.142]      Angle of the robot as seen by camera (rad)
     float      kickChipPower       ; // float   [0.000, 8.000]       Speed of the ball in m/s
@@ -150,14 +150,14 @@ static inline uint32_t REM_RobotCommand_get_payloadSize(REM_RobotCommandPayload 
     return ((remrcp->payload[10]));
 }
 
-static inline float REM_RobotCommand_get_x(REM_RobotCommandPayload *remrcp){
-    uint32_t _x = ((remrcp->payload[11]) << 8) | ((remrcp->payload[12]));
-    return (_x * 0.0009155413138018F) + -30.0000000000000000F;
+static inline float REM_RobotCommand_get_targetX(REM_RobotCommandPayload *remrcp){
+    uint32_t _targetX = ((remrcp->payload[11]) << 8) | ((remrcp->payload[12]));
+    return (_targetX * 0.0000610360875868F);
 }
 
-static inline float REM_RobotCommand_get_y(REM_RobotCommandPayload *remrcp){
-    uint32_t _y = ((remrcp->payload[13]) << 8) | ((remrcp->payload[14]));
-    return (_y * 0.0009155413138018F) + -30.0000000000000000F;
+static inline float REM_RobotCommand_get_targetY(REM_RobotCommandPayload *remrcp){
+    uint32_t _targetY = ((remrcp->payload[13]) << 8) | ((remrcp->payload[14]));
+    return (_targetY * 0.0000915541313802F);
 }
 
 static inline float REM_RobotCommand_get_yaw(REM_RobotCommandPayload *remrcp){
@@ -305,16 +305,16 @@ static inline void REM_RobotCommand_set_payloadSize(REM_RobotCommandPayload *rem
     remrcp->payload[10] = payloadSize;
 }
 
-static inline void REM_RobotCommand_set_x(REM_RobotCommandPayload *remrcp, float x){
-    uint32_t _x = (uint32_t)((x +30.0000000000000000F) / 0.0009155413138018F);
-    remrcp->payload[11] = (_x >> 8);
-    remrcp->payload[12] = _x;
+static inline void REM_RobotCommand_set_targetX(REM_RobotCommandPayload *remrcp, float targetX){
+    uint32_t _targetX = (uint32_t)(targetX / 0.0000610360875868F);
+    remrcp->payload[11] = (_targetX >> 8);
+    remrcp->payload[12] = _targetX;
 }
 
-static inline void REM_RobotCommand_set_y(REM_RobotCommandPayload *remrcp, float y){
-    uint32_t _y = (uint32_t)((y +30.0000000000000000F) / 0.0009155413138018F);
-    remrcp->payload[13] = (_y >> 8);
-    remrcp->payload[14] = _y;
+static inline void REM_RobotCommand_set_targetY(REM_RobotCommandPayload *remrcp, float targetY){
+    uint32_t _targetY = (uint32_t)(targetY / 0.0000915541313802F);
+    remrcp->payload[13] = (_targetY >> 8);
+    remrcp->payload[14] = _targetY;
 }
 
 static inline void REM_RobotCommand_set_yaw(REM_RobotCommandPayload *remrcp, float yaw){
@@ -415,8 +415,8 @@ static inline void encodeREM_RobotCommand(REM_RobotCommandPayload *remrcp, REM_R
     REM_RobotCommand_set_messageId           (remrcp, remrc->messageId);
     REM_RobotCommand_set_timestamp           (remrcp, remrc->timestamp);
     REM_RobotCommand_set_payloadSize         (remrcp, remrc->payloadSize);
-    REM_RobotCommand_set_x                   (remrcp, remrc->x);
-    REM_RobotCommand_set_y                   (remrcp, remrc->y);
+    REM_RobotCommand_set_targetX             (remrcp, remrc->targetX);
+    REM_RobotCommand_set_targetY             (remrcp, remrc->targetY);
     REM_RobotCommand_set_yaw                 (remrcp, remrc->yaw);
     REM_RobotCommand_set_cameraYaw           (remrcp, remrc->cameraYaw);
     REM_RobotCommand_set_kickChipPower       (remrcp, remrc->kickChipPower);
@@ -455,8 +455,8 @@ static inline void decodeREM_RobotCommand(REM_RobotCommand *remrc, REM_RobotComm
     remrc->messageId     = REM_RobotCommand_get_messageId(remrcp);
     remrc->timestamp     = REM_RobotCommand_get_timestamp(remrcp);
     remrc->payloadSize   = REM_RobotCommand_get_payloadSize(remrcp);
-    remrc->x             = REM_RobotCommand_get_x(remrcp);
-    remrc->y             = REM_RobotCommand_get_y(remrcp);
+    remrc->targetX       = REM_RobotCommand_get_targetX(remrcp);
+    remrc->targetY       = REM_RobotCommand_get_targetY(remrcp);
     remrc->yaw           = REM_RobotCommand_get_yaw(remrcp);
     remrc->cameraYaw     = REM_RobotCommand_get_cameraYaw(remrcp);
     remrc->kickChipPower = REM_RobotCommand_get_kickChipPower(remrcp);

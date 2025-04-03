@@ -16,8 +16,8 @@
 -------- -------- -------- ----1111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- messageId
 -------- -------- -------- -------- 11111111 11111111 11111111 11111111 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- timestamp
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- payloadSize
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- x
--------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- y
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- -------- -------- targetX
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- -------- -------- targetY
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- -------- -------- yaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 11111111 -------- -------- -------- cameraYaw
 -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- 11111111 -------- -------- kickChipPower
@@ -60,8 +60,8 @@ class REM_RobotCommand:
     messageId = 0             # integer [0, 15]              messageId. Can be used for aligning packets
     timestamp = 0             # integer [0, 281474976710655] Unix Timestamp in milliseconds
     payloadSize = 0           # integer [0, 255]             Size of the payload. At most 255 bytes including the generic_packet_header. Keep the 127 byte SX1280 limit in mind
-    x = 0                     # float   [-30.000, 30.000]    X coordinate of the robot's position (m)
-    y = 0                     # float   [-30.000, 30.000]    Y coordinate of the robot's position (m)
+    targetX = 0               # float   [0.000, 4.000]       X coordinate to reach
+    targetY = 0               # float   [0.000, 6.000]       Y coordinate to reach
     yaw = 0                   # float   [-3.142, 3.142]      Absolute facing angle (rad)
     cameraYaw = 0             # float   [-3.142, 3.142]      Angle of the robot as seen by camera (rad)
     kickChipPower = 0         # float   [0.000, 8.000]       Speed of the ball in m/s
@@ -146,14 +146,14 @@ class REM_RobotCommand:
         return ((payload[10]));
 
     @staticmethod
-    def get_x(payload):
-        _x = ((payload[11]) << 8) | ((payload[12]));
-        return (_x * 0.0009155413138018) + -30.0000000000000000;
+    def get_targetX(payload):
+        _targetX = ((payload[11]) << 8) | ((payload[12]));
+        return (_targetX * 0.0000610360875868);
 
     @staticmethod
-    def get_y(payload):
-        _y = ((payload[13]) << 8) | ((payload[14]));
-        return (_y * 0.0009155413138018) + -30.0000000000000000;
+    def get_targetY(payload):
+        _targetY = ((payload[13]) << 8) | ((payload[14]));
+        return (_targetY * 0.0000915541313802);
 
     @staticmethod
     def get_yaw(payload):
@@ -301,16 +301,16 @@ class REM_RobotCommand:
         payload[10] = payloadSize;
 
     @staticmethod
-    def set_x(payload, x):
-        _x = int((x +30.0000000000000000) / 0.0009155413138018);
-        payload[11] = (_x >> 8);
-        payload[12] = _x;
+    def set_targetX(payload, targetX):
+        _targetX = int(targetX / 0.0000610360875868);
+        payload[11] = (_targetX >> 8);
+        payload[12] = _targetX;
 
     @staticmethod
-    def set_y(payload, y):
-        _y = int((y +30.0000000000000000) / 0.0009155413138018);
-        payload[13] = (_y >> 8);
-        payload[14] = _y;
+    def set_targetY(payload, targetY):
+        _targetY = int(targetY / 0.0000915541313802);
+        payload[13] = (_targetY >> 8);
+        payload[14] = _targetY;
 
     @staticmethod
     def set_yaw(payload, yaw):
@@ -411,8 +411,8 @@ class REM_RobotCommand:
         REM_RobotCommand.set_messageId           (payload, self.messageId)
         REM_RobotCommand.set_timestamp           (payload, self.timestamp)
         REM_RobotCommand.set_payloadSize         (payload, self.payloadSize)
-        REM_RobotCommand.set_x                   (payload, self.x)
-        REM_RobotCommand.set_y                   (payload, self.y)
+        REM_RobotCommand.set_targetX             (payload, self.targetX)
+        REM_RobotCommand.set_targetY             (payload, self.targetY)
         REM_RobotCommand.set_yaw                 (payload, self.yaw)
         REM_RobotCommand.set_cameraYaw           (payload, self.cameraYaw)
         REM_RobotCommand.set_kickChipPower       (payload, self.kickChipPower)
@@ -452,8 +452,8 @@ class REM_RobotCommand:
         self.messageId        = REM_RobotCommand.get_messageId(payload)
         self.timestamp        = REM_RobotCommand.get_timestamp(payload)
         self.payloadSize      = REM_RobotCommand.get_payloadSize(payload)
-        self.x                = REM_RobotCommand.get_x(payload)
-        self.y                = REM_RobotCommand.get_y(payload)
+        self.targetX          = REM_RobotCommand.get_targetX(payload)
+        self.targetY          = REM_RobotCommand.get_targetY(payload)
         self.yaw              = REM_RobotCommand.get_yaw(payload)
         self.cameraYaw        = REM_RobotCommand.get_cameraYaw(payload)
         self.kickChipPower    = REM_RobotCommand.get_kickChipPower(payload)

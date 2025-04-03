@@ -27,8 +27,9 @@ packets = {
     "REM_RobotCommand" : [
             # Movement
         #------------------------ Addedd ----------------------
-         ["x", 16, [-30, 30], "X coordinate of the robot's position (m)"],
-         ["y", 16, [-30, 30], "Y coordinate of the robot's position (m)"],
+         ["targetX",            16, [0, 4.0], "X coordinate to reach"], #target x
+         ["targetY",            16, [0, 6.0], "Y coordinate to reach"], #target y
+        ##END ADDED
 
        # ["rho",                16, [0, 30], "Magnitude of movement (m/s)"],
        # ["theta",              16, [-math.pi, math.pi], "Direction of movement (radians)"],
